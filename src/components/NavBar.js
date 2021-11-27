@@ -1,0 +1,468 @@
+import React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+// import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import MenuIcon from "@mui/icons-material/Menu";
+import Dialog from "@mui/material/Dialog";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Box from "@mui/material/Box";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ManageIcon from "@mui/icons-material/ManageAccounts";
+import HomeIcon from "@mui/icons-material/Home";
+import LoginIcon from "@mui/icons-material/Login";
+import CreateIcon from "@mui/icons-material/Create";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Lock from "@mui/icons-material/Lock";
+import Logo from "../img/dice.svg";
+import { Link } from "react-router-dom";
+
+function NavBar() {
+  const [openLogin, setOpenLogin] = React.useState(false);
+  const [openRegister, setOpenRegister] = React.useState(false);
+  const [drawer, setDrawer] = React.useState(false);
+  const [values, setValues] = React.useState({
+    password: "",
+    username: "",
+    tempPassword: "",
+    email: "",
+    showPassword: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setDrawer({ ...drawer, [anchor]: open });
+  };
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        <Link
+          to="/"
+          style={{
+            fontWeight: "bold",
+            color: "#2e3440",
+            textDecoration: "none",
+          }}
+        >
+          <ListItem button key={"home"}>
+            <ListItemIcon>
+              <HomeIcon sx={{color:'#4c566a'}}/>
+            </ListItemIcon>
+            <ListItemText primary={"home"} />
+          </ListItem>
+        </Link>
+        <Link
+          to="/create"
+          style={{
+            fontWeight: "bold",
+            color: "#2e3440",
+            textDecoration: "none",
+          }}
+        >
+          <ListItem button key={"create"}>
+            <ListItemIcon>
+              <CreateIcon sx={{color:'#4c566a'}}/>
+            </ListItemIcon>
+            <ListItemText primary={"create"} />
+          </ListItem>
+        </Link>
+        <Link
+          to="/search"
+          style={{
+            fontWeight: "bold",
+            color: "#2e3440",
+            textDecoration: "none",
+          }}
+        >
+          <ListItem button key={"search"}>
+            <ListItemIcon>
+              <SearchIcon sx={{color:'#4c566a'}}/>
+            </ListItemIcon>
+            <ListItemText primary={"search"} />
+          </ListItem>
+        </Link>
+        <Link
+          to="/manage"
+          style={{
+            fontWeight: "bold",
+            color: "#2e3440",
+            textDecoration: "none",
+          }}
+        >
+          <ListItem button key={"manage"}>
+            <ListItemIcon>
+              <ManageIcon sx={{color:'#4c566a'}}/>
+            </ListItemIcon>
+            <ListItemText primary={"manage"} />
+          </ListItem>
+        </Link>
+        <ListItem button key={"login"} onClick={handleClickOpenLogin}>
+          <ListItemIcon>
+            <LoginIcon sx={{color:'#4c566a'}}/>
+          </ListItemIcon>
+          <ListItemText primary={"login"} />
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  const clearTextInput = () => {
+    setValues({ password: "", username: "", email: "", tempPassword: "" });
+  };
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleClickOpenLogin = () => {
+    handleCloseRegister();
+    setOpenLogin(true);
+  };
+
+  const handleCloseLogin = () => {
+    setOpenLogin(false);
+    clearTextInput();
+  };
+  const handleClickOpenRegister = () => {
+    handleCloseLogin();
+    setOpenRegister(true);
+  };
+
+  const handleCloseRegister = () => {
+    setOpenRegister(false);
+    clearTextInput();
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  return (
+    <div>
+      <AppBar
+        position="fixed"
+        sx={{
+          justifyContent: "center",
+          // paddingX: 1,
+          minHeight: 66,
+          backgroundColor: "#2e3440",
+        }}
+      >
+        <Toolbar>
+          <img
+            src={Logo}
+            alt="questboardLogo"
+            style={{ marginRight: 10}}
+            height={32}
+            align='left'
+            />
+          <Typography
+            variant="h6"
+            component="div"
+            edge="start"
+            sx={{
+              flexGrow: 1,
+              color: "#d8dee9",
+              ml: { xs: 1, sm: 0 },
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            align="left"
+            >
+            questboard
+          </Typography>
+
+
+          <Stack
+            direction="row"
+            spacing={1.5}
+            sx={{ display: { xs: "none", sm: "block" }}}
+          >
+            <Link to="/">
+              <Button
+                variant="text"
+                color="primary"
+                sx={{ textTransform: "lowercase", color: "#d8dee9" }}
+              >
+                home
+              </Button>
+            </Link>
+            <Link to="/create">
+              <Button
+                variant="text"
+                color="primary"
+                sx={{ textTransform: "lowercase", color: "#d8dee9" }}
+              >
+                create
+              </Button>
+            </Link>
+            <Link to="/search">
+              <Button
+                variant="text"
+                color="primary"
+                sx={{ textTransform: "lowercase", color: "#d8dee9" }}
+              >
+                search
+              </Button>
+            </Link>
+            <Link to="/manage">
+              <Button
+                variant="text"
+                color="primary"
+                sx={{ textTransform: "lowercase", color: "#d8dee9" }}
+              >
+                manage
+              </Button>
+            </Link>
+            <Button
+              variant="contained"
+              color="grey"
+              onClick={handleClickOpenLogin}
+              sx={{
+                fontWeight: "bold",
+                color: "#4c566a",
+                backgroundColor: "#d8dee9",
+              }}
+            >
+              Login
+            </Button>
+          </Stack>
+          <React.Fragment key={"right"}>
+            <IconButton
+              size="large"
+              onClick={toggleDrawer("right", true)}
+              edge="end"
+              aria-label="menu"
+              sx={{ display: { sm: "none" }, color: "#d8dee9" }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Drawer
+              anchor={"right"}
+              open={drawer["right"]}
+              PaperProps={{
+                style: {
+                  backgroundColor: "#eceff4",
+                }
+              }}
+              onClose={toggleDrawer("right", false)}
+            >
+              {list("right")}
+            </Drawer>
+          </React.Fragment>
+          <Dialog
+            open={openLogin}
+            onClose={handleCloseLogin}
+            PaperProps={{
+              style: {
+                backgroundColor: "#eceff4",
+              }
+            }}
+          >
+            <DialogTitle>Login</DialogTitle>
+            <DialogContent>
+              <Stack spacing={3}>
+                <TextField
+                  id="input-with-icon-textfield"
+                  label="Email"
+                  type="email"
+                  sx={{ width: "250" }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                />
+
+                <FormControl sx={{ width: "250" }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Password
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange("password")}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Lock />
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Stack>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                sx={{ color: "#2e3440" }}
+                onClick={handleClickOpenRegister}
+              >
+                Register
+              </Button>
+              <Button sx={{ color: "#2e3440" }} onClick={handleCloseLogin}>
+                Login
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog
+            open={openRegister}
+            onClose={handleCloseRegister}
+            PaperProps={{
+              style: {
+                backgroundColor: "#eceff4",
+              },
+            }}
+          >
+            <DialogTitle>Register</DialogTitle>
+            <DialogContent>
+              <Stack spacing={3}>
+                <TextField
+                  id="input-with-icon-textfield"
+                  label="Email"
+                  type="email"
+                  sx={{ width: "250" }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                />
+
+                <FormControl sx={{ width: "250" }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Password
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange("password")}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Lock />
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                <FormControl sx={{ width: "250" }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Confirm Password
+                  </InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.tempPassword}
+                    onChange={handleChange("tempPassword")}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Lock />
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Stack>
+            </DialogContent>
+            <DialogActions>
+              <Button sx={{ color: "#2e3440" }} onClick={handleClickOpenLogin}>
+                Login
+              </Button>
+              <Button sx={{ color: "#2e3440" }} onClick={handleCloseRegister}>
+                Register
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}
+
+export default NavBar;
