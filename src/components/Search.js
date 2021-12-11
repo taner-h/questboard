@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import FormInfo from "./FormInfo";
 import GameCard from "./GameCard";
-// import FormControl from "@mui/material/FormControl";
+import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-// import InputLabel from "@mui/material/InputLabel";
+import Divider from '@mui/material/Divider';
+import InputLabel from "@mui/material/InputLabel";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import Drawer from "@mui/material/Drawer";
-// import MenuItem from "@mui/material/MenuItem";
-import List from "@mui/material/List";
-// import Select from "@mui/material/Select";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import Autocomplete from "@mui/material/Autocomplete";
+import ToggleButton from '@mui/material/ToggleButton';
+// import Drawer from "@mui/material/Drawer";
+import MenuItem from "@mui/material/MenuItem";
+// import List from "@mui/material/List";
+import Select from "@mui/material/Select";
+// import ListItem from "@mui/material/ListItem";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,7 +29,36 @@ import SortIcon from "@mui/icons-material/Sort";
 
 function Search() {
   const [page, setPage] = React.useState(1);
-  const [filterDrawer, setFilterDrawer] = React.useState(false);
+  const [filters, setFilters] = useState(
+    {
+      gameSystem: "",
+      medium: "",
+      adventureLength: "",
+      language: ""
+    }
+  )
+
+  const[sort, setSort] = useState(
+  {
+    sortBy: "Create Time",
+    sortDescending: true
+  }
+  )
+
+  const [showFilters, setShowFilters] = React.useState(false)
+  const [showSort, setShowSort] = React.useState(false)
+
+  const handleChangeFilterGameSystem = (event) => {
+    setFilters({ ...filters, gameSystem: event.target.value });
+  }
+  const handleChangeFilterMedium = (event) => {
+    setFilters({ ...filters, medium: event.target.value });
+  }
+  const handleChangeFilterAdventureLength = (event) => {
+    setFilters({ ...filters, adventureLength: event.target.value });
+  }
+
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -41,49 +75,242 @@ function Search() {
     },
   }));
 
-  const toggleFilterDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setFilterDrawer({ ...filterDrawer, [anchor]: open });
-  };
-
-  const list = (anchor) => (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={toggleFilterDrawer(anchor, false)}
-      onKeyDown={toggleFilterDrawer(anchor, false)}
-    >
-      <List>
-    
-        <ListItem button key={"create"}>
-          <ListItemIcon>
-            <SortIcon></SortIcon>
-          </ListItemIcon>
-          <ListItemText primary={"create"} />
-        </ListItem>
-        <ListItem button key={"search"}>
-          <ListItemIcon>
-            <SortIcon></SortIcon>
-          </ListItemIcon>
-          <ListItemText primary={"search"} />
-        </ListItem>
-        <ListItem button key={"manage"}>
-          <ListItemIcon>
-            <SortIcon></SortIcon>
-          </ListItemIcon>
-          <ListItemText primary={"manage"} />
-        </ListItem>
-      </List>
-    </Box>
-  );
+  
 
   const styles = useStyles();
+
+  const languages = [
+    "Abkhaz",
+    "Afar",
+    "Afrikaans",
+    "Akan",
+    "Albanian",
+    "Amharic",
+    "Arabic",
+    "Aragonese",
+    "Armenian",
+    "Assamese",
+    "Avaric",
+    "Avestan",
+    "Aymara",
+    "Azerbaijani",
+    "Bambara",
+    "Bashkir",
+    "Basque",
+    "Belarusian",
+    "Bengali",
+    "Bihari",
+    "Bislama",
+    "Bosnian",
+    "Breton",
+    "Bulgarian",
+    "Burmese",
+    "Catalan",
+    "Chamorro",
+    "Chechen",
+    "Chichewa",
+    "Chinese",
+    "Chuvash",
+    "Cornish",
+    "Corsican",
+    "Cree",
+    "Croatian",
+    "Czech",
+    "Danish",
+    "Divehi",
+    "Dutch",
+    "English",
+    "Esperanto",
+    "Estonian",
+    "Ewe",
+    "Faroese",
+    "Fijian",
+    "Finnish",
+    "French",
+    "Fula",
+    "Galician",
+    "Georgian",
+    "German",
+    "Greek",
+    "Guaraní",
+    "Gujarati",
+    "Haitia",
+    "Hausa",
+    "Hebrew",
+    "Herero",
+    "Hindi",
+    "Hiri Motu",
+    "Hungarian",
+    "Interlingua",
+    "Indonesian",
+    "Interlingue",
+    "Irish",
+    "Igbo",
+    "Inupiaq",
+    "Ido",
+    "Icelandic",
+    "Italian",
+    "Inuktitut",
+    "Japanese",
+    "Javanese",
+    "Kalaallisut",
+    "Kannada",
+    "Kanuri",
+    "Kashmiri",
+    "Kazakh",
+    "Khmer",
+    "Kikuyu",
+    "Kinyarwanda",
+    "Kirghiz",
+    "Komi",
+    "Kongo",
+    "Korean",
+    "Kurdish",
+    "Kwanyama",
+    "Latin",
+    "Luxembourgish",
+    "Luganda",
+    "Limburgish",
+    "Lingala",
+    "Lao",
+    "Lithuanian",
+    "Luba-Katanga",
+    "Latvian",
+    "Manx",
+    "Macedonian",
+    "Malagasy",
+    "Malay",
+    "Malayalam",
+    "Maltese",
+    "Māori",
+    "Marathi",
+    "Marshallese",
+    "Mongolian",
+    "Nauru",
+    "Navajo",
+    "North Ndebele",
+    "Nepali",
+    "Ndonga",
+    "Norwegian",
+    "Nuosu",
+    "South Ndebele",
+    "Occitan",
+    "Ojibwe",
+    "Oromo",
+    "Oriya",
+    "Ossetian",
+    "Panjabi",
+    "Pāli",
+    "Persian",
+    "Polish",
+    "Pashto",
+    "Portuguese",
+    "Quechua",
+    "Romansh",
+    "Kirundi",
+    "Romanian",
+    "Russian",
+    "Sanskrit",
+    "Sardinian",
+    "Sindhi",
+    "Northern Sami",
+    "Samoan",
+    "Sango",
+    "Serbian",
+    "Scottish Gaelic",
+    "Shona",
+    "Sinhala",
+    "Slovak",
+    "Slovene",
+    "Somali",
+    "Southern Sotho",
+    "Spanish",
+    "Sundanese",
+    "Swahili",
+    "Swati",
+    "Swedish",
+    "Tamil",
+    "Telugu",
+    "Tajik",
+    "Thai",
+    "Tigrinya",
+    "Tibetan",
+    "Turkmen",
+    "Tagalog",
+    "Tswana",
+    "Tonga",
+    "Turkish",
+    "Tsonga",
+    "Tatar",
+    "Twi",
+    "Tahitian",
+    "Uighur",
+    "Ukrainian",
+    "Urdu",
+    "Uzbek",
+    "Venda",
+    "Vietnamese",
+    "Volapük",
+    "Walloon",
+    "Welsh",
+    "Wolof",
+    "Western Frisian",
+    "Xhosa",
+    "Yiddish",
+    "Yoruba",
+    "Zhuang",
+  ];
+
+  const tagList = [
+    "Absurd",
+    "Adults Only",
+    "Casual",
+    "Character Driven",
+    "Combat-heavy",
+    "Comedy",
+    "Dark",
+    "Dragonlance",
+    "Dungeon Crawler",
+    "Eberron",
+    "Epic Fantasy",
+    "Forgotten Realms",
+    "Fun Prioritized",
+    "Gothic",
+    "Grim",
+    "Hardcore Play",
+    "Heavy Prep",
+    "High Magic",
+    "High Tier",
+    "Homebrew",
+    "Horror",
+    "Improvisation",
+    "Kid-friendly",
+    "Low Magic",
+    "Low Tier",
+    "Maraton Sessions",
+    "Mediaval",
+    "Mid Tier",
+    "Multiple GM",
+    "Murderhobo",
+    "New GM",
+    "No Prep",
+    "Old School",
+    "Open-world",
+    "Prewritten",
+    "Railroad",
+    "Realistic",
+    "RP-heavy",
+    "Rule of Fun",
+    "Rules-heavy",
+    "Sandbox",
+    "Serious",
+    "Solo",
+    "Strategic",
+    "Urban",
+    "Vampire",
+    "Werewolf",
+    "Worldbuilding",
+  ];
 
   return (
     <Box
@@ -91,13 +318,44 @@ function Search() {
     >
       <FormInfo
         title="Search"
+        type='title'
         subtitle="Looking for a game? Use the search bar to search any game you want. Don't forget to use sorting and filtering to specify your search in detail."
       ></FormInfo>
 
+<Divider variant="middle" />
+
+
       <div>
-        <TextField
+      <FormControl sx={{ minWidth: 275, width:'75%', maxWidth: 350, marginX: 1, marginBottom: 2 , marginTop: 5}}>
+          <Autocomplete
+            multiple
+            id="tags-outlined"
+            options={tagList}
+            getOptionLabel={(option) => option}
+            filterSelectedOptions
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            // value={values.tags}
+            // onChange={handleChangeTags}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search tags"
+                //   placeholder="Choose one or more tags"
+              />
+            )}
+          />
+        </FormControl>
+        {/* <TextField
           id="search-bar"
-          label="Search"
+          label="Search tags"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -108,39 +366,42 @@ function Search() {
             ),
           }}
           // defaultValue="Search for a game."
-        />
+        /> */}
       </div>
 
       <div>
-        <React.Fragment key={"left"}>
           <Button
             variant="contained"
             color="grey"
-            onClick={toggleFilterDrawer("left", true)}
             sx={{
               fontWeight: "bold",
               color: "#d8dee9",
               backgroundColor: "#4c566a",
               marginTop: 5,
-              marginX: 2,
+              marginRight: 1,
+            }}
+            onClick={() => {
+              setShowFilters(!showFilters);
             }}
             endIcon={<FilterAltIcon />}
           >
             FILTER
           </Button>
-          <Drawer
-            anchor={"left"}
-            open={filterDrawer["left"]}
-            PaperProps={{
-              style: {
-                backgroundColor: "#eceff4",
-              },
-            }}
-            onClose={toggleFilterDrawer("left", false)}
-          >
-            {list("left")}
-          </Drawer>
-        </React.Fragment>
+        <Button
+        variant="contained"
+        color="grey"
+        sx={{
+          fontWeight: "bold",
+          color: "#d8dee9",
+          backgroundColor: "#4c566a",
+          marginTop: 5,
+          marginX: 1,
+        }}
+        endIcon={<SearchIcon />}
+      >
+        SEARCH
+        
+      </Button>
         <Button
           variant="contained"
           color="grey"
@@ -149,7 +410,10 @@ function Search() {
             color: "#d8dee9",
             backgroundColor: "#4c566a",
             marginTop: 5,
-            marginX: 2,
+            marginLeft:1,
+          }}
+          onClick={() => {
+            setShowSort(!showSort);
           }}
           endIcon={<SortIcon />}
         >
@@ -157,7 +421,130 @@ function Search() {
         </Button>
       </div>
 
-      <Grid container sx={{ my: 4, alignItems:"stretch"}} spacing={4}>
+      {showFilters ? (
+        <div>
+          <FormControl sx={{ marginX: 1, marginTop: 5 }}>
+            <InputLabel>Game System</InputLabel>
+            <Select
+              required
+              id="adventure-length-select"
+              value={filters.gameSystem}
+              // variant="filled"
+              label="Game System"
+              sx={{ width: 170 }}
+              onChange={handleChangeFilterGameSystem}
+            >
+              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="Dungeons & Dragons">Dungeons & Dragons</MenuItem>
+              <MenuItem value="Pathfinder">Pathfinder</MenuItem>
+              <MenuItem value="Starfinder">Starfinder</MenuItem>
+              <MenuItem value="Shadowrun">Shadowrun</MenuItem>
+              <MenuItem value="FATE">FATE</MenuItem>
+              <MenuItem value="Vampire: The Masquerade">
+                Vampire: The Masquerade
+              </MenuItem>
+              <MenuItem value="Call of Cthulhu">Call of Cthulhu</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ marginX: 1, marginTop: 5 }}>
+            <InputLabel>Medium</InputLabel>
+            <Select
+              required
+              id="medium-select"
+              value={filters.medium}
+              // variant="filled"
+              label="Medium"
+              sx={{ width: 170 }}
+              onChange={handleChangeFilterMedium}
+            >
+              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="Online">Online</MenuItem>
+              <MenuItem value="IRL">IRL</MenuItem>
+              <MenuItem value="Hybrid">Hybrid</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ marginX: 1, marginTop: 5 }}>
+            <InputLabel>Adventure Length</InputLabel>
+            <Select
+              required
+              id="adventure-length-select"
+              value={filters.adventureLength}
+              // variant="filled"
+              label="Adventure Length"
+              sx={{ width: 170 }}
+              onChange={handleChangeFilterAdventureLength}
+            >
+              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="One-Shot">One-Shot</MenuItem>
+              <MenuItem value="Mini adventure">Mini adventure</MenuItem>
+              <MenuItem value="Adventure">Adventure</MenuItem>
+              <MenuItem value="Long Adventure">Long Adventure</MenuItem>
+              <MenuItem value="Campaign">Campaign</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ marginX: 1, marginTop: 5 }}>
+            <Autocomplete
+              disablePortal
+              id="language-select"
+              options={languages}
+              variant="filled"
+              value={filters.language}
+              sx={{ width: 170 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Game Language"
+                />
+              )}
+              onChange={(event, newValue) => {
+                setFilters({ ...filters, language: newValue });
+              }}
+            />
+          </FormControl>
+        </div>
+      ) : null}
+
+      {showSort ? (
+        <div>
+          <FormControl sx={{ marginX: 2, marginTop: 5 }}>
+            <InputLabel>Sort By</InputLabel>
+            <Select
+              required
+              id="sort-select"
+              // size='small'
+              value={sort.sortBy}
+              // variant="filled"
+              label="Sort By"
+              sx={{ width: 170 }}
+              onChange={(event) => {
+                setSort({ ...sort, sortBy: event.target.value });
+              }}
+            >
+              <MenuItem value="Create Time">Create Time</MenuItem>
+              <MenuItem value="Player Count">Player Count</MenuItem>
+              <MenuItem value="Experience Level">Experience Level</MenuItem>
+            </Select>
+          </FormControl>
+
+          <ToggleButton
+            sx={{ marginTop: 5 }}
+            size="large"
+            value={sort.sortDescending}
+            // selected={selected}
+            onClick={() => {
+              setSort({ ...sort, sortDescending: !sort.sortDescending });
+              console.log(sort.sortDescending);
+            }}
+          >
+            {sort.sortDescending ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+          </ToggleButton>
+        </div>
+      ) : null}
+
+
+
+      <Grid container sx={{ my: 4, alignItems: "stretch" }} spacing={4}>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <GameCard
             game="D&D 5e"
@@ -167,6 +554,7 @@ function Search() {
             playerCount="5/7"
             storyType="Prewritten"
             language="English"
+            page='search'
           ></GameCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -177,6 +565,7 @@ function Search() {
             length="Long Adventure"
             playerCount="2/5"
             storyType="Prewritten"
+            page='search'
             language="Turkish"
           ></GameCard>
         </Grid>
@@ -188,6 +577,7 @@ function Search() {
             length="One Shot"
             playerCount="1/4"
             storyType="Homebrew"
+            page='search'
             language="English"
           ></GameCard>
         </Grid>
@@ -199,6 +589,7 @@ function Search() {
             length="Mini Adventure"
             playerCount="3/5"
             storyType="Prewritten"
+            page='search'
             language="English"
           ></GameCard>
         </Grid>
@@ -209,6 +600,7 @@ function Search() {
             medium="LA, USA"
             length="Campaign"
             playerCount="4/5"
+            page='search'
             storyType="Homebrew"
             language="English"
           ></GameCard>
@@ -217,6 +609,7 @@ function Search() {
           <GameCard
             game="D&D 5e"
             adventureName="Witchlight"
+            page='search'
             medium="Online(Foundry)"
             length="Campaign"
             playerCount="0/5"
@@ -228,6 +621,7 @@ function Search() {
           <GameCard
             game="Call of Cthulhu 7e"
             adventureName="Below the Surface"
+            page='search'
             medium="London, UK"
             length="One-Shot"
             playerCount="3/7"
@@ -238,6 +632,7 @@ function Search() {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <GameCard
             game="Pathfinder 1e"
+            page='search'
             adventureName="Storm King"
             medium="Berlin, Germany"
             length="Adventure"
@@ -252,6 +647,7 @@ function Search() {
             adventureName="Candlekeep"
             medium="Online(Astral)"
             length="Campaign"
+            page='search'
             playerCount="2/8"
             storyType="Homebrew"
             language="English"
@@ -262,6 +658,7 @@ function Search() {
             game="FATE: Core"
             adventureName="Exandria: Unlimited"
             medium="Online(Astral)"
+            page='search'
             length="Adventure"
             playerCount="4/5"
             storyType="Homebrew"
@@ -273,6 +670,7 @@ function Search() {
             game="D&D 5e"
             adventureName="Eberron"
             medium="Sydney, Australia"
+            page='search'
             length="One-Shot"
             playerCount="2/5"
             storyType="Prewritten"
@@ -285,12 +683,12 @@ function Search() {
             adventureName="A Call from Beyond"
             medium="Online(Foundry)"
             length="Mini Adventure"
+            page='search'
             playerCount="3/5"
             storyType="Homebrew"
             language="Turkish"
           ></GameCard>
         </Grid>
-
       </Grid>
 
       <div className={styles.root}>

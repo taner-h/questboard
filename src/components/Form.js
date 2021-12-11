@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
+// import Card from "@mui/material/Card";
 // import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -18,6 +19,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import RadioGroup from "@mui/material/RadioGroup";
 import TimePicker from "@mui/lab/TimePicker";
 import DateAdapter from "@mui/lab/AdapterDayjs";
+import Divider from '@mui/material/Divider';
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 // import Stack from "@mui/material/Stack";
@@ -427,7 +429,23 @@ function Form() {
     setValues({ ...values, playerExpLevel: event.target.value });
   };
   const handleChangeMedium = (event) => {
-    setValues({ ...values, medium: event.target.value });
+    // console.log(values.medium);
+    // setValues({ ...values, medium: event.target.value });
+    if (event.target.value === 'Online')
+    {
+      setValues({ ...values, medium: event.target.value, location: null, hosting: null});
+      // setValues({ ...values, hosting: "" });
+    }
+    if (event.target.value === 'IRL')
+    {
+      setValues({ ...values, platform: null,communicationMethod: null,medium: event.target.value  });
+    }
+    // setValues({ ...values, medium: event.target.value });
+    if (event.target.value === 'Hybrid')
+    {
+      setValues({ ...values, medium: event.target.value  });
+    }
+    // console.log(values.medium);
   };
   const handleChangePlatform = (event) => {
     setValues({ ...values, platform: event.target.value });
@@ -494,16 +512,21 @@ function Form() {
   return (
     <Box className="form-container" sx={{ mt: 17,mx: 2,mb: 5 }}>
 
-      {/* <FormInfo
+      <FormInfo
         title="Create"
+        type='title'
         subtitle="You can create a record for your roleplaying game here. You can be as precise as you wish to be with your answers. "
-      ></FormInfo> */}
+      ></FormInfo>
+
+<Divider variant="middle" />
+
       <FormInfo
         title="The Basics"
         subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
       ></FormInfo>
 
       <div>
+        
         <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
           <InputLabel>Game System</InputLabel>
           <Select

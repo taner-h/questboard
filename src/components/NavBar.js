@@ -33,6 +33,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import Lock from "@mui/icons-material/Lock";
 import Logo from "../img/dice.svg";
 import { Link } from "react-router-dom";
+import { AlternateEmail } from "@material-ui/icons";
 
 function NavBar() {
   const [openLogin, setOpenLogin] = React.useState(false);
@@ -182,6 +183,8 @@ function NavBar() {
           // paddingX: 1,
           minHeight: 66,
           backgroundColor: "#2e3440",
+          // width: `calc(100% - 240px)`, ml: `240px`
+          // zIndex: (theme) => theme.zIndex.drawer + 1 
         }}
       >
         <Toolbar>
@@ -300,8 +303,8 @@ function NavBar() {
               <Stack spacing={3}>
                 <TextField
                   id="input-with-icon-textfield"
-                  label="Email"
-                  type="email"
+                  label="Username"
+                  type="text"
                   sx={{ width: "250" }}
                   InputProps={{
                     startAdornment: (
@@ -373,13 +376,27 @@ function NavBar() {
               <Stack spacing={3}>
                 <TextField
                   id="input-with-icon-textfield"
+                  label="Username"
+                  type="text"
+                  sx={{ width: "250" }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                />
+                <TextField
+                  id="input-with-icon-textfield"
                   label="Email"
                   type="email"
                   sx={{ width: "250" }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <AccountCircle />
+                        <AlternateEmail />
                       </InputAdornment>
                     ),
                   }}

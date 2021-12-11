@@ -12,9 +12,9 @@ function FormInfo(props) {
           <Grid item xs>
             <Typography
               gutterBottom
-              variant="h3"
+              variant= {props.type === 'title' ?  'h3' : 'h4'}
               component="div"
-              sx={{ flexGrow: 1, color: "#2e3440" }}
+              sx={{ flexGrow: 1, color: "#4c566a", fontWeight: (props.type === 'title' ?  '500' : '400')}}
             >
               {props.title}
             </Typography>
