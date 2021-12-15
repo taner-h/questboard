@@ -32,10 +32,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Lock from "@mui/icons-material/Lock";
 import Logo from "../img/dice.svg";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AlternateEmail } from "@material-ui/icons";
 
-function NavBar() {
+function NavBar(props) {
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
   const [drawer, setDrawer] = React.useState(false);
@@ -46,6 +46,8 @@ function NavBar() {
     email: "",
     showPassword: false,
   });
+
+  const { password, email, username } = values;
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -76,7 +78,7 @@ function NavBar() {
         >
           <ListItem button key={"home"}>
             <ListItemIcon>
-              <HomeIcon sx={{color:'#4c566a'}}/>
+              <HomeIcon sx={{ color: "#4c566a" }} />
             </ListItemIcon>
             <ListItemText primary={"home"} />
           </ListItem>
@@ -91,7 +93,7 @@ function NavBar() {
         >
           <ListItem button key={"create"}>
             <ListItemIcon>
-              <CreateIcon sx={{color:'#4c566a'}}/>
+              <CreateIcon sx={{ color: "#4c566a" }} />
             </ListItemIcon>
             <ListItemText primary={"create"} />
           </ListItem>
@@ -106,7 +108,7 @@ function NavBar() {
         >
           <ListItem button key={"search"}>
             <ListItemIcon>
-              <SearchIcon sx={{color:'#4c566a'}}/>
+              <SearchIcon sx={{ color: "#4c566a" }} />
             </ListItemIcon>
             <ListItemText primary={"search"} />
           </ListItem>
@@ -121,17 +123,27 @@ function NavBar() {
         >
           <ListItem button key={"manage"}>
             <ListItemIcon>
-              <ManageIcon sx={{color:'#4c566a'}}/>
+              <ManageIcon sx={{ color: "#4c566a" }} />
             </ListItemIcon>
             <ListItemText primary={"manage"} />
           </ListItem>
         </Link>
-        <ListItem button key={"login"} onClick={handleClickOpenLogin}>
-          <ListItemIcon>
-            <LoginIcon sx={{color:'#4c566a'}}/>
-          </ListItemIcon>
-          <ListItemText primary={"login"} />
-        </ListItem>
+
+        {!props.isAuthenticated ? (
+          <ListItem button key={"login"} onClick={handleClickOpenLogin}>
+            <ListItemIcon>
+              <LoginIcon sx={{ color: "#4c566a" }} />
+            </ListItemIcon>
+            <ListItemText primary={"login"} />
+          </ListItem>
+        ) : (
+          <ListItem button key={"logout"} onClick={handleLogout}>
+            <ListItemIcon>
+              <LoginIcon sx={{ color: "#4c566a" }} />
+            </ListItemIcon>
+            <ListItemText primary={"logout"} />
+          </ListItem>
+        )}
       </List>
     </Box>
   );
@@ -152,22 +164,65 @@ function NavBar() {
   };
 
   const handleClickOpenLogin = () => {
-    handleCloseRegister();
+    setOpenRegister(false);
     setOpenLogin(true);
   };
 
-  const handleCloseLogin = () => {
+  const handleSubmitLogin = async(event) => {
+    event.preventDefault();
+    const body = {email, password};
+    
+    try {
+      
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: {"Content-Type" : "application/json"},
+        body: JSON.stringify(body)
+      });
+      const parseRes = await response.json();
+      localStorage.setItem("token", parseRes.token);
+      props.handleAuthChange(true);
+      // console.log(parseRes);
+
+    } catch (err) {
+      console.error(err.message);
+    }
+
+
     setOpenLogin(false);
     clearTextInput();
   };
   const handleClickOpenRegister = () => {
-    handleCloseLogin();
+    setOpenLogin(true);
     setOpenRegister(true);
   };
 
-  const handleCloseRegister = () => {
+  const handleSubmitRegister = async (event) => {
+    event.preventDefault();
+    const body = { email, password, username };
+
+    try {
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: {"Content-Type" : "application/json"},
+        body: JSON.stringify(body)
+      });
+
+      const parseRes = await response.json();
+      localStorage.setItem("token", parseRes.token);
+      props.handleAuthChange(true);
+    } catch (err) {
+      console.error(err.message);
+    }
+
     setOpenRegister(false);
     clearTextInput();
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    localStorage.removeItem("token");
+    props.handleAuthChange(false);
   };
 
   const handleMouseDownPassword = (event) => {
@@ -184,17 +239,17 @@ function NavBar() {
           minHeight: 66,
           backgroundColor: "#2e3440",
           // width: `calc(100% - 240px)`, ml: `240px`
-          // zIndex: (theme) => theme.zIndex.drawer + 1 
+          // zIndex: (theme) => theme.zIndex.drawer + 1
         }}
       >
         <Toolbar>
           <img
             src={Logo}
             alt="questboardLogo"
-            style={{ marginRight: 10}}
+            style={{ marginRight: 10 }}
             height={32}
-            align='left'
-            />
+            align="left"
+          />
           <Typography
             variant="h6"
             component="div"
@@ -207,15 +262,14 @@ function NavBar() {
               alignItems: "center",
             }}
             align="left"
-            >
+          >
             questboard
           </Typography>
-
 
           <Stack
             direction="row"
             spacing={1.5}
-            sx={{ display: { xs: "none", sm: "block" }}}
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
             <Link to="/">
               <Button
@@ -253,18 +307,34 @@ function NavBar() {
                 manage
               </Button>
             </Link>
-            <Button
-              variant="contained"
-              color="grey"
-              onClick={handleClickOpenLogin}
-              sx={{
-                fontWeight: "bold",
-                color: "#4c566a",
-                backgroundColor: "#d8dee9",
-              }}
-            >
-              Login
-            </Button>
+
+            {!props.isAuthenticated ? (
+              <Button
+                variant="contained"
+                color="grey"
+                onClick={handleClickOpenLogin}
+                sx={{
+                  fontWeight: "bold",
+                  color: "#4c566a",
+                  backgroundColor: "#d8dee9",
+                }}
+              >
+                Login
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="grey"
+                onClick={handleLogout}
+                sx={{
+                  fontWeight: "bold",
+                  color: "#4c566a",
+                  backgroundColor: "#d8dee9",
+                }}
+              >
+                LOGOUT
+              </Button>
+            )}
           </Stack>
           <React.Fragment key={"right"}>
             <IconButton
@@ -282,7 +352,7 @@ function NavBar() {
               PaperProps={{
                 style: {
                   backgroundColor: "#eceff4",
-                }
+                },
               }}
               onClose={toggleDrawer("right", false)}
             >
@@ -291,11 +361,11 @@ function NavBar() {
           </React.Fragment>
           <Dialog
             open={openLogin}
-            onClose={handleCloseLogin}
+            // onClose={handleSubmitLogin}
             PaperProps={{
               style: {
                 backgroundColor: "#eceff4",
-              }
+              },
             }}
           >
             <DialogTitle>Login</DialogTitle>
@@ -303,13 +373,15 @@ function NavBar() {
               <Stack spacing={3}>
                 <TextField
                   id="input-with-icon-textfield"
-                  label="Username"
+                  label="Email"
+                  value={values.email}
                   type="text"
+                  onChange={handleChange("email")}
                   sx={{ width: "250" }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <AccountCircle />
+                        <AlternateEmail />
                       </InputAdornment>
                     ),
                   }}
@@ -356,7 +428,7 @@ function NavBar() {
               >
                 Register
               </Button>
-              <Button sx={{ color: "#2e3440" }} onClick={handleCloseLogin}>
+              <Button sx={{ color: "#2e3440" }} onClick={handleSubmitLogin}>
                 Login
               </Button>
             </DialogActions>
@@ -364,7 +436,7 @@ function NavBar() {
 
           <Dialog
             open={openRegister}
-            onClose={handleCloseRegister}
+            onClose={handleSubmitRegister}
             PaperProps={{
               style: {
                 backgroundColor: "#eceff4",
@@ -377,6 +449,8 @@ function NavBar() {
                 <TextField
                   id="input-with-icon-textfield"
                   label="Username"
+                  value={values.username}
+                  onChange={handleChange("username")}
                   type="text"
                   sx={{ width: "250" }}
                   InputProps={{
@@ -391,6 +465,8 @@ function NavBar() {
                 <TextField
                   id="input-with-icon-textfield"
                   label="Email"
+                  onChange={handleChange("email")}
+                  value={values.email}
                   type="email"
                   sx={{ width: "250" }}
                   InputProps={{
@@ -471,7 +547,7 @@ function NavBar() {
               <Button sx={{ color: "#2e3440" }} onClick={handleClickOpenLogin}>
                 Login
               </Button>
-              <Button sx={{ color: "#2e3440" }} onClick={handleCloseRegister}>
+              <Button sx={{ color: "#2e3440" }} onClick={handleSubmitRegister}>
                 Register
               </Button>
             </DialogActions>

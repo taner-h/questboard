@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 // import Drawer from '@mui/material/Drawer';
 // import AppBar from '@mui/material/AppBar';
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 // import Toolbar from '@mui/material/Toolbar';
 // import List from '@mui/material/List';
 // import Typography from '@mui/material/Typography';
 // import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 // import Card from "@mui/material/Card";
 // import CardActions from "@mui/material/CardActions";
 import GameCard from "./GameCard";
@@ -30,27 +30,62 @@ import Box from "@mui/material/Box";
 // import InboxIcon from '@mui/icons-material/MoveToInbox';
 // import MailIcon from '@mui/icons-material/Mail';
 
-function Manage() {
+function Manage(props) {
+
+  const [name, setName] = useState("");
+
+  async function getName()
+  {
+    try {
+      const response = await fetch("http://localhost:5000/manage/",{
+      method: "GET",
+      headers: {token: localStorage.token}
+    });
+
+    const parseRes = await response.json();
+
+    setName(parseRes.username);
+    console.log(parseRes.username);
+
+    } catch (err) {
+      console.error(err.message); 
+    }
+  }
+
+
+  useEffect(() => {
+    getName();
+  }, []); 
+
   return (
+
     <Box
-      sx={{ flexGrow: 1, mt: 17, paddingX: { xs: 4, sm: 6, md: 8, lg: 12 } }}
+    sx={{ flexGrow: 1, mt: 17, paddingX: { xs: 4, sm: 6, md: 8, lg: 12 } }}
     >
       <FormInfo
-        type='title'
+        type="title"
         title="Manage"
-        subtitle="Manage your groups here. Schedule the next session and add a new group member (or ban them if you want, we won't tell anybody!)"
+        welcome={name}
+        subtitle={"Manage your groups here. Schedule the next session and add a new group member (or ban them if you want, we won't tell anybody!"}
       ></FormInfo>
 
-<Divider variant="middle" />
+      <Divider variant="middle" />
 
-<FormInfo
+      <FormInfo
         title="My Groups"
         // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
       ></FormInfo>
 
-<Grid container sx={{ marginBottom: 8, alignItems: "stretch" , justifyContent: 'center'}} spacing={4}>
-
-<Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid
+        container
+        sx={{
+          marginBottom: 8,
+          alignItems: "stretch",
+          justifyContent: "center",
+        }}
+        spacing={4}
+      >
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <GameCard
             game="D&D 5e"
             adventureName="Curse of Strahd"
@@ -84,17 +119,23 @@ function Manage() {
             language="German"
           ></GameCard>
         </Grid>
+      </Grid>
 
-</Grid>
-
-<FormInfo
+      <FormInfo
         title="Pending Response"
         // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
       ></FormInfo>
 
-<Grid container sx={{ marginBottom: 8, alignItems: "stretch" , justifyContent: 'center'}} spacing={4}>
-
-<Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid
+        container
+        sx={{
+          marginBottom: 8,
+          alignItems: "stretch",
+          justifyContent: "center",
+        }}
+        spacing={4}
+      >
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <GameCard
             game="Pathfinder 2e"
             adventureName="Out of the Abyys"
@@ -115,11 +156,12 @@ function Manage() {
             storyType="Homebrew"
             language="English"
           ></GameCard>
-        </Grid> 
         </Grid>
-
+      </Grid>
     </Box>
-  );
+
+  )
+
 }
 
-export default Manage
+export default Manage;
