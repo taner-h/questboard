@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import FormInfo from "./FormInfo";
 import InputLabel from "@mui/material/InputLabel";
+import Slide from "@mui/material/Slide";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 // import Card from "@mui/material/Card";
 // import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
+import CloseIcon from '@mui/icons-material/Close';
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Slider from "@mui/material/Slider";
@@ -21,11 +24,13 @@ import TimePicker from "@mui/lab/TimePicker";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import Divider from '@mui/material/Divider';
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import Snackbar from '@mui/material/Snackbar';
 
 // import Stack from "@mui/material/Stack";
 
-function Form() {
+function Form(props) {
   const [temptime, setTempTime] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [values, setValues] = useState({
     gameSystem: "",
     gameVersion: "",
@@ -42,7 +47,7 @@ function Form() {
     hosting: "",
     sessionFrequency: null,
     sessionLength: null,
-    gmTimeZone: "",
+    gmTimeZone: null,
     sessionDay: "",
     sessionHour: null,
     gameStyle: "",
@@ -52,9 +57,17 @@ function Form() {
     storyGenre: "",
     campaignPrimer: "",
     storyStyle: "",
-    prewrittenAdventureName: "",
     tags: [],
   });
+
+  const [toast, setToast] = React.useState({
+    isOpen: false,
+    message: ""
+  })
+
+  const closeToast = (event) =>{
+    setToast({ ...toast, isOpen: false });
+  };
 
   const options = [
     {
@@ -75,7 +88,7 @@ function Form() {
     },
     {
       system: "Pathfinder",
-      versions: ["Pathfinder", "Pathfinder, Second Edition"],
+      versions: ["First Edition", "Second Edition"],
     },
     {
       system: "Vampire: The Masquerade",
@@ -89,7 +102,7 @@ function Form() {
     },
     {
       system: "Starfinder",
-      versions: ["Starfinder"],
+      versions: ["First Edition"],
     },
     {
       system: "Call of Cthulhu",
@@ -501,11 +514,74 @@ function Form() {
     setValues({ ...values, hosting: event.target.value });
   };
 
+
   //   const handleChangeLanguage = (event) => {
   //     setValues({ ...values, language: event.target.value });
   //   };
 
-  console.log(values);
+  // console.log(values);
+
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+
+    if (!props.isAuthenticated)
+    {
+      setToast({isOpen: true, message: "Submit failed. Please login or register first."})
+    }
+
+    const { gameSystem, gameVersion, adventureName, adventureLength, language, totalPlayerCount, currentPlayerCount, playerExpLevel, medium, platform, communicationMethod, location, hosting, sessionFrequency, sessionLength, gmTimeZone, sessionDay, sessionHour, gameStyle, gmStyle, adventureStyle, gmExperinceLevel, storyGenre, campaignPrimer, storyStyle} = values;
+    const userID = localStorage.getItem("user");
+    const body = {
+      gameSystem,
+      userID,
+      gameVersion,
+      adventureName,
+      adventureLength,
+      language,
+      totalPlayerCount,
+      currentPlayerCount,
+      playerExpLevel,
+      medium,
+      platform,
+      communicationMethod,
+      location,
+      hosting,
+      sessionFrequency,
+      sessionLength,
+      gmTimeZone,
+      sessionDay,
+      sessionHour,
+      gameStyle,
+      gmStyle,
+      adventureStyle,
+      gmExperinceLevel,
+      storyGenre,
+      campaignPrimer,
+      storyStyle,
+    }
+    
+    try {
+      const response = await fetch("http://localhost:5000/groups", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (response)
+      {
+        setIsSubmitted(true);
+        setToast({isOpen: true, message: "Submitted succesfully."})
+   
+      }
+      
+
+    } catch (err) {
+      console.error(err.message);
+
+    }
+
+     
+  }
 
   
 
@@ -527,10 +603,9 @@ function Form() {
 
       <div>
         
-        <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+        <FormControl required sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
           <InputLabel>Game System</InputLabel>
           <Select
-            required
             id="game-system-select"
             value={values.gameSystem}
             // variant="filled"
@@ -544,7 +619,7 @@ function Form() {
           </Select>
         </FormControl>
 
-        <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+        <FormControl required sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
           <InputLabel>Game Version</InputLabel>
           <Select
             disabled={values.gameSystem ? false : true}
@@ -562,13 +637,13 @@ function Form() {
               })}
           </Select>
         </FormControl>
-        <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+        <FormControl required sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
           <TextField
             id="filled-basic"
             label={
               values.storyStyle === "Prewritten"
-                ? "Prewritten Adventure Name"
-                : "Adventure Name"
+                ? "Prewritten Adventure Name *"
+                : "Adventure Name *"
             }
             value={values.adventureName}
             //   variant="filled"
@@ -577,7 +652,7 @@ function Form() {
         </FormControl>
       </div>
       <div>
-        <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+        <FormControl required sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
           <InputLabel>Adventure Length</InputLabel>
           <Select
             required
@@ -613,14 +688,14 @@ function Form() {
                         {languages.map(i => {return <MenuItem value={i}>{i}</MenuItem>})} 
                     </Select>
                 </FormControl> */}
-        <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+        <FormControl required sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
           <Autocomplete
             disablePortal
             id="language-select"
             options={languages}
             value={values.language}
             renderInput={(params) => (
-              <TextField {...params} variant="outlined" label="Game Language" />
+              <TextField {...params} variant="outlined" label="Game Language *" />
             )}
             onChange={(event, newValue) => {
               setValues({ ...values, language: newValue });
@@ -666,26 +741,22 @@ function Form() {
       ></FormInfo>
 
       <div>
-        <FormControl sx={{ maxWidth: 250, marginX: 2, marginY: 1 }}>
+        <FormControl required sx={{ maxWidth: 250, marginX: 2, marginY: 1 }}>
           {/* <InputLabel>Total Player Count</InputLabel> */}
           <TextField
             id="total-player-count"
-            label="Total Player Count"
+            label="Total Player Count *"
             type="number"
             value={values.totalPlayerCount}
             onChange={handleChangeTotalPlayerCount}
             // InputLabelProps={{ shrink: true }}
           />
         </FormControl>
-        <FormControl sx={{ maxWidth: 250, marginX: 2, marginY: 1 }}>
+        <FormControl required sx={{ maxWidth: 250, marginX: 2, marginY: 1 }}>
           {/* <InputLabel>Current Player Count{values.totalPlayerCount ? values.totalPlayerCount : ''}</InputLabel> */}
           <TextField
             id="current-player-count"
-            label={
-              values.totalPlayerCount
-                ? "Current Player Count: X/" + values.totalPlayerCount
-                : "Current Player Count"
-            }
+            label="Current Player Count *"
             type="number"
             value={values.currentPlayerCount}
             onChange={handleChangeCurrentPlayerCount}
@@ -721,6 +792,7 @@ function Form() {
       <div>
         <FormControl
           sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+          required
         >
           <FormLabel sx={{ color: "#2e3440" }}>Medium</FormLabel>
           <RadioGroup
@@ -1130,11 +1202,31 @@ function Form() {
 
       <Button
         color="grey"
+        disabled={isSubmitted}
         sx={{ mt: 5, color: "#d8dee9", backgroundColor: "#4c566a" }}
         variant="contained"
+        onClick={handleSubmit}
       >
         Submit
       </Button>
+
+      <Snackbar
+              open={toast.isOpen}
+              autoHideDuration={4000}
+              onClose={closeToast}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              TransitionComponent={Slide}
+              message={toast.message}
+              action={[<IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={closeToast}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>]}
+            />
+
     </Box>
   );
 }

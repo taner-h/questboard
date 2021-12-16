@@ -21,6 +21,7 @@ import PersonIcon from "@mui/icons-material/Person";
 // import Button from "@mui/material/Button";
 // import MoreIcon from "@mui/icons-material/More";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import EditIcon from '@mui/icons-material/Edit';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -36,6 +37,16 @@ function GameCard(props) {
   const [addGame, setAddGame] = React.useState(false);
   const [maxWidth, setMaxWidth] = React.useState("sm");
 
+  const { group } = props;
+
+  const getExp = (number) => {
+    if (number === "0") return 'Beginner'
+    if (number === "25") return 'Novice'
+    if (number === "50") return 'Intermediate'
+    if (number === "75") return 'Experienced'
+    if (number === "100") return 'Veteran'
+  }
+
   const handleClickOpenInfo = () => {
     setOpenInfo(true);
   };
@@ -48,16 +59,16 @@ function GameCard(props) {
     setAddGame(true);
   };
 
-  const handleMaxWidthChange = (event) => {
-    setMaxWidth(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value
-    );
-  };
+  // const handleMaxWidthChange = (event) => {
+  //   setMaxWidth(
+  //     // @ts-expect-error autofill of arbitrary value is not handled.
+  //     event.target.value
+  //   );
+  // };
 
-  const handleFullWidthChange = (event) => {
-    setFullWidth(event.target.checked);
-  };
+  // const handleFullWidthChange = (event) => {
+  //   setFullWidth(event.target.checked);
+  // };
 
   return (
     <Card>
@@ -67,18 +78,18 @@ function GameCard(props) {
           color="text.secondary"
           gutterBottom
         >
-          {props.game}
+          {`${group.game_system} ${group.game_version}`}
         </Typography>
         <Typography variant="h6" color="#2e3440">
-          {props.adventureName}
+          {group.adventure_name}
         </Typography>
         <Typography variant="subtitle1" sx={{ mb: 1.5 }} color="#434c5e">
-          {props.medium}
+          {`${group.medium}(${group.medium === 'IRL' ? group.session_location : group.platform})`}
           <br />
-          {props.length}
+          {group.adventure_length}
         </Typography>
         <Typography variant="body2" color="#4c566a">
-          {props.playerCount} Players, {props.storyType}, {props.language}
+          {`${group.current_player_count}/${group.total_player_count}`} Players, {group.story_style}, {group.game_language}
         </Typography>
       </CardContent>
       <CardActions
@@ -89,24 +100,6 @@ function GameCard(props) {
           backgroundColor: "#e5e9f0",
         }}
       >
-        {/* <Button
-          variant="contained"
-          color="grey"
-          sx={{
-            fontWeight: "bold",
-            color: "#d8dee9",
-            backgroundColor: "#4c566a",
-          }}
-          size="small"
-        >
-          Send Request
-        </Button> */}
-        {/* <IconButton>
-          <AddBoxIcon style={{color: "#4c566a"}} ></AddBoxIcon>
-        </IconButton>
-        <IconButton >
-          <MoreIcon style={{color: "#4c566a"}} ></MoreIcon>
-        </IconButton> */}
         <CardActions>
           <Button
             size="small"
@@ -133,7 +126,6 @@ function GameCard(props) {
               },
             }}
           >
-            {/* <DialogTitle>Curse of Strahd</DialogTitle> */}
             <DialogContent>
               <Box sx={{ m: 2 }}>
                 <Grid container alignItems="center">
@@ -147,7 +139,7 @@ function GameCard(props) {
                       variant="h4"
                       component="div"
                     >
-                      Curse of Strahd
+                      {group.adventure_name}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -160,19 +152,20 @@ function GameCard(props) {
                       >
                         <AddBoxIcon className="addBoxIcon" />
                       </IconButton>
-                    ) : null}
+                    ) : 
+                    <IconButton
+                        size="large"
+                        // disabled={addGame}
+                        sx={{ color: "#4c566a", marginBottom: 1 }}
+                        // onClick={handleAddGame}
+                      >
+                        <EditIcon className="addBoxIcon" />
+                      </IconButton>}
                   </Grid>
                 </Grid>
 
                 <Typography color="#4c566a" variant="body2">
-                  Under raging storm clouds, the vampire Count Strahd von
-                  Zarovich stands silhouetted against the ancient walls of
-                  Castle Ravenloft. Rumbling thunder pounds the castle spires.
-                  The wind’s howling increases as he turns his gaze down toward
-                  the village of Barovia. A lightning flash rips through the
-                  darkness, but Strahd is gone. Only the howling of the wind
-                  fills the midnight air. The master of Castle Ravenloft is
-                  having guests for dinner—and you are invited.
+                  {group.primer}
                 </Typography>
               </Box>
 
@@ -187,7 +180,7 @@ function GameCard(props) {
                   Basics
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  D&D 5e, Campaign, English, Prewritten
+                {`${group.game_system} ${group.game_version}`}, {group.adventure_length}, {group.game_language}, Prewritten
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -201,7 +194,7 @@ function GameCard(props) {
                   Player Info
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  5/7 Players, Intermediate
+                {`${group.current_player_count}/${group.total_player_count}`} Players{group.player_experience_level ? `, ${getExp(group.player_experience_level)}` : null}
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -215,7 +208,12 @@ function GameCard(props) {
                   Location Details
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  Online, Roll20, Discord
+                  {group.medium} 
+                  {group.medium !== 'IRL' 
+                    ? `, ${group.platform}, ${group.communication_method}`
+                    : `, ${group.session_location}, ${group.hosting}`
+                    }
+                    
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -229,7 +227,7 @@ function GameCard(props) {
                   Session Details
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  1 Session per 7 days, 4 Hours, +3 UTC, Friday, 7 PM
+                  1 Session per {group.session_frequency} days, {group.session_length} Hours, {group.gm_timezone > -1 ? "UTC +" + group.gm_timezone : "UTC " + group.gm_timezone}, {group.session_day}, {group.session_time ? group.session_time.substring(0, 5): null}
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -243,7 +241,7 @@ function GameCard(props) {
                   Game Style
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  RP-heavy, Improvised, Character Driven, Experienced, Horror
+                  {group.player_style}, {group.gm_style}, {group.adventure_style}, {group.gm_experience_level}, {group.story_genre}
                 </Typography>
               </Box>
 

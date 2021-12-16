@@ -45,7 +45,7 @@ function Manage(props) {
     const parseRes = await response.json();
 
     setName(parseRes.username);
-    console.log(parseRes.username);
+    // console.log(parseRes.username);
 
     } catch (err) {
       console.error(err.message); 
@@ -55,7 +55,7 @@ function Manage(props) {
 
   useEffect(() => {
     getName();
-  }, []); 
+  }); 
 
   return (
 
@@ -65,8 +65,9 @@ function Manage(props) {
       <FormInfo
         type="title"
         title="Manage"
-        welcome={name}
-        subtitle={"Manage your groups here. Schedule the next session and add a new group member (or ban them if you want, we won't tell anybody!"}
+        name={name}
+        isAuthenticated={props.isAuthenticated}
+        subtitle={"You can manage your groups from here. Schedule the next session and add a new group member."}
       ></FormInfo>
 
       <Divider variant="middle" />

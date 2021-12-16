@@ -4,17 +4,15 @@ import Form from "./components/Form";
 import Search from "./components/Search";
 import NavBar from "./components/NavBar";
 import Manage from "./components/Manage";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userID, setUserID] = useState(null);
 
+  const handleChangeUserID = (integer) => {
+    setUserID(integer);
+  };
   const handleAuthChange = (boolean) => {
     setIsAuthenticated(boolean);
   };
@@ -43,6 +41,8 @@ function App() {
       <Router>
         <NavBar
           isAuthenticated={isAuthenticated}
+          userID={userID}
+          handleChangeUserID={handleChangeUserID}
           handleAuthChange={handleAuthChange}
         ></NavBar>
         <Routes>

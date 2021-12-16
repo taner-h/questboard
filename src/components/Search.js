@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import FormInfo from "./FormInfo";
 import GameCard from "./GameCard";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 import InputLabel from "@mui/material/InputLabel";
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
-import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButton from "@mui/material/ToggleButton";
 // import Drawer from "@mui/material/Drawer";
 import MenuItem from "@mui/material/MenuItem";
 // import List from "@mui/material/List";
@@ -28,39 +28,56 @@ import { makeStyles } from "@material-ui/core/styles";
 import SortIcon from "@mui/icons-material/Sort";
 
 function Search() {
-  const [page, setPage] = React.useState(1);
-  const [filters, setFilters] = useState(
-    {
-      gameSystem: "",
-      medium: "",
-      adventureLength: "",
-      language: ""
-    }
-  )
+  const [groups, setGroups] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(5);
+  const [limit, setLimit] = useState(8);
+  const [filters, setFilters] = useState({
+    gameSystem: "",
+    medium: "",
+    adventureLength: "",
+    language: "",
+  });
 
-  const[sort, setSort] = useState(
-  {
+  const [sort, setSort] = useState({
     sortBy: "Create Time",
-    sortDescending: true
-  }
-  )
+    sortDescending: true,
+  });
 
-  const [showFilters, setShowFilters] = React.useState(false)
-  const [showSort, setShowSort] = React.useState(false)
+  const [showFilters, setShowFilters] = React.useState(false);
+  const [showSort, setShowSort] = React.useState(false);
+
+  const getGroups = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/groups?page=${page}&limit=${limit}`);
+      const jsonRes = await response.json();
+      setGroups(jsonRes.groups);
+      setPageCount(jsonRes.pageCount);
+      // console.log(jsonRes);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getGroups();
+  }, [page]);
 
   const handleChangeFilterGameSystem = (event) => {
     setFilters({ ...filters, gameSystem: event.target.value });
-  }
+  };
   const handleChangeFilterMedium = (event) => {
     setFilters({ ...filters, medium: event.target.value });
-  }
+  };
   const handleChangeFilterAdventureLength = (event) => {
     setFilters({ ...filters, adventureLength: event.target.value });
-  }
-
+  };
 
   const handlePageChange = (event, value) => {
+    // console.log(value);
+
     setPage(value);
+    getGroups();
   };
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,8 +91,6 @@ function Search() {
       marginY: 5,
     },
   }));
-
-  
 
   const styles = useStyles();
 
@@ -318,15 +333,23 @@ function Search() {
     >
       <FormInfo
         title="Search"
-        type='title'
+        type="title"
         subtitle="Looking for a game? Use the search bar to search any game you want. Don't forget to use sorting and filtering to specify your search in detail."
       ></FormInfo>
 
-<Divider variant="middle" />
-
+      <Divider variant="middle" />
 
       <div>
-      <FormControl sx={{ minWidth: 275, width:'75%', maxWidth: 350, marginX: 1, marginBottom: 2 , marginTop: 5}}>
+        <FormControl
+          sx={{
+            minWidth: 275,
+            width: "75%",
+            maxWidth: 350,
+            marginX: 1,
+            marginBottom: 2,
+            marginTop: 5,
+          }}
+        >
           <Autocomplete
             multiple
             id="tags-outlined"
@@ -370,38 +393,6 @@ function Search() {
       </div>
 
       <div>
-          <Button
-            variant="contained"
-            color="grey"
-            sx={{
-              fontWeight: "bold",
-              color: "#d8dee9",
-              backgroundColor: "#4c566a",
-              marginTop: 5,
-              marginRight: 1,
-            }}
-            onClick={() => {
-              setShowFilters(!showFilters);
-            }}
-            endIcon={<FilterAltIcon />}
-          >
-            FILTER
-          </Button>
-        <Button
-        variant="contained"
-        color="grey"
-        sx={{
-          fontWeight: "bold",
-          color: "#d8dee9",
-          backgroundColor: "#4c566a",
-          marginTop: 5,
-          marginX: 1,
-        }}
-        endIcon={<SearchIcon />}
-      >
-        SEARCH
-        
-      </Button>
         <Button
           variant="contained"
           color="grey"
@@ -410,7 +401,38 @@ function Search() {
             color: "#d8dee9",
             backgroundColor: "#4c566a",
             marginTop: 5,
-            marginLeft:1,
+            marginRight: 1,
+          }}
+          onClick={() => {
+            setShowFilters(!showFilters);
+          }}
+          endIcon={<FilterAltIcon />}
+        >
+          FILTER
+        </Button>
+        <Button
+          variant="contained"
+          color="grey"
+          sx={{
+            fontWeight: "bold",
+            color: "#d8dee9",
+            backgroundColor: "#4c566a",
+            marginTop: 5,
+            marginX: 1,
+          }}
+          endIcon={<SearchIcon />}
+        >
+          SEARCH
+        </Button>
+        <Button
+          variant="contained"
+          color="grey"
+          sx={{
+            fontWeight: "bold",
+            color: "#d8dee9",
+            backgroundColor: "#4c566a",
+            marginTop: 5,
+            marginLeft: 1,
           }}
           onClick={() => {
             setShowSort(!showSort);
@@ -542,159 +564,22 @@ function Search() {
         </div>
       ) : null}
 
-
-
       <Grid container sx={{ my: 4, alignItems: "stretch" }} spacing={4}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="D&D 5e"
-            adventureName="Curse of Strahd"
-            medium="Online(Roll20)"
-            length="Campaign"
-            playerCount="5/7"
-            storyType="Prewritten"
-            language="English"
-            page='search'
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="D&D 3.5"
-            adventureName="Wave Echo Cave"
-            medium="Online(Foundry)"
-            length="Long Adventure"
-            playerCount="2/5"
-            storyType="Prewritten"
-            page='search'
-            language="Turkish"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Pathfinder 2e"
-            adventureName="Out of the Abyys"
-            medium="Istanbul, Turkey"
-            length="One Shot"
-            playerCount="1/4"
-            storyType="Homebrew"
-            page='search'
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="FATE: Core"
-            adventureName="Dragon Heist"
-            medium="Online(Roll20)"
-            length="Mini Adventure"
-            playerCount="3/5"
-            storyType="Prewritten"
-            page='search'
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Starfinder"
-            adventureName="Mad Mage"
-            medium="LA, USA"
-            length="Campaign"
-            playerCount="4/5"
-            page='search'
-            storyType="Homebrew"
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="D&D 5e"
-            adventureName="Witchlight"
-            page='search'
-            medium="Online(Foundry)"
-            length="Campaign"
-            playerCount="0/5"
-            storyType="Prewritten"
-            language="German"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Call of Cthulhu 7e"
-            adventureName="Below the Surface"
-            page='search'
-            medium="London, UK"
-            length="One-Shot"
-            playerCount="3/7"
-            storyType="Homebrew"
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Pathfinder 1e"
-            page='search'
-            adventureName="Storm King"
-            medium="Berlin, Germany"
-            length="Adventure"
-            playerCount="2/6"
-            storyType="Prewritten"
-            language="Spanish"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Shadowrun 6e"
-            adventureName="Candlekeep"
-            medium="Online(Astral)"
-            length="Campaign"
-            page='search'
-            playerCount="2/8"
-            storyType="Homebrew"
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="FATE: Core"
-            adventureName="Exandria: Unlimited"
-            medium="Online(Astral)"
-            page='search'
-            length="Adventure"
-            playerCount="4/5"
-            storyType="Homebrew"
-            language="French"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="D&D 5e"
-            adventureName="Eberron"
-            medium="Sydney, Australia"
-            page='search'
-            length="One-Shot"
-            playerCount="2/5"
-            storyType="Prewritten"
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Pathfinder 2e"
-            adventureName="A Call from Beyond"
-            medium="Online(Foundry)"
-            length="Mini Adventure"
-            page='search'
-            playerCount="3/5"
-            storyType="Homebrew"
-            language="Turkish"
-          ></GameCard>
-        </Grid>
+        {groups.map((group) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <GameCard
+              group={group}
+              page="search"
+            ></GameCard>
+          </Grid>
+        ))}
+
       </Grid>
 
       <div className={styles.root}>
         <Pagination
           sx={{ marginY: 5 }}
-          count={10}
+          count={pageCount}
           page={page}
           onChange={handlePageChange}
         />

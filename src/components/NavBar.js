@@ -2,14 +2,18 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 // import Container from "@mui/material/Container";
+import CloseIcon from '@mui/icons-material/Close';
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Slide from "@mui/material/Slide";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import MenuIcon from "@mui/icons-material/Menu";
 import Dialog from "@mui/material/Dialog";
 import Input from "@mui/material/Input";
+import Snackbar from "@mui/material/Snackbar";
+// import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Drawer from "@mui/material/Drawer";
@@ -32,7 +36,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Lock from "@mui/icons-material/Lock";
 import Logo from "../img/dice.svg";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AlternateEmail } from "@material-ui/icons";
 
 function NavBar(props) {
@@ -46,6 +50,15 @@ function NavBar(props) {
     email: "",
     showPassword: false,
   });
+
+  const [toast, setToast] = React.useState({
+    isOpen: false,
+    message: ""
+  })
+
+  const closeToast = (event) =>{
+    setToast({ ...toast, isOpen: false });
+  };
 
   const { password, email, username } = values;
 
@@ -168,32 +181,84 @@ function NavBar(props) {
     setOpenLogin(true);
   };
 
-  const handleSubmitLogin = async(event) => {
+
+
+  
+
+  // const actionToastSuccess = (
+  //   <React.Fragment>
+  //     <IconButton
+  //       size="small"
+  //       aria-label="close"
+  //       color="inherit"
+  //       onClick={handleCloseToastSuccess}
+  //     >
+  //       <CloseIcon fontSize="small" />
+  //     </IconButton>
+  //   </React.Fragment>
+  // );
+  // const actionToastFail = (
+  //   <React.Fragment>
+  //     <IconButton
+  //       size="small"
+  //       aria-label="close"
+  //       color="inherit"
+  //       onClick={handleCloseToastFail}
+  //     >
+  //       <CloseIcon fontSize="small" />
+  //     </IconButton>
+  //   </React.Fragment>
+  // );
+
+  const handleSubmitLogin = async (event) => {
     event.preventDefault();
-    const body = {email, password};
-    
+    const body = { email, password };
+
     try {
-      
       const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
-        headers: {"Content-Type" : "application/json"},
-        body: JSON.stringify(body)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       });
       const parseRes = await response.json();
-      localStorage.setItem("token", parseRes.token);
-      props.handleAuthChange(true);
-      // console.log(parseRes);
 
+      if (parseRes.token) {
+        localStorage.setItem("token", parseRes.token);
+        localStorage.setItem('user', parseRes.userID);
+        props.handleAuthChange(true);
+        // setOpenToastSuccess(true);
+        setToast({isOpen: true, message: "Login succesful."})
+        // handleChangeToast("loginSuccess", true);
+        // try {
+        //   const response2 = await fetch(
+        //     `http://localhost:5000/users/${email}`,
+        //     {
+        //       method: "GET",
+        //       headers: { "Content-Type": "application/json" },
+        //     }
+        //   );
+        //   const result = await response2.json();
+        //   if (result) {
+        //     localStorage.setItem("user_id", result.user_id);
+        //   }
+        // } catch (err) {
+        //   console.error(err.message);
+        // }
+      } else {
+        // setOpenToastFail(true);
+        setToast({isOpen: true, message: "Incorrect email or password."})
+        props.handleAuthChange(false);
+      }
+      // console.log(parseRes);
     } catch (err) {
       console.error(err.message);
     }
-
 
     setOpenLogin(false);
     clearTextInput();
   };
   const handleClickOpenRegister = () => {
-    setOpenLogin(true);
+    setOpenLogin(false);
     setOpenRegister(true);
   };
 
@@ -204,13 +269,38 @@ function NavBar(props) {
     try {
       const response = await fetch("http://localhost:5000/auth/register", {
         method: "POST",
-        headers: {"Content-Type" : "application/json"},
-        body: JSON.stringify(body)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       });
 
       const parseRes = await response.json();
-      localStorage.setItem("token", parseRes.token);
-      props.handleAuthChange(true);
+      if (parseRes) {
+        localStorage.setItem("token", parseRes.token);
+        localStorage.setItem('user', parseRes.userID);
+        props.handleAuthChange(true);
+        setToast({isOpen: true, message: "Registered and logged in succesfully."})
+
+        // handleChangeToast("registerSuccess", true);
+
+        // try {
+        //   const response2 = await fetch(
+        //     `http://localhost:5000/users/${email}`,
+        //     {
+        //       method: "GET",
+        //       headers: { "Content-Type": "application/json" },
+        //     }
+        //   );
+        //   const result = await response2.json();
+        //   if (result) {
+        //     localStorage.setItem("user_id", result.user_id);
+        //   }
+        // } catch (err) {
+        //   console.error(err.message);
+        // }
+      } else {
+        setToast({isOpen: true, message: "Register failed."})
+        props.handleAuthChange(false);
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -222,7 +312,10 @@ function NavBar(props) {
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     props.handleAuthChange(false);
+    setToast({isOpen: true, message: "Logged out succesfully."})
+
   };
 
   const handleMouseDownPassword = (event) => {
@@ -552,6 +645,26 @@ function NavBar(props) {
               </Button>
             </DialogActions>
           </Dialog>
+
+          <div>
+            <Snackbar
+              open={toast.isOpen}
+              autoHideDuration={4000}
+              onClose={closeToast}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              TransitionComponent={Slide}
+              message={toast.message}
+              action={[<IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={closeToast}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>]}
+            />
+          </div>
+
         </Toolbar>
       </AppBar>
     </div>
