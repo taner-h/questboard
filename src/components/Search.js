@@ -31,7 +31,7 @@ function Search() {
   const [groups, setGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(5);
-  const [limit, setLimit] = useState(8);
+  const [limit, setLimit] = useState(9);
   const [filters, setFilters] = useState({
     gameSystem: "",
     medium: "",

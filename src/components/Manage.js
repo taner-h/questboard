@@ -33,29 +33,50 @@ import Box from "@mui/material/Box";
 function Manage(props) {
 
   const [name, setName] = useState("");
+  const [gmGroups, setGmGroups] = useState([]);
+  const [playerGroups, setPlayerGroups] = useState([]);
+  const [requestGroups, setRequestGroups] = useState([]);
 
-  async function getName()
-  {
+  // async function getName()
+  // {
+  //   try {
+  //     const response = await fetch("http://localhost:5000/manage/",{
+  //     method: "GET",
+  //     headers: {token: localStorage.token}
+  //   });
+
+  //   const parseRes = await response.json();
+
+  //   setName(parseRes.username);
+  //   // console.log(parseRes.username);
+
+  //   } catch (err) {
+  //     console.error(err.message); 
+  //   }
+  // }
+
+  const getGroups = async () => {
     try {
-      const response = await fetch("http://localhost:5000/manage/",{
-      method: "GET",
-      headers: {token: localStorage.token}
-    });
+      const userID = localStorage.getItem("user");
 
-    const parseRes = await response.json();
+      const response = await fetch(`http://localhost:5000/groups/${userID}`,);
+      const jsonRes = await response.json();
 
-    setName(parseRes.username);
-    // console.log(parseRes.username);
+      setGmGroups(jsonRes.gm);
+      setPlayerGroups(jsonRes.player);
+      setRequestGroups(jsonRes.request);
 
+      // console.log(gmGroups);
     } catch (err) {
-      console.error(err.message); 
+      console.error(err.message);
     }
-  }
+  };
+
 
 
   useEffect(() => {
-    getName();
-  }); 
+    getGroups();
+  }, [props.isAuthenticated]); 
 
   return (
 
@@ -73,7 +94,7 @@ function Manage(props) {
       <Divider variant="middle" />
 
       <FormInfo
-        title="My Groups"
+        title="GM Groups"
         // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
       ></FormInfo>
 
@@ -86,44 +107,19 @@ function Manage(props) {
         }}
         spacing={4}
       >
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="D&D 5e"
-            adventureName="Curse of Strahd"
-            medium="Online(Roll20)"
-            length="Campaign"
-            playerCount="5/7"
-            storyType="Prewritten"
-            language="English"
-          ></GameCard>
-        </Grid>
+        {gmGroups.map((group) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <GameCard
+              type='gm'
+              group={group}
+            ></GameCard>
+          </Grid>
+        ))}
 
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="FATE: Core"
-            adventureName="Dragon Heist"
-            medium="Online(Roll20)"
-            length="Mini Adventure"
-            playerCount="3/5"
-            storyType="Prewritten"
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="D&D 5e"
-            adventureName="Witchlight"
-            medium="Online(Foundry)"
-            length="Campaign"
-            playerCount="0/5"
-            storyType="Prewritten"
-            language="German"
-          ></GameCard>
-        </Grid>
       </Grid>
 
       <FormInfo
-        title="Pending Response"
+        title="Player Groups"
         // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
       ></FormInfo>
 
@@ -136,28 +132,37 @@ function Manage(props) {
         }}
         spacing={4}
       >
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Pathfinder 2e"
-            adventureName="Out of the Abyys"
-            medium="Istanbul, Turkey"
-            length="One Shot"
-            playerCount="1/4"
-            storyType="Homebrew"
-            language="English"
-          ></GameCard>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard
-            game="Call of Cthulhu 7e"
-            adventureName="Below the Surface"
-            medium="London, UK"
-            length="One-Shot"
-            playerCount="3/7"
-            storyType="Homebrew"
-            language="English"
-          ></GameCard>
-        </Grid>
+        {playerGroups.map((group) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <GameCard
+              group={group}
+              type='player'
+            ></GameCard>
+          </Grid>
+        ))}
+      </Grid>
+      <FormInfo
+        title="Requested Groups"
+        // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
+      ></FormInfo>
+
+      <Grid
+        container
+        sx={{
+          marginBottom: 8,
+          alignItems: "stretch",
+          justifyContent: "center",
+        }}
+        spacing={4}
+      >
+        {requestGroups.map((group) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <GameCard
+              type='request'
+              group={group}
+            ></GameCard>
+          </Grid>
+        ))}
       </Grid>
     </Box>
 

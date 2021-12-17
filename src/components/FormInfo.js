@@ -26,7 +26,6 @@ function FormInfo(props) {
             variant="subtitle1"
             sx={{ flexGrow: 1, mx:3, color: "#434c5e" }}
           >
-            {props.isAuthenticated ? `Welcome ${props.name}! `: null}
             {props.subtitle}
           </Typography>
         </Grid>
