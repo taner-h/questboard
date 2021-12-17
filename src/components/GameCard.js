@@ -1,11 +1,13 @@
 import React from "react";
 // import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
+import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from "@mui/icons-material/Check";
+import Snackbar from "@mui/material/Snackbar";
+import CloseIcon from "@mui/icons-material/Close";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import GroupIcon from "@mui/icons-material/Group";
 import CardContent from "@mui/material/CardContent";
@@ -47,18 +49,57 @@ function GameCard(props) {
 
   const [players, setPlayers] = React.useState([]);
   const [requests, setRequests] = React.useState([]);
+  const [gm, setGm] = React.useState([]);
 
   const { group } = props;
 
+  const [toast, setToast] = React.useState({
+    isOpen: false,
+    message: "",
+  });
+
+  const closeToast = (event) => {
+    setToast({ ...toast, isOpen: false });
+  };
+
   const getPlayers = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/groups/${group.group_id}`);
+      const response = await fetch(
+        `http://localhost:5000/players/${group.group_id}`
+      );
       const jsonRes = await response.json();
-    setPlayers(jsonRes);
+
+      setPlayers(jsonRes);
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
     }
-  }
+  };
+
+  const getRequests = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/requests/${group.group_id}`
+      );
+      const jsonRes = await response.json();
+
+      setRequests(jsonRes);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getGM = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/creator/${group.group_id}`
+      );
+      const jsonRes = await response.json();
+
+      setGm(jsonRes);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   const getExp = (number) => {
     if (number === "0") return "Beginner";
@@ -76,9 +117,10 @@ function GameCard(props) {
     setOpenInfo(false);
   };
   const handleOpenPlayers = () => {
+    getPlayers();
+    getRequests();
+    getGM();
     setOpenPlayers(true);
-
-
   };
 
   const handleClosePlayers = () => {
@@ -92,9 +134,65 @@ function GameCard(props) {
     setOpenSession(false);
   };
 
-  const handleAddGame = () => {
-    setAddGame(true);
+  const handleAddGame = async () => {
+    try {
+      const userID = localStorage.getItem("user");
+      const groupID = group.group_id;
+      const body = {
+        userID,
+        groupID,
+      };
+
+      const response = await fetch("http://localhost:5000/requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (response) {
+        setAddGame(true);
+        setToast({
+          isOpen: true,
+          message: "Request has been made succesfully.",
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   };
+
+  const handleAcceptRequest = async (event) => {
+    try {
+      const userID = event.target.value;
+      console.log(userID)
+      const groupID = group.group_id;
+      const body = {
+        userID,
+        groupID,
+      };
+      const response = await fetch("http://localhost:5000/players", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (response)
+      {
+        setToast({
+          isOpen: true,
+          message: "User has been added to the group succesfully.",
+        });
+      }
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const handleRejectRequest = () => {
+
+  };
+
 
   // const handleMaxWidthChange = (event) => {
   //   setMaxWidth(
@@ -141,7 +239,7 @@ function GameCard(props) {
         }}
       >
         <CardActions>
-          {props.page === "search" || props.type === 'request' ? null : (
+          {props.page === "search" || props.type === "request" ? null : (
             <Button
               size="small"
               // edge='start'
@@ -171,7 +269,7 @@ function GameCard(props) {
           >
             {props.page === "search" ? "Learn More" : "Details"}
           </Button>
-          {props.page === "search" || props.type === 'request' ? null : (
+          {props.page === "search" || props.type === "request" ? null : (
             <Button
               size="small"
               // edge='end'
@@ -207,95 +305,64 @@ function GameCard(props) {
                   color="#434c5e"
                   variant="body1"
                 >
-                  Players
+                  GM
                 </Typography>
-                  
-                </Box>
-                <Divider variant="middle" />
-                <Box sx={{ m: 2 }}>
-
+              </Box>
+              <Divider variant="middle" />
+              <Box sx={{ m: 2 }}>
                 <List
                   sx={{
                     width: "100%",
                     // maxWidth: 360,
                   }}
                 >
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
+                  <ListItem>
                     <ListItemAvatar>
-                      <Avatar sx={{  backgroundColor:"#4c566a" }}>
+                      <Avatar sx={{ backgroundColor: "#4c566a" }}>
                         <PersonIcon />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="garygygax" secondary="Sorcerer 6" />
+                    <ListItemText primary={gm.username} />
                   </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="quillM420" secondary="Rogue 9" />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="JuanB70-1" secondary="Bard 8" />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="Caspien-Dragonborn"
-                      secondary="Paladin 10"
-                    />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor: "#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="GarakMukremin"
-                      secondary="Wizard 20"
-                    />
-                  </ListItem>
+                </List>
+              </Box>
+
+              <Box sx={{ m: 2 }}>
+                <Typography
+                  gutterBottom
+                  sx={{ fontWeight: "500" }}
+                  color="#434c5e"
+                  variant="body1"
+                >
+                  Players
+                </Typography>
+              </Box>
+              <Divider variant="middle" />
+              <Box sx={{ m: 2 }}>
+                <List
+                  sx={{
+                    width: "100%",
+                    // maxWidth: 360,
+                  }}
+                >
+                  {players.map((player) => (
+                    <ListItem
+                      secondaryAction={
+                        props.type === "gm" ? (
+                          <IconButton edge="end" aria-label="delete">
+                            <DeleteIcon sx={{ color: "#4c566a" }} />
+                          </IconButton>
+                        ) : null
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar sx={{ backgroundColor: "#4c566a" }}>
+                          <PersonIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={player.username} />
+                    </ListItem>
+                  ))}
                 </List>
               </Box>
 
@@ -308,101 +375,52 @@ function GameCard(props) {
                 >
                   Requests
                 </Typography>
-                  
-                </Box>
-                <Divider variant="middle" />
+              </Box>
+              <Divider variant="middle" />
 
-                <Box sx={{ m: 2 }}>
-
+              <Box sx={{ m: 2 }}>
                 <List
                   sx={{
                     width: "100%",
                     // maxWidth: 360,
                   }}
                 >
-                  <ListItem
-                    secondaryAction={
-                      <> 
-                      <IconButton edge="end" aria-label="accept" sx={{marginRight: 0.5}} >
-                        <CheckIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
+                  {requests.map((request) => (
+                    <ListItem
+                
+                      secondaryAction={
+                        props.type === "gm" ? (
+                          <>
+                            <IconButton
+                              edge="end"
+                              key={request.group_id}
+                              value={request.user_id}
+                              aria-label="accept"
+                              sx={{ marginRight: 0.5 }}
+                              onClick={handleAcceptRequest}
+                            >
+                              <CheckIcon  sx={{ color: "#4c566a" }} />
+                            </IconButton>
 
-                      <IconButton edge="end" aria-label="reject" >
-                        <CloseIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-
-                      </>
-                    }
-                  >
-                    <ListItemAvatar>
-                      <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="garygygax" secondary="Sorcerer 6" />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="quillM420" secondary="Rogue 9" />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="JuanB70-1" secondary="Bard 8" />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor:"#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="Caspien-Dragonborn"
-                      secondary="Paladin 10"
-                    />
-                  </ListItem>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon sx={{ color: "#4c566a" }} />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemAvatar>
-                    <Avatar sx={{  backgroundColor: "#4c566a" }}>
-                        <PersonIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="GarakMukremin"
-                      secondary="Wizard 20"
-                    />
-                  </ListItem>
+                            <IconButton
+                              onClick={handleRejectRequest}
+                              edge="end"
+                              aria-label="reject"
+                            >
+                              <CloseIcon sx={{ color: "#4c566a" }} />
+                            </IconButton>
+                          </>
+                        ) : null
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar sx={{ backgroundColor: "#4c566a" }}>
+                          <PersonIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={request.username} />
+                    </ListItem>
+                  ))}
                 </List>
               </Box>
             </DialogContent>
@@ -424,7 +442,6 @@ function GameCard(props) {
             </DialogActions>
           </Dialog>
 
-
           <Dialog
             fullWidth={fullWidth}
             maxWidth={maxWidth}
@@ -438,19 +455,19 @@ function GameCard(props) {
           >
             <DialogContent>
               <Box sx={{ m: 2 }}>
-                    <Typography
-                      gutterBottom
-                      sx={{ fontWeight: "500" }}
-                      color="#434c5e"
-                      variant="body1"
-                    >
-                      Next Session
-                    </Typography>
+                <Typography
+                  gutterBottom
+                  sx={{ fontWeight: "500" }}
+                  color="#434c5e"
+                  variant="body1"
+                >
+                  Next Session
+                </Typography>
 
-                    <Typography color="#4c566a" variant="body2">
-                      19.12.2021, 18.00, Roll20, Dicord
-                    </Typography>
-                  </Box>
+                <Typography color="#4c566a" variant="body2">
+                  19.12.2021, 18.00, Roll20, Dicord
+                </Typography>
+              </Box>
             </DialogContent>
             <DialogActions>
               <Button
@@ -673,8 +690,6 @@ function GameCard(props) {
                   label="Dark"
                 />
               </Box>
-
-            
             </DialogContent>
             <DialogActions>
               <Button
@@ -695,6 +710,27 @@ function GameCard(props) {
           </Dialog>
         </CardActions>
       </CardActions>
+
+      <div>
+        <Snackbar
+          open={toast.isOpen}
+          autoHideDuration={4000}
+          onClose={closeToast}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          TransitionComponent={Slide}
+          message={toast.message}
+          action={[
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={closeToast}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>,
+          ]}
+        />
+      </div>
     </Card>
   );
 }

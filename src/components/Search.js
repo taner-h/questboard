@@ -29,6 +29,7 @@ import SortIcon from "@mui/icons-material/Sort";
 
 function Search() {
   const [groups, setGroups] = useState([]);
+  // const [inGroup, setInGroup] = useState([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(5);
   const [limit, setLimit] = useState(9);
@@ -59,8 +60,25 @@ function Search() {
     }
   };
 
+  // const getInGroup = async () => {
+  //   try {
+  //     const userid = localStorage.getItem("user");
+  //     const response = await fetch(`http://localhost:5000/group/${userid}`);
+  //     const jsonRes = await response.json();
+
+  //     // console.log(jsonRes);
+  //     await setInGroup(jsonRes);
+  //     // console.log(inGroup);
+
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // }
+
   useEffect(() => {
     getGroups();
+    // getInGroup();
+
   }, [page]);
 
   const handleChangeFilterGameSystem = (event) => {
