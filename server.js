@@ -141,6 +141,31 @@ app.get("/groups/:user_id", async (req, res) => {
 
 });
 
+// get group_ids of a user
+app.get("/group/:user_id", async (req, res) => {
+    try {
+        const {user_id} = req.params;
+        // const response = []
+
+        const gmGroups = await pool.query("SELECT group_id FROM groups WHERE creator_id = $1", [user_id]);
+        // response.concat(gmGroups.rows);
+
+        const playerGroups = await pool.query("SELECT groups.group_id FROM players INNER JOIN groups ON players.group_id = groups.group_id WHERE user_id = $1", [user_id]);
+        // response.concat(playerGroups.rows);
+
+        const requestedGroups = await pool.query("SELECT groups.group_id FROM requests INNER JOIN groups ON requests.group_id = groups.group_id WHERE user_id = $1", [user_id]);
+        // response.concat(requestedGroups.rows);
+
+        const response = gmGroups.rows.concat(playerGroups.rows, requestedGroups.rows); 
+
+        res.json(response);
+
+    } catch (err) {
+        console.error(err.message)
+    }
+
+});
+
 // app.get("/groups/:id", async (req, res) => {
 //   try {
 //     const { id } = req.params;
@@ -192,6 +217,23 @@ app.get("/players/:id", async (req, res) => {
   }
 });
 
+// get creator of a group by id
+
+app.get("/creator/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const creator = await pool.query(
+        "SELECT users.user_id, username FROM users INNER JOIN groups on users.user_id = groups.creator_id WHERE group_id = $1",
+        [id]
+      );
+      res.json(creator.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
+  
+
 // send a request to a group
 app.post("/requests", async (req, res) => {
   try {
@@ -228,9 +270,9 @@ app.get("/requests/:id", async (req, res) => {
     const { id } = req.params;
 
     const requests = await pool.query(
-      "SELECT user_id, group_id FROM requests WHERE group_id = $1",
-      [id]
-    );
+        "SELECT users.user_id, username FROM requests INNER JOIN users on requests.user_id = users.user_id WHERE group_id = $1",
+        [id]
+      );
     res.json(requests.rows);
   } catch (err) {
     console.error(err.message);
