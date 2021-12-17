@@ -118,20 +118,41 @@ app.get("/groups?", async (req, res) => {
   }
 });
 
-// get a group by id
+// get all groups of a user
+app.get("/groups/:user_id", async (req, res) => {
+    try {
+        const {user_id} = req.params;
+        const response = {}
 
-app.get("/groups/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
+        const gmGroups = await pool.query("SELECT * FROM groups WHERE creator_id = $1", [user_id]);
+        response.gm = gmGroups.rows;
 
-    const group = await pool.query("SELECT * FROM groups WHERE group_id = $1", [
-      id,
-    ]);
-    res.json(group.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
+        const playerGroups = await pool.query("SELECT * FROM players INNER JOIN groups ON players.group_id = groups.group_id WHERE user_id = $1", [user_id]);
+        response.player = playerGroups.rows;
+
+        const requestedGroups = await pool.query("SELECT * FROM requests INNER JOIN groups ON requests.group_id = groups.group_id WHERE user_id = $1", [user_id]);
+        response.request = requestedGroups.rows;
+
+        res.json(response);
+
+    } catch (err) {
+        console.error(err.message)
+    }
+
 });
+
+// app.get("/groups/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const group = await pool.query("SELECT * FROM groups WHERE group_id = $1", [
+//       id,
+//     ]);
+//     res.json(group.rows[0]);
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// });
 
 // add a player to a group
 
@@ -207,7 +228,7 @@ app.get("/requests/:id", async (req, res) => {
     const { id } = req.params;
 
     const requests = await pool.query(
-      "SELECT user_id FROM requests WHERE group_id = $1",
+      "SELECT user_id, group_id FROM requests WHERE group_id = $1",
       [id]
     );
     res.json(requests.rows);
