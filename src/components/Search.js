@@ -42,7 +42,7 @@ function Search() {
 
   const [sort, setSort] = useState({
     sortBy: "Create Time",
-    sortDescending: true,
+    orderBy: 'DESC',
   });
 
   const [showFilters, setShowFilters] = React.useState(false);
@@ -50,7 +50,12 @@ function Search() {
 
   const getGroups = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/groups?page=${page}&limit=${limit}`);
+      const sortBy = getSort(sort.sortBy)
+      // console.log(sortBy)
+      // console.log(sort.orderBy)
+
+      // const temp_lang = filters.language === null ? '' : filters.language;  
+      const response = await fetch(`http://localhost:5000/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${sort.orderBy}&gameSystem=${filters.gameSystem}&medium=${filters.medium}&adventureLength=${filters.adventureLength}&language=${filters.language}`);
       const jsonRes = await response.json();
       setGroups(jsonRes.groups);
       setPageCount(jsonRes.pageCount);
@@ -111,6 +116,19 @@ function Search() {
   }));
 
   const styles = useStyles();
+
+  const getSort = (sort) => {
+    if (sort === "Create Time") return 'group_id';
+    else if (sort === "Player Count") return 'available_player_count' 
+    else if (sort === "Experience Level") return 'player_experience_level'
+    else return null; 
+  }
+
+  const handleSearch = () => {
+
+    getGroups();
+
+  }
 
   const languages = [
     "Abkhaz",
@@ -439,6 +457,7 @@ function Search() {
             marginX: 1,
           }}
           endIcon={<SearchIcon />}
+          onClick={handleSearch}
         >
           SEARCH
         </Button>
@@ -528,6 +547,7 @@ function Search() {
               id="language-select"
               options={languages}
               variant="filled"
+              defaultValue=''
               value={filters.language}
               sx={{ width: 170 }}
               renderInput={(params) => (
@@ -538,7 +558,7 @@ function Search() {
                 />
               )}
               onChange={(event, newValue) => {
-                setFilters({ ...filters, language: newValue });
+                setFilters({ ...filters, language: newValue ? newValue : '' });
               }}
             />
           </FormControl>
@@ -570,14 +590,14 @@ function Search() {
           <ToggleButton
             sx={{ marginTop: 5 }}
             size="large"
-            value={sort.sortDescending}
+            value={sort.orderBy}
             // selected={selected}
             onClick={() => {
-              setSort({ ...sort, sortDescending: !sort.sortDescending });
-              console.log(sort.sortDescending);
+              setSort({ ...sort, orderBy: sort.orderBy === 'DESC' ? 'ASC' : 'DESC' });
+              // console.log(sort.orderBy);
             }}
           >
-            {sort.sortDescending ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+            {sort.orderBy === 'DESC' ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
           </ToggleButton>
         </div>
       ) : null}
