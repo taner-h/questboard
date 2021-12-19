@@ -96,15 +96,29 @@ app.get("/groups?", async (req, res) => {
   try {
     const page = req.query.page;
     const limit = req.query.limit;
-    // console.log(page);
-    // console.log(limit);
+    const sortBy = req.query.sortBy;
+    const orderBy = req.query.orderBy;
+
+    console.log(req.query.language)
+
+    // const language_value = req.query.language === null ? '' : req.query.language
+
+    const gameSystem = req.query.gameSystem ? `'${req.query.gameSystem}'` : 'game_system' 
+    const medium = req.query.medium ? `'${req.query.medium}'` : 'medium' 
+    const adventureLength = req.query.adventureLength ? `'${req.query.adventureLength}'` : 'adventure_length'
+    const language = req.query.language ? `'${req.query.language}'` : 'game_language' 
+
+    // console.log(sortBy);
+    // console.log(orderBy);
+    // console.log(str);
+
+    const query = `SELECT *, total_player_count - current_player_count AS available_player_count FROM groups WHERE game_system = ${gameSystem} AND medium = ${medium} AND adventure_length = ${adventureLength} AND game_language = ${language} ORDER BY ${sortBy} ${orderBy}`;
+    console.log(query);
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    const allGroups = await pool.query(
-      "SELECT  * FROM groups ORDER BY group_id DESC"
-    );
+    const allGroups = await pool.query(query);
 
     const pageCount = Math.floor((allGroups.rows.length - 1)/ limit) + 1;    
     const response = {}
@@ -285,7 +299,7 @@ app.delete("/requests", async (req, res) => {
   try {
     const { userID, groupID } = req.body;
     const deleteRequest = await pool.query(
-      "DELETE FROM requests WHERE user_id = $1 AND group_id =$2",
+      "DELETE FROM requests WHERE user_id = $1 AND group_id = $2",
       [userID, groupID]
     );
 
