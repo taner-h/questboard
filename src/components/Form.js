@@ -1061,7 +1061,7 @@ function Form(props) {
           >
             <MenuItem value="RP-heavy">RP-heavy</MenuItem>
             <MenuItem value="Old school">Old school</MenuItem>
-            <MenuItem value="Old school">Tactical</MenuItem>
+            <MenuItem value="Tactical">Tactical</MenuItem>
             <MenuItem value="Murderhobo">Murderhobo</MenuItem>
             <MenuItem value="Min-max">Min-max</MenuItem>
             <MenuItem value="Casual">Casual</MenuItem>
