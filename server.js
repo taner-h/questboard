@@ -204,6 +204,10 @@ app.post("/players", async (req, res) => {
       [userID, groupID]
     );
 
+    const updatePlayerNum = await pool.query(
+      "UPDATE groups SET current_player_count = current_player_count + 1 WHERE group_id = $1", [groupID]
+    );
+
     const requests = await pool.query(
       "DELETE FROM requests WHERE user_id = $1 AND group_id = $2",
       [userID, groupID]
@@ -318,6 +322,11 @@ app.delete("/players", async (req, res) => {
       "DELETE FROM players WHERE user_id = $1 AND group_id =$2",
       [userID, groupID]
     );
+
+    const updatePlayerNum = await pool.query(
+      "UPDATE groups SET current_player_count = GREATEST(current_player_count - 1, 0) WHERE group_id = $1", [groupID]
+    );
+
 
     res.json("Player is deleted.");
   } catch (err) {
