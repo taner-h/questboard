@@ -1,41 +1,27 @@
-import React, { useState, useEffect } from "react";
-// import Drawer from '@mui/material/Drawer';
-// import AppBar from '@mui/material/AppBar';
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-// import Toolbar from '@mui/material/Toolbar';
-// import List from '@mui/material/List';
-// import Typography from '@mui/material/Typography';
-// import ListItem from '@mui/material/ListItem';
 import Divider from "@mui/material/Divider";
-// import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-import GameCard from "./GameCard";
 import FormInfo from "./FormInfo";
-// import NavBar from './NavBar';
-// import CardContent from "@mui/material/CardContent";
-// import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import GameCard from "./GameCard";
 import Box from "@mui/material/Box";
-// import IconButton from "@mui/material/IconButton";
-// import MoreIcon from '@mui/icons-material/More';
-// import AddBoxIcon from '@mui/icons-material/AddBox';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import Stack from '@mui/material/Stack';
-// import Chip from '@mui/material/Chip';
-// import ListItemIcon from '@mui/material/ListItemIcon';
-// import ListItemText from '@mui/material/ListItemText';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Tooltip from "@mui/material/Tooltip";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 function Manage(props) {
-
   const [name, setName] = useState("");
   const [gmGroups, setGmGroups] = useState([]);
   const [playerGroups, setPlayerGroups] = useState([]);
   const [requestGroups, setRequestGroups] = useState([]);
+
+  const [tab, setTab] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setTab(newValue);
+  };
 
   // async function getName()
   // {
@@ -51,7 +37,7 @@ function Manage(props) {
   //   // console.log(parseRes.username);
 
   //   } catch (err) {
-  //     console.error(err.message); 
+  //     console.error(err.message);
   //   }
   // }
 
@@ -59,7 +45,7 @@ function Manage(props) {
     try {
       const userID = localStorage.getItem("user");
 
-      const response = await fetch(`http://localhost:5000/groups/${userID}`,);
+      const response = await fetch(`http://localhost:5000/groups/${userID}`);
       const jsonRes = await response.json();
 
       setGmGroups(jsonRes.gm);
@@ -72,102 +58,163 @@ function Manage(props) {
     }
   };
 
-
-
   useEffect(() => {
     getGroups();
-  }, [props.isAuthenticated]); 
+  }, [props.isAuthenticated]);
 
   return (
-
     <Box
-    sx={{ flexGrow: 1, mt: 17, paddingX: { xs: 4, sm: 6, md: 8, lg: 12 } }}
+      sx={{ flexGrow: 1, mt: 17, paddingX: { xs: 4, sm: 6, md: 8, lg: 12 } }}
     >
       <FormInfo
         type="title"
         title="Manage"
         name={name}
         isAuthenticated={props.isAuthenticated}
-        subtitle={"You can manage your groups from here. Schedule the next session and add a new group member."}
+        subtitle={
+          "You can manage your groups from here. Schedule the next session and add a new group member."
+        }
       ></FormInfo>
 
-      <Divider variant="middle" />
+      <Tabs value={tab} onChange={handleChange} centered>
+        <Tooltip title="Groups that you created">
+          <Tab label="GM Groups" />
+        </Tooltip>
+        <Tooltip title="Groups in which your a player">
+          <Tab label="Player Groups" />
+        </Tooltip>
+        <Tooltip title="Groups that you sent a request to">
+          <Tab label="Requested Groups" />
+        </Tooltip>
+      </Tabs>
 
-      <FormInfo
-        title="GM Groups"
-        // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
-      ></FormInfo>
+      <Divider sx={{ mb: 5 }} variant="middle" />
 
-      <Grid
-        container
-        sx={{
-          marginBottom: 8,
-          alignItems: "stretch",
-          justifyContent: "center",
-        }}
-        spacing={4}
-      >
-        {gmGroups.map((group) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <GameCard
-              type='gm'
-              group={group}
-            ></GameCard>
+      {tab === 0 &&
+        (gmGroups.length === 0 ? (
+          <>
+            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+              You have no groups that you created.
+            </Typography>
+
+            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+              Click the button below and start creating a group.
+            </Typography>
+
+            <Link className="text-link" to="/create">
+              <Button
+                variant="contained"
+                color="grey"
+                sx={{
+                  backgroundColor: "#2e3440",
+                  color: "#d8dee9",
+                }}
+              >
+                Create
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <Grid
+            container
+            sx={{
+              marginBottom: 8,
+              alignItems: "stretch",
+              justifyContent: "center",
+            }}
+            spacing={4}
+          >
+            {gmGroups.map((group) => (
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <GameCard type="gm" group={group}></GameCard>
+              </Grid>
+            ))}
           </Grid>
         ))}
+      {tab === 1 &&
+        (playerGroups.length === 0 ? (
+          <>
+            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+              You have no groups in which you are a player.
+            </Typography>
 
-      </Grid>
+            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+              Click the button below and start searching for games.
+            </Typography>
 
-      <FormInfo
-        title="Player Groups"
-        // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
-      ></FormInfo>
-
-      <Grid
-        container
-        sx={{
-          marginBottom: 8,
-          alignItems: "stretch",
-          justifyContent: "center",
-        }}
-        spacing={4}
-      >
-        {playerGroups.map((group) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <GameCard
-              group={group}
-              type='player'
-            ></GameCard>
+            <Link className="text-link" to="/search">
+              <Button
+                variant="contained"
+                color="grey"
+                sx={{
+                  backgroundColor: "#2e3440",
+                  color: "#d8dee9",
+                }}
+              >
+                Search
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <Grid
+            container
+            sx={{
+              marginBottom: 8,
+              alignItems: "stretch",
+              justifyContent: "center",
+            }}
+            spacing={4}
+          >
+            {playerGroups.map((group) => (
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <GameCard group={group} type="player"></GameCard>
+              </Grid>
+            ))}
           </Grid>
         ))}
-      </Grid>
-      <FormInfo
-        title="Requested Groups"
-        // subtitle="Let's start with the basics. Tell us about the basics of the game you wish to run."
-      ></FormInfo>
+      {tab === 2 &&
+        (requestGroups.length === 0 ? (
+          <>
+            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+              You have no requested groups.
+            </Typography>
 
-      <Grid
-        container
-        sx={{
-          marginBottom: 8,
-          alignItems: "stretch",
-          justifyContent: "center",
-        }}
-        spacing={4}
-      >
-        {requestGroups.map((group) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <GameCard
-              type='request'
-              group={group}
-            ></GameCard>
+            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+              Click the button below and start searching for games.
+            </Typography>
+
+            <Link className="text-link" to="/search">
+              <Button
+                variant="contained"
+                color="grey"
+                sx={{
+                  backgroundColor: "#2e3440",
+                  color: "#d8dee9",
+                }}
+              >
+                Search
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <Grid
+            container
+            sx={{
+              marginBottom: 8,
+              alignItems: "stretch",
+              justifyContent: "center",
+            }}
+            spacing={4}
+          >
+            {requestGroups.map((group) => (
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <GameCard type="request" group={group}></GameCard>
+              </Grid>
+            ))}
           </Grid>
         ))}
-      </Grid>
     </Box>
-
-  )
-
+  );
 }
 
 export default Manage;

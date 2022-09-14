@@ -40,3 +40,8 @@
 .addBoxIcon {
   transform: scale(1.6);
 }
+
+.text-link {
+  text-decoration: none;
+  color: #d8dee9;
+}

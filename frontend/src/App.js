@@ -17,6 +17,16 @@ function App() {
     setIsAuthenticated(boolean);
   };
 
+  const handleGrantAuth = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleDenyAuth = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  };
+
   async function isAuth() {
     try {
       const response = await fetch("http://localhost:5000/auth/isVerified", {
@@ -26,7 +36,7 @@ function App() {
 
       const parseRes = await response.json();
       // console.log(parseRes);
-      parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+      parseRes === true ? handleGrantAuth() : handleDenyAuth();
     } catch (err) {
       console.error(err.message);
     }

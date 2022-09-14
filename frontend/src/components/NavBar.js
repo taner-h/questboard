@@ -2,7 +2,7 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 // import Container from "@mui/material/Container";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Slide from "@mui/material/Slide";
@@ -53,10 +53,10 @@ function NavBar(props) {
 
   const [toast, setToast] = React.useState({
     isOpen: false,
-    message: ""
-  })
+    message: "",
+  });
 
-  const closeToast = (event) =>{
+  const closeToast = (event) => {
     setToast({ ...toast, isOpen: false });
   };
 
@@ -181,10 +181,6 @@ function NavBar(props) {
     setOpenLogin(true);
   };
 
-
-
-  
-
   // const actionToastSuccess = (
   //   <React.Fragment>
   //     <IconButton
@@ -224,10 +220,10 @@ function NavBar(props) {
 
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
-        localStorage.setItem('user', parseRes.userID);
+        localStorage.setItem("user", parseRes.userID);
         props.handleAuthChange(true);
         // setOpenToastSuccess(true);
-        setToast({isOpen: true, message: "Login succesful."})
+        setToast({ isOpen: true, message: "Login succesful." });
         // handleChangeToast("loginSuccess", true);
         // try {
         //   const response2 = await fetch(
@@ -246,7 +242,7 @@ function NavBar(props) {
         // }
       } else {
         // setOpenToastFail(true);
-        setToast({isOpen: true, message: "Incorrect email or password."})
+        setToast({ isOpen: true, message: "Incorrect email or password." });
         props.handleAuthChange(false);
       }
       // console.log(parseRes);
@@ -276,9 +272,12 @@ function NavBar(props) {
       const parseRes = await response.json();
       if (parseRes) {
         localStorage.setItem("token", parseRes.token);
-        localStorage.setItem('user', parseRes.userID);
+        localStorage.setItem("user", parseRes.userID);
         props.handleAuthChange(true);
-        setToast({isOpen: true, message: "Registered and logged in succesfully."})
+        setToast({
+          isOpen: true,
+          message: "Registered and logged in succesfully.",
+        });
 
         // handleChangeToast("registerSuccess", true);
 
@@ -298,7 +297,7 @@ function NavBar(props) {
         //   console.error(err.message);
         // }
       } else {
-        setToast({isOpen: true, message: "Register failed."})
+        setToast({ isOpen: true, message: "Register failed." });
         props.handleAuthChange(false);
       }
     } catch (err) {
@@ -314,8 +313,7 @@ function NavBar(props) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     props.handleAuthChange(false);
-    setToast({isOpen: true, message: "Logged out succesfully."})
-
+    setToast({ isOpen: true, message: "Logged out succesfully." });
   };
 
   const handleMouseDownPassword = (event) => {
@@ -364,7 +362,7 @@ function NavBar(props) {
             spacing={1.5}
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            <Link to="/">
+            <Link className="text-link" to="/">
               <Button
                 variant="text"
                 color="primary"
@@ -373,7 +371,7 @@ function NavBar(props) {
                 home
               </Button>
             </Link>
-            <Link to="/create">
+            <Link className="text-link" to="/create">
               <Button
                 variant="text"
                 color="primary"
@@ -382,7 +380,7 @@ function NavBar(props) {
                 create
               </Button>
             </Link>
-            <Link to="/search">
+            <Link className="text-link" to="/search">
               <Button
                 variant="text"
                 color="primary"
@@ -391,7 +389,7 @@ function NavBar(props) {
                 search
               </Button>
             </Link>
-            <Link to="/manage">
+            <Link className="text-link" to="/manage">
               <Button
                 variant="text"
                 color="primary"
@@ -654,17 +652,18 @@ function NavBar(props) {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               TransitionComponent={Slide}
               message={toast.message}
-              action={[<IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={closeToast}
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>]}
+              action={[
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={closeToast}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>,
+              ]}
             />
           </div>
-
         </Toolbar>
       </AppBar>
     </div>
