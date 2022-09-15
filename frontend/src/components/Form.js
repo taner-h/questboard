@@ -414,15 +414,15 @@ function Form(props) {
     },
     {
       value: 50,
-      label: "Intermediate",
+      label: "Moderate",
     },
     {
       value: 75,
-      label: "Experienced",
+      label: "Seasoned",
     },
     {
       value: 100,
-      label: "Veteran",
+      label: "Pro",
     },
   ];
 
@@ -683,6 +683,8 @@ function Form(props) {
         mt: 15,
         mx: 2,
         mb: 5,
+        alignItems: "center",
+        justifyContent: "center",
         // backgroundColor: "#eceff4",
       }}
     >
@@ -696,8 +698,12 @@ function Form(props) {
 
       {/* <Divider variant="middle" /> */}
 
-      <Stepper sx={{ marginTop: 2 }} activeStep={activeStep} alternativeLabel>
-        {steps.map((label) => (
+      <Stepper
+        sx={{ marginTop: 2, marginX: -2 }}
+        activeStep={activeStep}
+        alternativeLabel
+      >
+        {steps.map((label, index) => (
           <Step
             sx={{
               "& .MuiStepLabel-root .Mui-completed": {
@@ -723,6 +729,10 @@ function Form(props) {
             pt: 4,
             pb: 6,
             backgroundColor: "#eceff4",
+            flexGrow: 1,
+            minWidth: "fit-content",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <FormInfo
@@ -733,7 +743,7 @@ function Form(props) {
           <div>
             <FormControl
               required
-              sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+              sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
             >
               <InputLabel>Game System</InputLabel>
               <Select
@@ -752,7 +762,7 @@ function Form(props) {
 
             <FormControl
               required
-              sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+              sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
             >
               <InputLabel>Game Version</InputLabel>
               <Select
@@ -761,7 +771,7 @@ function Form(props) {
                 value={values.gameVersion}
                 // variant="filled"
                 label="Game Version"
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 250 }}
                 onChange={handleChangeGameVersion}
               >
                 {values.gameSystem !== "" &&
@@ -774,7 +784,7 @@ function Form(props) {
             </FormControl>
             <FormControl
               required
-              sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+              sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
             >
               <TextField
                 id="filled-basic"
@@ -792,7 +802,7 @@ function Form(props) {
           <div>
             <FormControl
               required
-              sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+              sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
             >
               <InputLabel>Adventure Length</InputLabel>
               <Select
@@ -801,7 +811,7 @@ function Form(props) {
                 value={values.adventureLength}
                 // variant="filled"
                 label="Adventure Length"
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 250 }}
                 onChange={handleChangeAdventureLength}
               >
                 <MenuItem value="One-Shot">One-Shot (1 session)</MenuItem>
@@ -831,7 +841,7 @@ function Form(props) {
                 </FormControl> */}
             <FormControl
               required
-              sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+              sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
             >
               <Autocomplete
                 disablePortal
@@ -856,7 +866,7 @@ function Form(props) {
             <FormControl
               sx={{
                 alignItems: "center",
-                minWidth: 300,
+                minWidth: 250,
                 marginX: 2,
                 marginY: 2,
               }}
@@ -898,6 +908,8 @@ function Form(props) {
             pt: 4,
             pb: 6,
             backgroundColor: "#eceff4",
+            flexGrow: 1,
+            minWidth: "fit-content",
           }}
         >
           <FormInfo
@@ -938,7 +950,7 @@ function Form(props) {
           <div>
             <FormControl
               sx={{
-                minWidth: 300,
+                minWidth: 250,
                 width: "65%",
                 maxWidth: 500,
                 marginY: 2,
@@ -973,6 +985,8 @@ function Form(props) {
             pt: 4,
             pb: 6,
             backgroundColor: "#eceff4",
+            flexGrow: 1,
+            minWidth: "fit-content",
           }}
         >
           <FormInfo
@@ -982,7 +996,7 @@ function Form(props) {
 
           <div>
             <FormControl
-              sx={{ minWidth: 300, marginX: 2, marginY: 2 }}
+              sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
               required
             >
               <FormLabel sx={{ color: "#2e3440" }}>Medium</FormLabel>
@@ -1018,7 +1032,7 @@ function Form(props) {
           </div>
 
           <div>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Platform</InputLabel>
               <Select
                 disabled={
@@ -1035,7 +1049,7 @@ function Form(props) {
                 }
                 // variant="filled"
                 label="Platform"
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 250 }}
                 onChange={handleChangePlatform}
               >
                 <MenuItem value="Roll20">Roll20</MenuItem>
@@ -1049,7 +1063,7 @@ function Form(props) {
               </Select>
             </FormControl>
 
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <TextField
                 disabled={
                   values.medium === "Hybrid" || values.medium === "IRL"
@@ -1070,7 +1084,7 @@ function Form(props) {
           </div>
 
           <div>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Communication Method</InputLabel>
               <Select
                 disabled={
@@ -1086,7 +1100,7 @@ function Form(props) {
                 }
                 // variant="filled"
                 label="Communication Method"
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 250 }}
                 onChange={handleChangeCommunicationMethod}
               >
                 <MenuItem value="Discord">Discord</MenuItem>
@@ -1097,7 +1111,7 @@ function Form(props) {
               </Select>
             </FormControl>
 
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Hosting</InputLabel>
               <Select
                 id="hosting-select"
@@ -1113,7 +1127,7 @@ function Form(props) {
                 }
                 // variant="filled"
                 label="Hosting"
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 250 }}
                 onChange={handleChangeHosting}
               >
                 <MenuItem value="GM Hosted">GM Hosted</MenuItem>
@@ -1135,6 +1149,8 @@ function Form(props) {
             pt: 4,
             pb: 6,
             backgroundColor: "#eceff4",
+            flexGrow: 1,
+            minWidth: "fit-content",
           }}
         >
           <FormInfo
@@ -1143,7 +1159,7 @@ function Form(props) {
           ></FormInfo>
 
           <div>
-            <FormControl sx={{ maxWidth: 220, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ maxWidth: 250, marginX: 2, marginY: 2 }}>
               <TextField
                 label="Session Frequency"
                 id="session-frequency-input"
@@ -1162,7 +1178,7 @@ function Form(props) {
                 }}
               />
             </FormControl>
-            <FormControl sx={{ maxWidth: 220, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ maxWidth: 250, marginX: 2, marginY: 2 }}>
               <TextField
                 label="Session Length"
                 id="session-length-input"
@@ -1177,7 +1193,7 @@ function Form(props) {
               />
             </FormControl>
 
-            <FormControl sx={{ minWidth: 220, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>GM Time Zone</InputLabel>
               <Select
                 required
@@ -1204,7 +1220,7 @@ function Form(props) {
           </div>
 
           <div>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Session Day</InputLabel>
               <Select
                 id="session-day-select"
@@ -1223,7 +1239,7 @@ function Form(props) {
               </Select>
             </FormControl>
 
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <LocalizationProvider dateAdapter={DateAdapter}>
                 {/* <DesktopTimePicker
               label="Session Time"
@@ -1263,6 +1279,8 @@ function Form(props) {
             pt: 4,
             pb: 6,
             backgroundColor: "#eceff4",
+            flexGrow: 1,
+            minWidth: "fit-content",
           }}
         >
           <FormInfo
@@ -1271,7 +1289,7 @@ function Form(props) {
           ></FormInfo>
 
           <div>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Player Game Style</InputLabel>
               <Select
                 id="player-game-style-select"
@@ -1288,7 +1306,7 @@ function Form(props) {
                 <MenuItem value="Casual">Casual</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>GM Style</InputLabel>
               <Select
                 id="gm-style-select"
@@ -1308,7 +1326,7 @@ function Form(props) {
                 <MenuItem value="Dialog Heavy">Dialog Heavy</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Adventure Style</InputLabel>
               <Select
                 id="adventure-style-select"
@@ -1327,7 +1345,7 @@ function Form(props) {
             </FormControl>
           </div>
           <div>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>GM Experience Level</InputLabel>
               <Select
                 id="gm-experience-level-select"
@@ -1338,13 +1356,13 @@ function Form(props) {
               >
                 <MenuItem value="Beginner">Beginner</MenuItem>
                 <MenuItem value="Novice">Novice</MenuItem>
-                <MenuItem value="Intermediate">Intermediate</MenuItem>
+                <MenuItem value="Modarate">Modarate</MenuItem>
                 <MenuItem value="Experienced">Experienced</MenuItem>
                 <MenuItem value="Veteran">Veteran</MenuItem>
                 <MenuItem value="Proffesional">Proffesional</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: 300, marginX: 2, marginY: 2 }}>
+            <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <InputLabel>Story Genre</InputLabel>
               <Select
                 id="story-genre-select"
@@ -1391,6 +1409,8 @@ function Form(props) {
             pt: 4,
             pb: 6,
             backgroundColor: "#eceff4",
+            flexGrow: 1,
+            minWidth: "fit-content",
           }}
         >
           <FormInfo
@@ -1402,7 +1422,7 @@ function Form(props) {
             <FormControl
               display="flex"
               sx={{
-                minWidth: 300,
+                minWidth: 250,
                 width: "75%",
                 maxWidth: 500,
                 marginX: 2,
@@ -1426,7 +1446,7 @@ function Form(props) {
           <div>
             <FormControl
               sx={{
-                minWidth: 300,
+                minWidth: 250,
                 width: "75%",
                 maxWidth: 500,
                 marginX: 2,

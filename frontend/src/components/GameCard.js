@@ -1,4 +1,4 @@
-import React, {forceUpdate} from "react";
+import React, { forceUpdate } from "react";
 // import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
 import Slide from "@mui/material/Slide";
@@ -174,14 +174,12 @@ function GameCard(props) {
         body: JSON.stringify(body),
       });
 
-      if (response)
-      {
+      if (response) {
         setToast({
           isOpen: true,
           message: "User has been added to the group succesfully.",
         });
       }
-
     } catch (err) {
       console.error(err.message);
     }
@@ -190,10 +188,10 @@ function GameCard(props) {
   const handleRejectRequest = async (userID) => {
     try {
       const groupID = group.group_id;
-      const body ={
+      const body = {
         userID,
-        groupID
-      }
+        groupID,
+      };
 
       const response = await fetch("http://localhost:5000/requests", {
         method: "DELETE",
@@ -201,28 +199,24 @@ function GameCard(props) {
         body: JSON.stringify(body),
       });
 
-      if (response)
-      {
+      if (response) {
         setToast({
           isOpen: true,
           message: "Request has been declined.",
         });
       }
-
     } catch (err) {
       console.error(err.message);
     }
-
   };
 
   const handleDeletePlayer = async (userID) => {
-
     try {
       const groupID = group.group_id;
-      const body ={
+      const body = {
         userID,
-        groupID
-      }
+        groupID,
+      };
 
       const response = await fetch("http://localhost:5000/players", {
         method: "DELETE",
@@ -230,19 +224,16 @@ function GameCard(props) {
         body: JSON.stringify(body),
       });
 
-      if (response)
-      {
+      if (response) {
         setToast({
           isOpen: true,
           message: "User has been deleted from the group.",
         });
       }
-
     } catch (err) {
       console.error(err.message);
     }
-  }
-
+  };
 
   // const handleMaxWidthChange = (event) => {
   //   setMaxWidth(
@@ -257,7 +248,7 @@ function GameCard(props) {
 
   return (
     <Card>
-      <CardContent sx={{ padding: 2, backgroundColor: "#eceff4" }}>
+      <CardContent sx={{ padding: 1, backgroundColor: "#eceff4" }}>
         <Typography
           sx={{ fontSize: 14, color: "#4c566a" }}
           color="text.secondary"
@@ -397,10 +388,14 @@ function GameCard(props) {
                 >
                   {players.map((player) => (
                     <ListItem
-                  key={player.user_id}
+                      key={player.user_id}
                       secondaryAction={
                         props.type === "gm" ? (
-                          <IconButton onClick={() => handleDeletePlayer(player.user_id)} edge="end" aria-label="delete">
+                          <IconButton
+                            onClick={() => handleDeletePlayer(player.user_id)}
+                            edge="end"
+                            aria-label="delete"
+                          >
                             <DeleteIcon sx={{ color: "#4c566a" }} />
                           </IconButton>
                         ) : null
@@ -438,7 +433,7 @@ function GameCard(props) {
                 >
                   {requests.map((request) => (
                     <ListItem
-                  key={request.user_id}
+                      key={request.user_id}
                       secondaryAction={
                         props.type === "gm" ? (
                           <>
@@ -446,14 +441,18 @@ function GameCard(props) {
                               edge="end"
                               aria-label="accept"
                               sx={{ marginRight: 0.5 }}
-                              onClick={() => handleAcceptRequest(request.user_id)}
+                              onClick={() =>
+                                handleAcceptRequest(request.user_id)
+                              }
                             >
-                              <CheckIcon  sx={{ color: "#4c566a" }} />
+                              <CheckIcon sx={{ color: "#4c566a" }} />
                             </IconButton>
 
                             <IconButton
                               edge="end"
-                              onClick={() => handleRejectRequest(request.user_id)}
+                              onClick={() =>
+                                handleRejectRequest(request.user_id)
+                              }
                               aria-label="reject"
                             >
                               <CloseIcon sx={{ color: "#4c566a" }} />

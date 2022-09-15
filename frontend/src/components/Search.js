@@ -25,6 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@material-ui/core/styles";
+import Collapse from "@mui/material/Collapse";
 import SortIcon from "@mui/icons-material/Sort";
 
 function Search() {
@@ -42,7 +43,7 @@ function Search() {
 
   const [sort, setSort] = useState({
     sortBy: "Create Time",
-    orderBy: 'DESC',
+    orderBy: "DESC",
   });
 
   const [showFilters, setShowFilters] = React.useState(false);
@@ -50,12 +51,14 @@ function Search() {
 
   const getGroups = async () => {
     try {
-      const sortBy = getSort(sort.sortBy)
+      const sortBy = getSort(sort.sortBy);
       // console.log(sortBy)
       // console.log(sort.orderBy)
 
-      // const temp_lang = filters.language === null ? '' : filters.language;  
-      const response = await fetch(`http://localhost:5000/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${sort.orderBy}&gameSystem=${filters.gameSystem}&medium=${filters.medium}&adventureLength=${filters.adventureLength}&language=${filters.language}`);
+      // const temp_lang = filters.language === null ? '' : filters.language;
+      const response = await fetch(
+        `http://localhost:5000/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${sort.orderBy}&gameSystem=${filters.gameSystem}&medium=${filters.medium}&adventureLength=${filters.adventureLength}&language=${filters.language}`
+      );
       const jsonRes = await response.json();
       setGroups(jsonRes.groups);
       setPageCount(jsonRes.pageCount);
@@ -83,7 +86,6 @@ function Search() {
   useEffect(() => {
     getGroups();
     // getInGroup();
-
   }, [page]);
 
   const handleChangeFilterGameSystem = (event) => {
@@ -118,17 +120,15 @@ function Search() {
   const styles = useStyles();
 
   const getSort = (sort) => {
-    if (sort === "Create Time") return 'group_id';
-    else if (sort === "Player Count") return 'available_player_count' 
-    else if (sort === "Experience Level") return 'player_experience_level'
-    else return null; 
-  }
+    if (sort === "Create Time") return "group_id";
+    else if (sort === "Player Count") return "available_player_count";
+    else if (sort === "Experience Level") return "player_experience_level";
+    else return null;
+  };
 
   const handleSearch = () => {
-
     getGroups();
-
-  }
+  };
 
   const languages = [
     "Abkhaz",
@@ -435,6 +435,7 @@ function Search() {
           sx={{
             fontWeight: "bold",
             color: "#d8dee9",
+            width: 100,
             backgroundColor: "#4c566a",
             marginTop: 5,
             marginRight: 1,
@@ -446,27 +447,14 @@ function Search() {
         >
           FILTER
         </Button>
+
         <Button
           variant="contained"
           color="grey"
           sx={{
             fontWeight: "bold",
             color: "#d8dee9",
-            backgroundColor: "#4c566a",
-            marginTop: 5,
-            marginX: 1,
-          }}
-          endIcon={<SearchIcon />}
-          onClick={handleSearch}
-        >
-          SEARCH
-        </Button>
-        <Button
-          variant="contained"
-          color="grey"
-          sx={{
-            fontWeight: "bold",
-            color: "#d8dee9",
+            width: 100,
             backgroundColor: "#4c566a",
             marginTop: 5,
             marginLeft: 1,
@@ -480,7 +468,26 @@ function Search() {
         </Button>
       </div>
 
-      {showFilters ? (
+      <div>
+        <Button
+          variant="contained"
+          color="grey"
+          sx={{
+            width: 120,
+            fontWeight: "bold",
+            color: "#d8dee9",
+            backgroundColor: "#4c566a",
+            marginTop: 3,
+            marginX: 1,
+          }}
+          endIcon={<SearchIcon />}
+          onClick={handleSearch}
+        >
+          SEARCH
+        </Button>
+      </div>
+
+      <Collapse in={showFilters}>
         <div>
           <FormControl sx={{ marginX: 1, marginTop: 5 }}>
             <InputLabel>Game System</InputLabel>
@@ -547,7 +554,7 @@ function Search() {
               id="language-select"
               options={languages}
               variant="filled"
-              defaultValue=''
+              defaultValue=""
               value={filters.language}
               sx={{ width: 170 }}
               renderInput={(params) => (
@@ -558,14 +565,14 @@ function Search() {
                 />
               )}
               onChange={(event, newValue) => {
-                setFilters({ ...filters, language: newValue ? newValue : '' });
+                setFilters({ ...filters, language: newValue ? newValue : "" });
               }}
             />
           </FormControl>
         </div>
-      ) : null}
+      </Collapse>
 
-      {showSort ? (
+      <Collapse in={showSort}>
         <div>
           <FormControl sx={{ marginX: 2, marginTop: 5 }}>
             <InputLabel>Sort By</InputLabel>
@@ -593,25 +600,28 @@ function Search() {
             value={sort.orderBy}
             // selected={selected}
             onClick={() => {
-              setSort({ ...sort, orderBy: sort.orderBy === 'DESC' ? 'ASC' : 'DESC' });
+              setSort({
+                ...sort,
+                orderBy: sort.orderBy === "DESC" ? "ASC" : "DESC",
+              });
               // console.log(sort.orderBy);
             }}
           >
-            {sort.orderBy === 'DESC' ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+            {sort.orderBy === "DESC" ? (
+              <ArrowDownwardIcon />
+            ) : (
+              <ArrowUpwardIcon />
+            )}
           </ToggleButton>
         </div>
-      ) : null}
+      </Collapse>
 
       <Grid container sx={{ my: 4, alignItems: "stretch" }} spacing={4}>
         {groups.map((group) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <GameCard
-              group={group}
-              page="search"
-            ></GameCard>
+            <GameCard group={group} page="search"></GameCard>
           </Grid>
         ))}
-
       </Grid>
 
       <div className={styles.root}>

@@ -78,13 +78,13 @@ function Manage(props) {
 
       <Tabs value={tab} onChange={handleChange} centered>
         <Tooltip title="Groups that you created">
-          <Tab label="GM Groups" />
+          <Tab label="Creator" />
         </Tooltip>
         <Tooltip title="Groups in which your a player">
-          <Tab label="Player Groups" />
+          <Tab label="Player" />
         </Tooltip>
         <Tooltip title="Groups that you sent a request to">
-          <Tab label="Requested Groups" />
+          <Tab label="Requested" />
         </Tooltip>
       </Tabs>
 
@@ -93,11 +93,11 @@ function Manage(props) {
       {tab === 0 &&
         (gmGroups.length === 0 ? (
           <>
-            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+            <Typography sx={{ mb: 3, color: "#4c566a" }}>
               You have no groups that you created.
             </Typography>
 
-            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+            <Typography sx={{ mb: 3, color: "#4c566a" }}>
               Click the button below and start creating a group.
             </Typography>
 
@@ -134,11 +134,11 @@ function Manage(props) {
       {tab === 1 &&
         (playerGroups.length === 0 ? (
           <>
-            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+            <Typography sx={{ mb: 3, color: "#4c566a" }}>
               You have no groups in which you are a player.
             </Typography>
 
-            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+            <Typography sx={{ mb: 3, color: "#4c566a" }}>
               Click the button below and start searching for games.
             </Typography>
 
@@ -175,11 +175,11 @@ function Manage(props) {
       {tab === 2 &&
         (requestGroups.length === 0 ? (
           <>
-            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+            <Typography sx={{ mb: 3, color: "#4c566a" }}>
               You have no requested groups.
             </Typography>
 
-            <Typography sx={{ mb: 3, color: "#2e3440" }}>
+            <Typography sx={{ mb: 3, color: "#4c566a" }}>
               Click the button below and start searching for games.
             </Typography>
 

@@ -126,21 +126,23 @@ function NavBar(props) {
             <ListItemText primary={"search"} />
           </ListItem>
         </Link>
-        <Link
-          to="/manage"
-          style={{
-            fontWeight: "bold",
-            color: "#2e3440",
-            textDecoration: "none",
-          }}
-        >
-          <ListItem button key={"manage"}>
-            <ListItemIcon>
-              <ManageIcon sx={{ color: "#4c566a" }} />
-            </ListItemIcon>
-            <ListItemText primary={"manage"} />
-          </ListItem>
-        </Link>
+        {props.isAuthenticated && (
+          <Link
+            to="/manage"
+            style={{
+              fontWeight: "bold",
+              color: "#2e3440",
+              textDecoration: "none",
+            }}
+          >
+            <ListItem button key={"manage"}>
+              <ListItemIcon>
+                <ManageIcon sx={{ color: "#4c566a" }} />
+              </ListItemIcon>
+              <ListItemText primary={"manage"} />
+            </ListItem>
+          </Link>
+        )}
 
         {!props.isAuthenticated ? (
           <ListItem button key={"login"} onClick={handleClickOpenLogin}>
@@ -354,7 +356,9 @@ function NavBar(props) {
             }}
             align="left"
           >
-            questboard
+            <Link className="text-link" to="/">
+              questboard
+            </Link>
           </Typography>
 
           <Stack
@@ -389,15 +393,17 @@ function NavBar(props) {
                 search
               </Button>
             </Link>
-            <Link className="text-link" to="/manage">
-              <Button
-                variant="text"
-                color="primary"
-                sx={{ textTransform: "lowercase", color: "#d8dee9" }}
-              >
-                manage
-              </Button>
-            </Link>
+            {props.isAuthenticated && (
+              <Link className="text-link" to="/manage">
+                <Button
+                  variant="text"
+                  color="primary"
+                  sx={{ textTransform: "lowercase", color: "#d8dee9" }}
+                >
+                  manage
+                </Button>
+              </Link>
+            )}
 
             {!props.isAuthenticated ? (
               <Button

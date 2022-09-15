@@ -82,9 +82,6 @@ app.post("/groups", async (req, res) => {
     );
 
     res.json(newGroup.rows[0]);
-
-
-
   } catch (err) {
     console.error(err.message);
   }
@@ -99,14 +96,20 @@ app.get("/groups?", async (req, res) => {
     const sortBy = req.query.sortBy;
     const orderBy = req.query.orderBy;
 
-    console.log(req.query.language)
+    console.log(req.query.language);
 
     // const language_value = req.query.language === null ? '' : req.query.language
 
-    const gameSystem = req.query.gameSystem ? `'${req.query.gameSystem}'` : 'game_system' 
-    const medium = req.query.medium ? `'${req.query.medium}'` : 'medium' 
-    const adventureLength = req.query.adventureLength ? `'${req.query.adventureLength}'` : 'adventure_length'
-    const language = req.query.language ? `'${req.query.language}'` : 'game_language' 
+    const gameSystem = req.query.gameSystem
+      ? `'${req.query.gameSystem}'`
+      : "game_system";
+    const medium = req.query.medium ? `'${req.query.medium}'` : "medium";
+    const adventureLength = req.query.adventureLength
+      ? `'${req.query.adventureLength}'`
+      : "adventure_length";
+    const language = req.query.language
+      ? `'${req.query.language}'`
+      : "game_language";
 
     // console.log(sortBy);
     // console.log(orderBy);
@@ -120,12 +123,12 @@ app.get("/groups?", async (req, res) => {
 
     const allGroups = await pool.query(query);
 
-    const pageCount = Math.floor((allGroups.rows.length - 1)/ limit) + 1;    
-    const response = {}
+    const pageCount = Math.floor((allGroups.rows.length - 1) / limit) + 1;
+    const response = {};
 
     // console.log(allGroups.rows)
-     response.groups = allGroups.rows.slice(startIndex, endIndex);
-     response.pageCount = pageCount;
+    response.groups = allGroups.rows.slice(startIndex, endIndex);
+    response.pageCount = pageCount;
     res.json(response);
   } catch (err) {
     console.error(err.message);
@@ -134,50 +137,67 @@ app.get("/groups?", async (req, res) => {
 
 // get all groups of a user
 app.get("/groups/:user_id", async (req, res) => {
-    try {
-        const {user_id} = req.params;
-        const response = {}
+  try {
+    const { user_id } = req.params;
+    const response = {};
 
-        const gmGroups = await pool.query("SELECT * FROM groups WHERE creator_id = $1", [user_id]);
-        response.gm = gmGroups.rows;
+    const gmGroups = await pool.query(
+      "SELECT * FROM groups WHERE creator_id = $1",
+      [user_id]
+    );
+    response.gm = gmGroups.rows;
 
-        const playerGroups = await pool.query("SELECT * FROM players INNER JOIN groups ON players.group_id = groups.group_id WHERE user_id = $1", [user_id]);
-        response.player = playerGroups.rows;
+    const playerGroups = await pool.query(
+      "SELECT * FROM players INNER JOIN groups ON players.group_id = groups.group_id WHERE user_id = $1",
+      [user_id]
+    );
+    response.player = playerGroups.rows;
 
-        const requestedGroups = await pool.query("SELECT * FROM requests INNER JOIN groups ON requests.group_id = groups.group_id WHERE user_id = $1", [user_id]);
-        response.request = requestedGroups.rows;
+    const requestedGroups = await pool.query(
+      "SELECT * FROM requests INNER JOIN groups ON requests.group_id = groups.group_id WHERE user_id = $1",
+      [user_id]
+    );
+    response.request = requestedGroups.rows;
 
-        res.json(response);
-
-    } catch (err) {
-        console.error(err.message)
-    }
-
+    res.json(response);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
 // get group_ids of a user
 app.get("/group/:user_id", async (req, res) => {
-    try {
-        const {user_id} = req.params;
-        // const response = []
+  try {
+    const { user_id } = req.params;
+    // const response = []
 
-        const gmGroups = await pool.query("SELECT group_id FROM groups WHERE creator_id = $1", [user_id]);
-        // response.concat(gmGroups.rows);
+    const gmGroups = await pool.query(
+      "SELECT group_id FROM groups WHERE creator_id = $1",
+      [user_id]
+    );
+    // response.concat(gmGroups.rows);
 
-        const playerGroups = await pool.query("SELECT groups.group_id FROM players INNER JOIN groups ON players.group_id = groups.group_id WHERE user_id = $1", [user_id]);
-        // response.concat(playerGroups.rows);
+    const playerGroups = await pool.query(
+      "SELECT groups.group_id FROM players INNER JOIN groups ON players.group_id = groups.group_id WHERE user_id = $1",
+      [user_id]
+    );
+    // response.concat(playerGroups.rows);
 
-        const requestedGroups = await pool.query("SELECT groups.group_id FROM requests INNER JOIN groups ON requests.group_id = groups.group_id WHERE user_id = $1", [user_id]);
-        // response.concat(requestedGroups.rows);
+    const requestedGroups = await pool.query(
+      "SELECT groups.group_id FROM requests INNER JOIN groups ON requests.group_id = groups.group_id WHERE user_id = $1",
+      [user_id]
+    );
+    // response.concat(requestedGroups.rows);
 
-        const response = gmGroups.rows.concat(playerGroups.rows, requestedGroups.rows); 
+    const response = gmGroups.rows.concat(
+      playerGroups.rows,
+      requestedGroups.rows
+    );
 
-        res.json(response);
-
-    } catch (err) {
-        console.error(err.message)
-    }
-
+    res.json(response);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
 // app.get("/groups/:id", async (req, res) => {
@@ -205,7 +225,8 @@ app.post("/players", async (req, res) => {
     );
 
     const updatePlayerNum = await pool.query(
-      "UPDATE groups SET current_player_count = current_player_count + 1 WHERE group_id = $1", [groupID]
+      "UPDATE groups SET current_player_count = current_player_count + 1 WHERE group_id = $1",
+      [groupID]
     );
 
     const requests = await pool.query(
@@ -238,19 +259,18 @@ app.get("/players/:id", async (req, res) => {
 // get creator of a group by id
 
 app.get("/creator/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-  
-      const creator = await pool.query(
-        "SELECT users.user_id, username FROM users INNER JOIN groups on users.user_id = groups.creator_id WHERE group_id = $1",
-        [id]
-      );
-      res.json(creator.rows[0]);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
-  
+  try {
+    const { id } = req.params;
+
+    const creator = await pool.query(
+      "SELECT users.user_id, username FROM users INNER JOIN groups on users.user_id = groups.creator_id WHERE group_id = $1",
+      [id]
+    );
+    res.json(creator.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 // send a request to a group
 app.post("/requests", async (req, res) => {
@@ -279,8 +299,6 @@ app.post("/requests", async (req, res) => {
   }
 });
 
-
-
 // get all requests of a group by id
 
 app.get("/requests/:id", async (req, res) => {
@@ -288,9 +306,9 @@ app.get("/requests/:id", async (req, res) => {
     const { id } = req.params;
 
     const requests = await pool.query(
-        "SELECT users.user_id, username FROM requests INNER JOIN users on requests.user_id = users.user_id WHERE group_id = $1",
-        [id]
-      );
+      "SELECT users.user_id, username FROM requests INNER JOIN users on requests.user_id = users.user_id WHERE group_id = $1",
+      [id]
+    );
     res.json(requests.rows);
   } catch (err) {
     console.error(err.message);
@@ -324,9 +342,9 @@ app.delete("/players", async (req, res) => {
     );
 
     const updatePlayerNum = await pool.query(
-      "UPDATE groups SET current_player_count = GREATEST(current_player_count - 1, 0) WHERE group_id = $1", [groupID]
+      "UPDATE groups SET current_player_count = GREATEST(current_player_count - 1, 0) WHERE group_id = $1",
+      [groupID]
     );
-
 
     res.json("Player is deleted.");
   } catch (err) {

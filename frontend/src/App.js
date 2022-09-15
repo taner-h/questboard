@@ -4,7 +4,13 @@ import Form from "./components/Form";
 import Search from "./components/Search";
 import NavBar from "./components/NavBar";
 import Manage from "./components/Manage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NotFound from "./components/NotFound";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -67,9 +73,18 @@ function App() {
           />
           <Route
             path="/manage"
-            element={<Manage isAuthenticated={isAuthenticated} />}
+            element={
+              isAuthenticated ? (
+                <Manage isAuthenticated={isAuthenticated} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
-          {/* <Route path="/manage" render={(props) => <Manage {...props} />} /> */}
+          <Route
+            path="*"
+            element={<NotFound isAuthenticated={isAuthenticated} />}
+          />
         </Routes>
       </Router>
     </div>
