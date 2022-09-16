@@ -1,16 +1,17 @@
-import "./App.css";
-import React, { useState, useEffect } from "react";
-import Form from "./components/Form";
-import Search from "./components/Search";
-import NavBar from "./components/NavBar";
-import Manage from "./components/Manage";
-import NotFound from "./components/NotFound";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Routes,
-  Route,
   Navigate,
+  Route,
+  Routes,
 } from "react-router-dom";
+import "./App.css";
+import Form from "./components/Form";
+import Homepage from "./components/Homepage";
+import Manage from "./components/Manage";
+import NavBar from "./components/NavBar";
+import NotFound from "./components/NotFound";
+import Search from "./components/Search";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -62,7 +63,10 @@ function App() {
           handleAuthChange={handleAuthChange}
         ></NavBar>
         <Routes>
-          {/* <Route path='/' exact element={<Homepage/>}/> */}
+          <Route
+            path="/"
+            element={<Homepage isAuthenticated={isAuthenticated} />}
+          />
           <Route
             path="/create"
             element={<Form isAuthenticated={isAuthenticated} />}
