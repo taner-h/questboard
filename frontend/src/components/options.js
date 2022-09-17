@@ -361,3 +361,95 @@ export const defaultValues = {
   storyStyle: "",
   tags: [],
 };
+
+export const platforms = [
+  "Roll20",
+  "Foundry VTT",
+  "Fantasy Grounds",
+  "Tabletop Simulator",
+  "Astral",
+  "TaleSpire",
+];
+
+export const communicationMethods = [
+  "Discord",
+  "Roll20",
+  "Skype",
+  "Zoom",
+  "TeamSpeak",
+];
+
+export const hostings = ["GM Hosted", "PC Hosted", "Rotational", "Game Shops"];
+
+export const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+export const gameStyles = [
+  "RP-heavy",
+  "Old school",
+  "Tactical",
+  "Murderhobo",
+  "Min-max",
+  "Casual",
+];
+
+export const gmStyles = [
+  "Heavy Prep",
+  "Rule-oriented",
+  "Rules Light",
+  "Improvised",
+  "Heavy worldbuilding",
+  "Low Prep",
+  "Dialog Heavy",
+];
+
+export const adventureStyles = [
+  "High Magic",
+  "Low Magic",
+  "Character Driven",
+  "Sandbox",
+  "Open-World",
+  "Railroady",
+];
+
+export const gmExperinceLevels = [
+  "Beginner",
+  "Novice",
+  "Modarate",
+  "Experienced",
+  "Veteran",
+  "Proffesional",
+];
+
+export const genres = [
+  "Alternate History",
+  "Apocalyptic",
+  "Classic Fantasy",
+  "Comedy",
+  "Cyber Punk",
+  "High Fantasy",
+  "Horror",
+  "Intrigue",
+  "Mystery",
+  "Noir",
+  "Political",
+  "Post-Apocalyptic",
+  "Pulp",
+  "Sci-fi",
+  "Setting Agnostic",
+  "Space Opera",
+  "Steampunk",
+  "Superhero",
+  "Supernatural",
+  "Surreal",
+  "Urban",
+  "War",
+  "Western",
+];

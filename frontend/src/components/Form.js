@@ -32,6 +32,15 @@ import {
   defaultValues,
   tagList,
   marks,
+  platforms,
+  communicationMethods,
+  hostings,
+  days,
+  gameStyles,
+  gmStyles,
+  adventureStyles,
+  gmExperinceLevels,
+  genres,
 } from "./options";
 
 function Form(props) {
@@ -580,14 +589,9 @@ function Form(props) {
                 sx={{ minWidth: 250 }}
                 onChange={handleChange("platform")}
               >
-                <MenuItem value="Roll20">Roll20</MenuItem>
-                <MenuItem value="Foundry VTT">Foundry VTT</MenuItem>
-                <MenuItem value="Fantasy Grounds">Fantasy Grounds</MenuItem>
-                <MenuItem value="Tabletop Simulator">
-                  Tabletop Simulator
-                </MenuItem>
-                <MenuItem value="Astral">Astral</MenuItem>
-                <MenuItem value="TaleSpire">TaleSpire</MenuItem>
+                {platforms.map((platform) => (
+                  <MenuItem value={platform}>{platform}</MenuItem>
+                ))}
               </Select>
             </FormControl>
 
@@ -631,11 +635,11 @@ function Form(props) {
                 sx={{ minWidth: 250 }}
                 onChange={handleChange("communicationMethod")}
               >
-                <MenuItem value="Discord">Discord</MenuItem>
-                <MenuItem value="Roll20">Roll20</MenuItem>
-                <MenuItem value="Skype">Skype</MenuItem>
-                <MenuItem value="Zoom">Zoom</MenuItem>
-                <MenuItem value="TeamSpeak">TeamSpeak</MenuItem>
+                {communicationMethods.map((communicationMethod) => (
+                  <MenuItem value={communicationMethod}>
+                    {communicationMethod}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
 
@@ -658,10 +662,9 @@ function Form(props) {
                 sx={{ minWidth: 250 }}
                 onChange={handleChange("hosting")}
               >
-                <MenuItem value="GM Hosted">GM Hosted</MenuItem>
-                <MenuItem value="PC Hosted">PC Hosted</MenuItem>
-                <MenuItem value="Rotational">Rotational</MenuItem>
-                <MenuItem value="Game Shops">Game Shops</MenuItem>
+                {hostings.map((hosting) => (
+                  <MenuItem value={hosting}>{hosting}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
@@ -757,37 +760,19 @@ function Form(props) {
                 label="Session Day"
                 onChange={handleChange("sessionDay")}
               >
-                <MenuItem value="Monday">Monday</MenuItem>
-                <MenuItem value="Tuesday">Tuesday</MenuItem>
-                <MenuItem value="Wednesday">Wednesday</MenuItem>
-                <MenuItem value="Thursday">Thursday</MenuItem>
-                <MenuItem value="Friday">Friday</MenuItem>
-                <MenuItem value="Saturday">Saturday</MenuItem>
-                <MenuItem value="Sunday">Sunday</MenuItem>
+                {days.map((day) => (
+                  <MenuItem value={day}>{day}</MenuItem>
+                ))}
               </Select>
             </FormControl>
 
             <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
               <LocalizationProvider dateAdapter={DateAdapter}>
-                {/* <DesktopTimePicker
-              label="Session Time"
-              value={values.sessionHour}
-              defaultValue=""
-              sx={{ color: "blue" }}
-              //   onChange={handleChangeSessionHour}
-              onChange={(newValue) => {
-                setValues({ ...values, sessionHour: newValue.getHours() });
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            /> */}
-
-                {/* <InputLabel>Session Hour</InputLabel> */}
                 <TimePicker
                   label="Session Hour"
                   inputFormat="HH:mm"
                   value={temptime}
                   type="time"
-                  // InputProps={{step: 300}}
                   onChange={handleChangeTempTime}
                   minutesStep={5}
                   renderInput={(params) => <TextField {...params} />}
@@ -826,12 +811,9 @@ function Form(props) {
                 onChange={handleChange("gameStyle")}
                 label="Player Game Style"
               >
-                <MenuItem value="RP-heavy">RP-heavy</MenuItem>
-                <MenuItem value="Old school">Old school</MenuItem>
-                <MenuItem value="Tactical">Tactical</MenuItem>
-                <MenuItem value="Murderhobo">Murderhobo</MenuItem>
-                <MenuItem value="Min-max">Min-max</MenuItem>
-                <MenuItem value="Casual">Casual</MenuItem>
+                {gameStyles.map((gameStyle) => (
+                  <MenuItem value={gameStyle}>{gameStyle}</MenuItem>
+                ))}
               </Select>
             </FormControl>
             <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
@@ -843,15 +825,9 @@ function Form(props) {
                 value={values.gmStyle}
                 onChange={handleChange("gmStyle")}
               >
-                <MenuItem value="Heavy Prep">Heavy Prep</MenuItem>
-                <MenuItem value="Rule-oriented">Rule-oriented</MenuItem>
-                <MenuItem value="Rules Light">Rules Light</MenuItem>
-                <MenuItem value="Improvised">Improvised</MenuItem>
-                <MenuItem value="Heavy worldbuilding">
-                  Heavy worldbuilding
-                </MenuItem>
-                <MenuItem value="Low Prep">Low Prep</MenuItem>
-                <MenuItem value="Dialog Heavy">Dialog Heavy</MenuItem>
+                {gmStyles.map((gmStyle) => (
+                  <MenuItem value={gmStyle}>{gmStyle}</MenuItem>
+                ))}
               </Select>
             </FormControl>
             <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
@@ -863,12 +839,9 @@ function Form(props) {
                 value={values.adventureStyle}
                 onChange={handleChange("adventureStyle")}
               >
-                <MenuItem value="High Magic">High Magic</MenuItem>
-                <MenuItem value="Low Magic">Low Magic</MenuItem>
-                <MenuItem value="Character Driven">Character Driven</MenuItem>
-                <MenuItem value="Sandbox">Sandbox</MenuItem>
-                <MenuItem value="Open-World">Open-World</MenuItem>
-                <MenuItem value="Railroady">Railroady</MenuItem>
+                {adventureStyles.map((adventureStyle) => (
+                  <MenuItem value={adventureStyle}>{adventureStyle}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
@@ -882,12 +855,11 @@ function Form(props) {
                 value={values.gmExperinceLevel}
                 onChange={handleChange("gmExperinceLevel")}
               >
-                <MenuItem value="Beginner">Beginner</MenuItem>
-                <MenuItem value="Novice">Novice</MenuItem>
-                <MenuItem value="Modarate">Modarate</MenuItem>
-                <MenuItem value="Experienced">Experienced</MenuItem>
-                <MenuItem value="Veteran">Veteran</MenuItem>
-                <MenuItem value="Proffesional">Proffesional</MenuItem>
+                {gmExperinceLevels.map((gmExperinceLevel) => (
+                  <MenuItem value={gmExperinceLevel}>
+                    {gmExperinceLevel}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <FormControl sx={{ minWidth: 250, marginX: 2, marginY: 2 }}>
@@ -899,29 +871,9 @@ function Form(props) {
                 value={values.storyGenre}
                 onChange={handleChange("storyGenre")}
               >
-                <MenuItem value="Alternate History">Alternate History</MenuItem>
-                <MenuItem value="Apocalyptic">Apocalyptic</MenuItem>
-                <MenuItem value="Classic Fantasy">Classic Fantasy</MenuItem>
-                <MenuItem value="Comedy">Comedy</MenuItem>
-                <MenuItem value="Cyber Punk">Cyber Punk</MenuItem>
-                <MenuItem value="High Fantasy">High Fantasy</MenuItem>
-                <MenuItem value="Horror">Horror</MenuItem>
-                <MenuItem value="Intrigue">Intrigue</MenuItem>
-                <MenuItem value="Mystery">Mystery</MenuItem>
-                <MenuItem value="Noir">Noir</MenuItem>
-                <MenuItem value="Political">Political</MenuItem>
-                <MenuItem value="Post-Apocalyptic">Post-Apocalyptic</MenuItem>
-                <MenuItem value="Pulp">Pulp</MenuItem>
-                <MenuItem value="Sci-fi">Sci-fi</MenuItem>
-                <MenuItem value="Setting Agnostic">Setting Agnostic</MenuItem>
-                <MenuItem value="Space Opera">Space Opera</MenuItem>
-                <MenuItem value="Steampunk">Steampunk</MenuItem>
-                <MenuItem value="Superhero">Superhero</MenuItem>
-                <MenuItem value="Supernatural">Supernatural</MenuItem>
-                <MenuItem value="Surreal">Surreal</MenuItem>
-                <MenuItem value="Urban">Urban</MenuItem>
-                <MenuItem value="War">War</MenuItem>
-                <MenuItem value="Western">Western</MenuItem>
+                {genres.map((genre) => (
+                  <MenuItem value={genre}>{genre}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>
