@@ -5,15 +5,19 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import logo from "../img/dice-dark.svg";
-import { Link as MuiLink } from "@mui/material";
+import dnd from "../img/dnd.png";
+import cthulhu from "../img/cthulhu.png";
+import fate from "../img/fate.png";
+import vampire from "../img/vampire.png";
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="#4C566A" align="center" {...props}>
+    <Typography variant="body2" color="#d8dee9" align="center" {...props}>
       {"Copyright © "}
-      <Link style={{ textDecoration: "none", color: "#4C566A" }} to="/">
+      <Link style={{ textDecoration: "none", color: "#d8dee9" }} to="/">
         questboard
       </Link>{" "}
       {new Date().getFullYear()}
@@ -116,14 +120,45 @@ export default function Homepage() {
         <img src={logo} alt="logo" height={200} style={{ marginTop: 50 }} />
         <Divider sx={{ mt: 6 }} />
 
-        {/* <Typography
-          sx={{ mt: 5, flexGrow: 1, color: "#434C5E", fontWeight: "600" }}
-          variant="h5"
-        >
+        <Typography sx={{ mt: 5, flexGrow: 1, color: "#434C5E" }} variant="h5">
           Supported game systems:
-        </Typography> */}
-        <Copyright sx={{ mt: 4, mb: 1 }} />
+        </Typography>
+
+        <Grid
+          container
+          justifyContent="center"
+          // alignItems="center"
+          maxWidth="md"
+          sx={{ my: 3, alignItems: "stretch" }}
+          spacing={4}
+        >
+          <Grid sx={{ margin: "auto" }} item xs={12} sm={6} md={3}>
+            <img src={dnd} alt="D&D Logo" width={180}></img>
+          </Grid>
+          <Grid sx={{ margin: "auto" }} item xs={12} sm={6} md={3}>
+            <img src={vampire} alt="D&D Logo" width={180}></img>
+          </Grid>
+          <Grid sx={{ margin: "auto" }} item xs={12} sm={6} md={3}>
+            <img src={fate} alt="D&D Logo" width={180}></img>
+          </Grid>
+          <Grid sx={{ margin: "auto" }} item xs={12} sm={6} md={3}>
+            <img src={cthulhu} alt="D&D Logo" width={180}></img>
+          </Grid>
+        </Grid>
+
+        <Typography sx={{ mt: 5, flexGrow: 1, color: "#434C5E" }} variant="h5">
+          and many more...
+        </Typography>
       </Container>
+      <Box
+        sx={{
+          backgroundColor: "#2E3440",
+          mt: 5,
+          py: 3,
+        }}
+      >
+        <Copyright />
+      </Box>
     </>
   );
 }
