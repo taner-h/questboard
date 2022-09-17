@@ -23,24 +23,6 @@ function Manage(props) {
     setTab(newValue);
   };
 
-  // async function getName()
-  // {
-  //   try {
-  //     const response = await fetch("http://localhost:5000/manage/",{
-  //     method: "GET",
-  //     headers: {token: localStorage.token}
-  //   });
-
-  //   const parseRes = await response.json();
-
-  //   setName(parseRes.username);
-  //   // console.log(parseRes.username);
-
-  //   } catch (err) {
-  //     console.error(err.message);
-  //   }
-  // }
-
   const getGroups = async () => {
     try {
       const userID = localStorage.getItem("user");

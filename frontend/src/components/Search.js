@@ -16,9 +16,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import MenuItem from "@mui/material/MenuItem";
 // import List from "@mui/material/List";
 import Select from "@mui/material/Select";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
@@ -27,6 +24,7 @@ import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@material-ui/core/styles";
 import Collapse from "@mui/material/Collapse";
 import SortIcon from "@mui/icons-material/Sort";
+import { languages, tagList } from "./options";
 
 function Search() {
   const [groups, setGroups] = useState([]);
@@ -68,39 +66,16 @@ function Search() {
     }
   };
 
-  // const getInGroup = async () => {
-  //   try {
-  //     const userid = localStorage.getItem("user");
-  //     const response = await fetch(`http://localhost:5000/group/${userid}`);
-  //     const jsonRes = await response.json();
-
-  //     // console.log(jsonRes);
-  //     await setInGroup(jsonRes);
-  //     // console.log(inGroup);
-
-  //   } catch (err) {
-  //     console.error(err.message);
-  //   }
-  // }
-
   useEffect(() => {
     getGroups();
     // getInGroup();
   }, [page]);
 
-  const handleChangeFilterGameSystem = (event) => {
-    setFilters({ ...filters, gameSystem: event.target.value });
-  };
-  const handleChangeFilterMedium = (event) => {
-    setFilters({ ...filters, medium: event.target.value });
-  };
-  const handleChangeFilterAdventureLength = (event) => {
-    setFilters({ ...filters, adventureLength: event.target.value });
+  const handleChange = (prop) => (event) => {
+    setFilters({ ...filters, [prop]: event.target.value });
   };
 
   const handlePageChange = (event, value) => {
-    // console.log(value);
-
     setPage(value);
     getGroups();
   };
@@ -129,239 +104,6 @@ function Search() {
   const handleSearch = () => {
     getGroups();
   };
-
-  const languages = [
-    "Abkhaz",
-    "Afar",
-    "Afrikaans",
-    "Akan",
-    "Albanian",
-    "Amharic",
-    "Arabic",
-    "Aragonese",
-    "Armenian",
-    "Assamese",
-    "Avaric",
-    "Avestan",
-    "Aymara",
-    "Azerbaijani",
-    "Bambara",
-    "Bashkir",
-    "Basque",
-    "Belarusian",
-    "Bengali",
-    "Bihari",
-    "Bislama",
-    "Bosnian",
-    "Breton",
-    "Bulgarian",
-    "Burmese",
-    "Catalan",
-    "Chamorro",
-    "Chechen",
-    "Chichewa",
-    "Chinese",
-    "Chuvash",
-    "Cornish",
-    "Corsican",
-    "Cree",
-    "Croatian",
-    "Czech",
-    "Danish",
-    "Divehi",
-    "Dutch",
-    "English",
-    "Esperanto",
-    "Estonian",
-    "Ewe",
-    "Faroese",
-    "Fijian",
-    "Finnish",
-    "French",
-    "Fula",
-    "Galician",
-    "Georgian",
-    "German",
-    "Greek",
-    "Guaraní",
-    "Gujarati",
-    "Haitia",
-    "Hausa",
-    "Hebrew",
-    "Herero",
-    "Hindi",
-    "Hiri Motu",
-    "Hungarian",
-    "Interlingua",
-    "Indonesian",
-    "Interlingue",
-    "Irish",
-    "Igbo",
-    "Inupiaq",
-    "Ido",
-    "Icelandic",
-    "Italian",
-    "Inuktitut",
-    "Japanese",
-    "Javanese",
-    "Kalaallisut",
-    "Kannada",
-    "Kanuri",
-    "Kashmiri",
-    "Kazakh",
-    "Khmer",
-    "Kikuyu",
-    "Kinyarwanda",
-    "Kirghiz",
-    "Komi",
-    "Kongo",
-    "Korean",
-    "Kurdish",
-    "Kwanyama",
-    "Latin",
-    "Luxembourgish",
-    "Luganda",
-    "Limburgish",
-    "Lingala",
-    "Lao",
-    "Lithuanian",
-    "Luba-Katanga",
-    "Latvian",
-    "Manx",
-    "Macedonian",
-    "Malagasy",
-    "Malay",
-    "Malayalam",
-    "Maltese",
-    "Māori",
-    "Marathi",
-    "Marshallese",
-    "Mongolian",
-    "Nauru",
-    "Navajo",
-    "North Ndebele",
-    "Nepali",
-    "Ndonga",
-    "Norwegian",
-    "Nuosu",
-    "South Ndebele",
-    "Occitan",
-    "Ojibwe",
-    "Oromo",
-    "Oriya",
-    "Ossetian",
-    "Panjabi",
-    "Pāli",
-    "Persian",
-    "Polish",
-    "Pashto",
-    "Portuguese",
-    "Quechua",
-    "Romansh",
-    "Kirundi",
-    "Romanian",
-    "Russian",
-    "Sanskrit",
-    "Sardinian",
-    "Sindhi",
-    "Northern Sami",
-    "Samoan",
-    "Sango",
-    "Serbian",
-    "Scottish Gaelic",
-    "Shona",
-    "Sinhala",
-    "Slovak",
-    "Slovene",
-    "Somali",
-    "Southern Sotho",
-    "Spanish",
-    "Sundanese",
-    "Swahili",
-    "Swati",
-    "Swedish",
-    "Tamil",
-    "Telugu",
-    "Tajik",
-    "Thai",
-    "Tigrinya",
-    "Tibetan",
-    "Turkmen",
-    "Tagalog",
-    "Tswana",
-    "Tonga",
-    "Turkish",
-    "Tsonga",
-    "Tatar",
-    "Twi",
-    "Tahitian",
-    "Uighur",
-    "Ukrainian",
-    "Urdu",
-    "Uzbek",
-    "Venda",
-    "Vietnamese",
-    "Volapük",
-    "Walloon",
-    "Welsh",
-    "Wolof",
-    "Western Frisian",
-    "Xhosa",
-    "Yiddish",
-    "Yoruba",
-    "Zhuang",
-  ];
-
-  const tagList = [
-    "Absurd",
-    "Adults Only",
-    "Casual",
-    "Character Driven",
-    "Combat-heavy",
-    "Comedy",
-    "Dark",
-    "Dragonlance",
-    "Dungeon Crawler",
-    "Eberron",
-    "Epic Fantasy",
-    "Forgotten Realms",
-    "Fun Prioritized",
-    "Gothic",
-    "Grim",
-    "Hardcore Play",
-    "Heavy Prep",
-    "High Magic",
-    "High Tier",
-    "Homebrew",
-    "Horror",
-    "Improvisation",
-    "Kid-friendly",
-    "Low Magic",
-    "Low Tier",
-    "Maraton Sessions",
-    "Mediaval",
-    "Mid Tier",
-    "Multiple GM",
-    "Murderhobo",
-    "New GM",
-    "No Prep",
-    "Old School",
-    "Open-world",
-    "Prewritten",
-    "Railroad",
-    "Realistic",
-    "RP-heavy",
-    "Rule of Fun",
-    "Rules-heavy",
-    "Sandbox",
-    "Serious",
-    "Solo",
-    "Strategic",
-    "Urban",
-    "Vampire",
-    "Werewolf",
-    "Worldbuilding",
-  ];
 
   return (
     <Box
@@ -404,28 +146,10 @@ function Search() {
             // value={values.tags}
             // onChange={handleChangeTags}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search tags"
-                //   placeholder="Choose one or more tags"
-              />
+              <TextField {...params} label="Search tags" />
             )}
           />
         </FormControl>
-        {/* <TextField
-          id="search-bar"
-          label="Search tags"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton>
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          // defaultValue="Search for a game."
-        /> */}
       </div>
 
       <div>
@@ -498,7 +222,7 @@ function Search() {
               // variant="filled"
               label="Game System"
               sx={{ width: 170 }}
-              onChange={handleChangeFilterGameSystem}
+              onChange={handleChange("gameSystem")}
             >
               <MenuItem value="">Any</MenuItem>
               <MenuItem value="Dungeons & Dragons">Dungeons & Dragons</MenuItem>
@@ -521,7 +245,7 @@ function Search() {
               // variant="filled"
               label="Medium"
               sx={{ width: 170 }}
-              onChange={handleChangeFilterMedium}
+              onChange={handleChange("medium")}
             >
               <MenuItem value="">Any</MenuItem>
               <MenuItem value="Online">Online</MenuItem>
@@ -538,7 +262,7 @@ function Search() {
               // variant="filled"
               label="Adventure Length"
               sx={{ width: 170 }}
-              onChange={handleChangeFilterAdventureLength}
+              onChange={handleChange("adventureLength")}
             >
               <MenuItem value="">Any</MenuItem>
               <MenuItem value="One-Shot">One-Shot</MenuItem>

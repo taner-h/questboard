@@ -25,45 +25,24 @@ import Stepper from "@mui/material/Stepper";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import FormInfo from "./FormInfo";
+import {
+  steps,
+  options,
+  languages,
+  defaultValues,
+  tagList,
+  marks,
+} from "./options";
 
 function Form(props) {
   const [temptime, setTempTime] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [values, setValues] = useState({
-    gameSystem: "",
-    gameVersion: "",
-    adventureName: "",
-    adventureLength: "",
-    language: "",
-    totalPlayerCount: null,
-    currentPlayerCount: null,
-    playerExpLevel: "",
-    medium: "",
-    platform: "",
-    communicationMethod: "",
-    location: "",
-    hosting: "",
-    sessionFrequency: null,
-    sessionLength: null,
-    gmTimeZone: null,
-    sessionDay: "",
-    sessionHour: null,
-    gameStyle: "",
-    gmStyle: "",
-    adventureStyle: "",
-    gmExperinceLevel: "",
-    storyGenre: "",
-    campaignPrimer: "",
-    storyStyle: "",
-    tags: [],
-  });
-
+  const [values, setValues] = useState(defaultValues);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [toast, setToast] = React.useState({
     isOpen: false,
     message: "",
   });
-
-  const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -73,398 +52,28 @@ function Form(props) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  const closeToast = (event) => {
+  const closeToast = () => {
     setToast({ ...toast, isOpen: false });
   };
 
-  const steps = [
-    "The Basics",
-    "Player Info",
-    "Location Details",
-    "Session Details",
-    "Game Style",
-    "Other",
-  ];
-
-  const options = [
-    // {
-    //   system: "",
-    //   versions: [""],
-    // },
-    {
-      system: "Dungeons & Dragons",
-      versions: [
-        "Original Edition",
-        "AD&D 1st Edition",
-        "AD&D 2nd Edition",
-        "3rd Edition",
-        "Version 3.5",
-        "4th Edition",
-        "5th Edition",
-      ],
-    },
-    {
-      system: "Pathfinder",
-      versions: ["First Edition", "Second Edition"],
-    },
-    {
-      system: "Vampire: The Masquerade",
-      versions: [
-        "Original Edition",
-        "Second Edition",
-        "Revised Edition",
-        "20th Anniversary Edition",
-        "5th Edition",
-      ],
-    },
-    {
-      system: "Starfinder",
-      versions: ["First Edition"],
-    },
-    {
-      system: "Call of Cthulhu",
-      versions: [
-        "1st edition",
-        "2nd edition",
-        "3rd edition",
-        "4th edition",
-        "5th edition",
-        "Edition 5.5",
-        "20th Anniversary Edition",
-        "6th edition",
-        "7th edition",
-      ],
-    },
-    {
-      system: "Shadowrun",
-      versions: [
-        "1st edition",
-        "2nd edition",
-        "3rd edition",
-        "4th edition",
-        "5th edition",
-        "6th edition",
-      ],
-    },
-    {
-      system: "FATE",
-      versions: [
-        "Original Edition",
-        "2nd Edition",
-        "3rd Edition",
-        "FATE Core",
-        "FATE Accelerated Edition",
-      ],
-    },
-  ];
-
-  const languages = [
-    "Abkhaz",
-    "Afar",
-    "Afrikaans",
-    "Akan",
-    "Albanian",
-    "Amharic",
-    "Arabic",
-    "Aragonese",
-    "Armenian",
-    "Assamese",
-    "Avaric",
-    "Avestan",
-    "Aymara",
-    "Azerbaijani",
-    "Bambara",
-    "Bashkir",
-    "Basque",
-    "Belarusian",
-    "Bengali",
-    "Bihari",
-    "Bislama",
-    "Bosnian",
-    "Breton",
-    "Bulgarian",
-    "Burmese",
-    "Catalan",
-    "Chamorro",
-    "Chechen",
-    "Chichewa",
-    "Chinese",
-    "Chuvash",
-    "Cornish",
-    "Corsican",
-    "Cree",
-    "Croatian",
-    "Czech",
-    "Danish",
-    "Divehi",
-    "Dutch",
-    "English",
-    "Esperanto",
-    "Estonian",
-    "Ewe",
-    "Faroese",
-    "Fijian",
-    "Finnish",
-    "French",
-    "Fula",
-    "Galician",
-    "Georgian",
-    "German",
-    "Greek",
-    "Guaraní",
-    "Gujarati",
-    "Haitia",
-    "Hausa",
-    "Hebrew",
-    "Herero",
-    "Hindi",
-    "Hiri Motu",
-    "Hungarian",
-    "Interlingua",
-    "Indonesian",
-    "Interlingue",
-    "Irish",
-    "Igbo",
-    "Inupiaq",
-    "Ido",
-    "Icelandic",
-    "Italian",
-    "Inuktitut",
-    "Japanese",
-    "Javanese",
-    "Kalaallisut",
-    "Kannada",
-    "Kanuri",
-    "Kashmiri",
-    "Kazakh",
-    "Khmer",
-    "Kikuyu",
-    "Kinyarwanda",
-    "Kirghiz",
-    "Komi",
-    "Kongo",
-    "Korean",
-    "Kurdish",
-    "Kwanyama",
-    "Latin",
-    "Luxembourgish",
-    "Luganda",
-    "Limburgish",
-    "Lingala",
-    "Lao",
-    "Lithuanian",
-    "Luba-Katanga",
-    "Latvian",
-    "Manx",
-    "Macedonian",
-    "Malagasy",
-    "Malay",
-    "Malayalam",
-    "Maltese",
-    "Māori",
-    "Marathi",
-    "Marshallese",
-    "Mongolian",
-    "Nauru",
-    "Navajo",
-    "North Ndebele",
-    "Nepali",
-    "Ndonga",
-    "Norwegian",
-    "Nuosu",
-    "South Ndebele",
-    "Occitan",
-    "Ojibwe",
-    "Oromo",
-    "Oriya",
-    "Ossetian",
-    "Panjabi",
-    "Pāli",
-    "Persian",
-    "Polish",
-    "Pashto",
-    "Portuguese",
-    "Quechua",
-    "Romansh",
-    "Kirundi",
-    "Romanian",
-    "Russian",
-    "Sanskrit",
-    "Sardinian",
-    "Sindhi",
-    "Northern Sami",
-    "Samoan",
-    "Sango",
-    "Serbian",
-    "Scottish Gaelic",
-    "Shona",
-    "Sinhala",
-    "Slovak",
-    "Slovene",
-    "Somali",
-    "Southern Sotho",
-    "Spanish",
-    "Sundanese",
-    "Swahili",
-    "Swati",
-    "Swedish",
-    "Tamil",
-    "Telugu",
-    "Tajik",
-    "Thai",
-    "Tigrinya",
-    "Tibetan",
-    "Turkmen",
-    "Tagalog",
-    "Tswana",
-    "Tonga",
-    "Turkish",
-    "Tsonga",
-    "Tatar",
-    "Twi",
-    "Tahitian",
-    "Uighur",
-    "Ukrainian",
-    "Urdu",
-    "Uzbek",
-    "Venda",
-    "Vietnamese",
-    "Volapük",
-    "Walloon",
-    "Welsh",
-    "Wolof",
-    "Western Frisian",
-    "Xhosa",
-    "Yiddish",
-    "Yoruba",
-    "Zhuang",
-  ];
-
-  const tagList = [
-    "Absurd",
-    "Adults Only",
-    "Casual",
-    "Character Driven",
-    "Combat-heavy",
-    "Comedy",
-    "Dark",
-    "Dragonlance",
-    "Dungeon Crawler",
-    "Eberron",
-    "Epic Fantasy",
-    "Forgotten Realms",
-    "Fun Prioritized",
-    "Gothic",
-    "Grim",
-    "Hardcore Play",
-    "Heavy Prep",
-    "High Magic",
-    "High Tier",
-    "Homebrew",
-    "Horror",
-    "Improvisation",
-    "Kid-friendly",
-    "Low Magic",
-    "Low Tier",
-    "Maraton Sessions",
-    "Mediaval",
-    "Mid Tier",
-    "Multiple GM",
-    "Murderhobo",
-    "New GM",
-    "No Prep",
-    "Old School",
-    "Open-world",
-    "Prewritten",
-    "Railroad",
-    "Realistic",
-    "RP-heavy",
-    "Rule of Fun",
-    "Rules-heavy",
-    "Sandbox",
-    "Serious",
-    "Solo",
-    "Strategic",
-    "Urban",
-    "Vampire",
-    "Werewolf",
-    "Worldbuilding",
-  ];
-  const marks = [
-    {
-      value: 0,
-      label: "Beginner",
-    },
-    {
-      value: 25,
-      label: "Novice",
-    },
-    {
-      value: 50,
-      label: "Moderate",
-    },
-    {
-      value: 75,
-      label: "Seasoned",
-    },
-    {
-      value: 100,
-      label: "Pro",
-    },
-  ];
-
-  //   function valuetext(value) {
-  //     return `${marks.find(i => i.value=== value).label}`;
-  //   }
-
-  function valueLabelFormat(value) {
+  const valueLabelFormat = (value) => {
     return marks.findIndex((mark) => mark.value === value) + 1;
-  }
+  };
 
-  const handleChangeTempTime = (newValue, input) => {
+  const handleChangeTempTime = (newValue) => {
     setTempTime(newValue);
-    // const hour = newValue.$d.toTimeString().substring(0,5);
-    // const minute = newValue.$d.getMinutes();
-    // const hourMinute = minute < 10 ? hour + ':0' + minute : hour + ':' + minute;
-    // console.log(hour + ':' + minute);
-    // console.log(input);
-    // console.log(hour);
-
-    // setValues({ ...values, sessionHour: hourMinute});
     if (newValue)
       setValues({
         ...values,
         sessionHour: newValue.$d.toTimeString().substring(0, 5),
       });
   };
-  const handleChangeGameSystem = (event) => {
-    setValues({ ...values, gameSystem: event.target.value });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
   };
-  const handleChangeGameVersion = (event) => {
-    setValues({ ...values, gameVersion: event.target.value });
-  };
-  const handleChangeAdventureName = (event) => {
-    setValues({ ...values, adventureName: event.target.value });
-  };
-  const handleChangeAdventureLength = (event) => {
-    setValues({ ...values, adventureLength: event.target.value });
-  };
-  const handleChangeTotalPlayerCount = (event) => {
-    setValues({ ...values, totalPlayerCount: event.target.value });
-  };
-  const handleChangeCurrentPlayerCount = (event) => {
-    setValues({ ...values, currentPlayerCount: event.target.value });
-  };
-  const handleChangePlayerExpLevel = (event) => {
-    setValues({ ...values, playerExpLevel: event.target.value });
-  };
+
   const handleChangeMedium = (event) => {
-    // console.log(values.medium);
-    // setValues({ ...values, medium: event.target.value });
     if (event.target.value === "Online") {
       setValues({
         ...values,
@@ -472,7 +81,6 @@ function Form(props) {
         location: null,
         hosting: null,
       });
-      // setValues({ ...values, hosting: "" });
     }
     if (event.target.value === "IRL") {
       setValues({
@@ -482,64 +90,9 @@ function Form(props) {
         medium: event.target.value,
       });
     }
-    // setValues({ ...values, medium: event.target.value });
     if (event.target.value === "Hybrid") {
       setValues({ ...values, medium: event.target.value });
     }
-    // console.log(values.medium);
-  };
-  const handleChangePlatform = (event) => {
-    setValues({ ...values, platform: event.target.value });
-  };
-  const handleChangeCommunicationMethod = (event) => {
-    setValues({ ...values, communicationMethod: event.target.value });
-  };
-  const handleChangeLocation = (event) => {
-    setValues({ ...values, location: event.target.value });
-  };
-  const handleChangeSessionFrequency = (event) => {
-    setValues({ ...values, sessionFrequency: event.target.value });
-  };
-  const handleChangeSessionLength = (event) => {
-    setValues({ ...values, sessionLength: event.target.value });
-  };
-  const handleChangeGMTimeZone = (event) => {
-    setValues({ ...values, gmTimeZone: event.target.value });
-  };
-  const handleChangeSessionDay = (event) => {
-    setValues({ ...values, sessionDay: event.target.value });
-  };
-  const handleChangeCampaingPrimer = (event) => {
-    setValues({ ...values, campaignPrimer: event.target.value });
-  };
-  const handleChangeGameStyle = (event) => {
-    setValues({ ...values, gameStyle: event.target.value });
-  };
-  const handleChangeGMStyle = (event) => {
-    setValues({ ...values, gmStyle: event.target.value });
-  };
-  const handleChangeAdventureStyle = (event) => {
-    setValues({ ...values, adventureStyle: event.target.value });
-  };
-  const handleChangeGMExperienceLevel = (event) => {
-    setValues({ ...values, gmExperinceLevel: event.target.value });
-  };
-  const handleChangeStoryGenre = (event) => {
-    setValues({ ...values, storyGenre: event.target.value });
-  };
-  const handleChangeStoryStyle = (event) => {
-    setValues({ ...values, storyStyle: event.target.value });
-  };
-
-  //   const handleChangeTags = (event) => {
-  //     setValues({ ...values, tags: event.target.value });
-  //   };
-
-  //   const handleChangeSessionHour = (event) => {
-  //     setValues({ ...values, sessionHour: event.target.value });
-  //   };
-  const handleChangeHosting = (event) => {
-    setValues({ ...values, hosting: event.target.value });
   };
 
   const hasEmptyRequiredValue = () => {
@@ -556,12 +109,6 @@ function Form(props) {
       return true;
     return false;
   };
-
-  //   const handleChangeLanguage = (event) => {
-  //     setValues({ ...values, language: event.target.value });
-  //   };
-
-  // console.log(values);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -656,16 +203,6 @@ function Form(props) {
     }
   };
 
-  // const useStyles = makeStyles(() => ({
-  //   root: {
-  //     "& .MuiStepIcon-active": { color: "red" },
-  //     "& .MuiStepIcon-completed": { color: "green" },
-  //     "& .Mui-disabled .MuiStepIcon-root": { color: "cyan" },
-  //   },
-  // }));
-
-  // const c = useStyles();
-
   return (
     <Box
       // component="main"
@@ -743,7 +280,7 @@ function Form(props) {
                 // variant="filled"
                 label="Game System"
                 sx={{ color: "#2e3440" }}
-                onChange={handleChangeGameSystem}
+                onChange={handleChange("gameSystem")}
               >
                 {options.map((i) => {
                   return <MenuItem value={i.system}>{i.system}</MenuItem>;
@@ -763,7 +300,7 @@ function Form(props) {
                 // variant="filled"
                 label="Game Version"
                 sx={{ minWidth: 250 }}
-                onChange={handleChangeGameVersion}
+                onChange={handleChange("gameVersion")}
               >
                 {values.gameSystem !== "" &&
                   options
@@ -786,7 +323,7 @@ function Form(props) {
                 }
                 value={values.adventureName}
                 //   variant="filled"
-                onChange={handleChangeAdventureName}
+                onChange={handleChange("adventureName")}
               />
             </FormControl>
           </div>
@@ -803,7 +340,7 @@ function Form(props) {
                 // variant="filled"
                 label="Adventure Length"
                 sx={{ minWidth: 250 }}
-                onChange={handleChangeAdventureLength}
+                onChange={handleChange("adventureLength")}
               >
                 <MenuItem value="One-Shot">One-Shot (1 session)</MenuItem>
                 <MenuItem value="Mini adventure">
@@ -869,7 +406,7 @@ function Form(props) {
                 aria-label="story-style"
                 value={values.storyStyle}
                 sx={{ justifyContent: "center" }}
-                onChange={handleChangeStoryStyle}
+                onChange={handleChange("storyStyle")}
                 name="story-style-radio"
               >
                 <FormControlLabel
@@ -919,7 +456,7 @@ function Form(props) {
                 label="Total Player Count *"
                 type="number"
                 value={values.totalPlayerCount}
-                onChange={handleChangeTotalPlayerCount}
+                onChange={handleChange("totalPlayerCount")}
                 // InputLabelProps={{ shrink: true }}
               />
             </FormControl>
@@ -933,7 +470,7 @@ function Form(props) {
                 label="Current Player Count *"
                 type="number"
                 value={values.currentPlayerCount}
-                onChange={handleChangeCurrentPlayerCount}
+                onChange={handleChange("currentPlayerCount")}
                 // InputLabelProps={{ shrink: false }}
               />
             </FormControl>
@@ -954,7 +491,7 @@ function Form(props) {
                 aria-label="Restricted values"
                 defaultValue={null}
                 value={values.playerExpLevel}
-                onChange={handleChangePlayerExpLevel}
+                onChange={handleChange("playerExpLevel")}
                 valueLabelFormat={valueLabelFormat}
                 // getAriaValueText={valuetext}
                 step={null}
@@ -1041,7 +578,7 @@ function Form(props) {
                 // variant="filled"
                 label="Platform"
                 sx={{ minWidth: 250 }}
-                onChange={handleChangePlatform}
+                onChange={handleChange("platform")}
               >
                 <MenuItem value="Roll20">Roll20</MenuItem>
                 <MenuItem value="Foundry VTT">Foundry VTT</MenuItem>
@@ -1069,7 +606,7 @@ function Form(props) {
                     : ""
                 }
                 //   variant="filled"
-                onChange={handleChangeLocation}
+                onChange={handleChange("location")}
               />
             </FormControl>
           </div>
@@ -1092,7 +629,7 @@ function Form(props) {
                 // variant="filled"
                 label="Communication Method"
                 sx={{ minWidth: 250 }}
-                onChange={handleChangeCommunicationMethod}
+                onChange={handleChange("communicationMethod")}
               >
                 <MenuItem value="Discord">Discord</MenuItem>
                 <MenuItem value="Roll20">Roll20</MenuItem>
@@ -1119,7 +656,7 @@ function Form(props) {
                 // variant="filled"
                 label="Hosting"
                 sx={{ minWidth: 250 }}
-                onChange={handleChangeHosting}
+                onChange={handleChange("hosting")}
               >
                 <MenuItem value="GM Hosted">GM Hosted</MenuItem>
                 <MenuItem value="PC Hosted">PC Hosted</MenuItem>
@@ -1156,7 +693,7 @@ function Form(props) {
                 id="session-frequency-input"
                 type="number"
                 value={values.sessionFrequency}
-                onChange={handleChangeSessionFrequency}
+                onChange={handleChange("sessionFrequency")}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -1175,7 +712,7 @@ function Form(props) {
                 id="session-length-input"
                 type="number"
                 value={values.sessionLength}
-                onChange={handleChangeSessionLength}
+                onChange={handleChange("sessionLength")}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">hours</InputAdornment>
@@ -1192,7 +729,7 @@ function Form(props) {
                 id="gm-time-zone-input"
                 type="number"
                 value={values.gmTimeZone}
-                onChange={handleChangeGMTimeZone}
+                onChange={handleChange("gmTimeZone")}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">UTC</InputAdornment>
@@ -1218,7 +755,7 @@ function Form(props) {
                 value={values.sessionDay}
                 // variant="filled"
                 label="Session Day"
-                onChange={handleChangeSessionDay}
+                onChange={handleChange("sessionDay")}
               >
                 <MenuItem value="Monday">Monday</MenuItem>
                 <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -1286,7 +823,7 @@ function Form(props) {
                 id="player-game-style-select"
                 value={values.gameStyle}
                 // variant="filled"
-                onChange={handleChangeGameStyle}
+                onChange={handleChange("gameStyle")}
                 label="Player Game Style"
               >
                 <MenuItem value="RP-heavy">RP-heavy</MenuItem>
@@ -1304,7 +841,7 @@ function Form(props) {
                 label="GM Style"
                 // variant="filled"
                 value={values.gmStyle}
-                onChange={handleChangeGMStyle}
+                onChange={handleChange("gmStyle")}
               >
                 <MenuItem value="Heavy Prep">Heavy Prep</MenuItem>
                 <MenuItem value="Rule-oriented">Rule-oriented</MenuItem>
@@ -1324,7 +861,7 @@ function Form(props) {
                 // variant="filled"
                 label="Adventure Style"
                 value={values.adventureStyle}
-                onChange={handleChangeAdventureStyle}
+                onChange={handleChange("adventureStyle")}
               >
                 <MenuItem value="High Magic">High Magic</MenuItem>
                 <MenuItem value="Low Magic">Low Magic</MenuItem>
@@ -1343,7 +880,7 @@ function Form(props) {
                 // variant="filled"
                 label="GM Experience Level"
                 value={values.gmExperinceLevel}
-                onChange={handleChangeGMExperienceLevel}
+                onChange={handleChange("gmExperinceLevel")}
               >
                 <MenuItem value="Beginner">Beginner</MenuItem>
                 <MenuItem value="Novice">Novice</MenuItem>
@@ -1360,7 +897,7 @@ function Form(props) {
                 // variant="filled"
                 label="Story Genre"
                 value={values.storyGenre}
-                onChange={handleChangeStoryGenre}
+                onChange={handleChange("storyGenre")}
               >
                 <MenuItem value="Alternate History">Alternate History</MenuItem>
                 <MenuItem value="Apocalyptic">Apocalyptic</MenuItem>
@@ -1427,7 +964,7 @@ function Form(props) {
                 minRows={4}
                 maxRows={10}
                 value={values.campaignPrimer}
-                onChange={handleChangeCampaingPrimer}
+                onChange={handleChange("campaignPrimer")}
                 sx={{ color: "#4c566a" }}
                 placeholder="Type anything you want to get your players' attention."
               />
