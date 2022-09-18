@@ -3,16 +3,24 @@ const cors = require("cors");
 const authorization = require("./middleware/authorization");
 const pool = require("./db");
 const app = express();
+const path = require("path");
 const PORT = process.env.PORT || 5000;
 
 // middleware
 app.use(express.json());
 app.use(cors());
 
-// routes
+// if(process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "frontend/build")));
+// }
 
+// routes
 app.use("/auth", require("./routes/jwtAuth"));
 app.use("/manage", require("./routes/manage"));
+
+app.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`);
+});
 
 // add a group
 app.post("/groups", async (req, res) => {
@@ -350,10 +358,6 @@ app.delete("/players", async (req, res) => {
   } catch (err) {
     console.error(err.message);
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port: ${PORT}`);
 });
 
 // get userID by email

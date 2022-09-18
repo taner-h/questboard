@@ -363,19 +363,6 @@ function Form(props) {
               </Select>
             </FormControl>
 
-            {/* <FormControl  sx={{minWidth:250, marginX: 3, marginY: 1}}>
-                    <InputLabel>Game Language</InputLabel>
-                    <Select
-                        id="game-language-select"
-                        value={values.language}
-                        variant='filled'
-                        label="Game Language"
-                        sx={{minWidth:250}}
-                        onChange={handleChangeLanguage}
-                    >
-                        {languages.map(i => {return <MenuItem value={i}>{i}</MenuItem>})} 
-                    </Select>
-                </FormControl> */}
             <FormControl
               required
               sx={{ minWidth: 250, marginX: 2, marginY: 2 }}
@@ -459,28 +446,24 @@ function Form(props) {
               required
               sx={{ maxWidth: 250, marginX: 2, marginY: 1 }}
             >
-              {/* <InputLabel>Total Player Count</InputLabel> */}
               <TextField
                 id="total-player-count"
                 label="Total Player Count *"
                 type="number"
                 value={values.totalPlayerCount}
                 onChange={handleChange("totalPlayerCount")}
-                // InputLabelProps={{ shrink: true }}
               />
             </FormControl>
             <FormControl
               required
               sx={{ maxWidth: 250, marginX: 2, marginY: 1 }}
             >
-              {/* <InputLabel>Current Player Count{values.totalPlayerCount ? values.totalPlayerCount : ''}</InputLabel> */}
               <TextField
                 id="current-player-count"
                 label="Current Player Count *"
                 type="number"
                 value={values.currentPlayerCount}
                 onChange={handleChange("currentPlayerCount")}
-                // InputLabelProps={{ shrink: false }}
               />
             </FormControl>
           </div>
@@ -495,14 +478,12 @@ function Form(props) {
               }}
             >
               <FormLabel>Player Experience Level</FormLabel>
-              {/* <Typography id="input-slider" gutterBottom color='grey.700'> Player Experience Level</Typography> */}
               <Slider
                 aria-label="Restricted values"
                 defaultValue={null}
                 value={values.playerExpLevel}
                 onChange={handleChange("playerExpLevel")}
                 valueLabelFormat={valueLabelFormat}
-                // getAriaValueText={valuetext}
                 step={null}
                 sx={{ color: "#4c566a" }}
                 valueLabelDisplay="auto"
@@ -578,13 +559,11 @@ function Form(props) {
                     : true
                 }
                 id="platform-select"
-                // value={values.platform}
                 value={
                   values.medium === "Hybrid" || values.medium === "Online"
                     ? values.platform
                     : ""
                 }
-                // variant="filled"
                 label="Platform"
                 sx={{ minWidth: 250 }}
                 onChange={handleChange("platform")}
@@ -609,7 +588,6 @@ function Form(props) {
                     ? values.location
                     : ""
                 }
-                //   variant="filled"
                 onChange={handleChange("location")}
               />
             </FormControl>
@@ -630,7 +608,6 @@ function Form(props) {
                     ? values.communicationMethod
                     : ""
                 }
-                // variant="filled"
                 label="Communication Method"
                 sx={{ minWidth: 250 }}
                 onChange={handleChange("communicationMethod")}
@@ -657,7 +634,6 @@ function Form(props) {
                     ? values.hosting
                     : ""
                 }
-                // variant="filled"
                 label="Hosting"
                 sx={{ minWidth: 250 }}
                 onChange={handleChange("hosting")}
@@ -807,7 +783,6 @@ function Form(props) {
               <Select
                 id="player-game-style-select"
                 value={values.gameStyle}
-                // variant="filled"
                 onChange={handleChange("gameStyle")}
                 label="Player Game Style"
               >
@@ -821,7 +796,6 @@ function Form(props) {
               <Select
                 id="gm-style-select"
                 label="GM Style"
-                // variant="filled"
                 value={values.gmStyle}
                 onChange={handleChange("gmStyle")}
               >
@@ -834,7 +808,6 @@ function Form(props) {
               <InputLabel>Adventure Style</InputLabel>
               <Select
                 id="adventure-style-select"
-                // variant="filled"
                 label="Adventure Style"
                 value={values.adventureStyle}
                 onChange={handleChange("adventureStyle")}
@@ -850,7 +823,6 @@ function Form(props) {
               <InputLabel>GM Experience Level</InputLabel>
               <Select
                 id="gm-experience-level-select"
-                // variant="filled"
                 label="GM Experience Level"
                 value={values.gmExperinceLevel}
                 onChange={handleChange("gmExperinceLevel")}
@@ -866,7 +838,6 @@ function Form(props) {
               <InputLabel>Story Genre</InputLabel>
               <Select
                 id="story-genre-select"
-                // variant="filled"
                 label="Story Genre"
                 value={values.storyGenre}
                 onChange={handleChange("storyGenre")}
