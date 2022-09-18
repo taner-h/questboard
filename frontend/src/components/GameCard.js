@@ -64,9 +64,7 @@ function GameCard(props) {
 
   const getPlayers = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/players/${group.group_id}`
-      );
+      const response = await fetch(`/players/${group.group_id}`);
       const jsonRes = await response.json();
 
       setPlayers(jsonRes);
@@ -77,9 +75,7 @@ function GameCard(props) {
 
   const getRequests = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/requests/${group.group_id}`
-      );
+      const response = await fetch(`requests/${group.group_id}`);
       const jsonRes = await response.json();
 
       setRequests(jsonRes);
@@ -90,9 +86,7 @@ function GameCard(props) {
 
   const getGM = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/creator/${group.group_id}`
-      );
+      const response = await fetch(`/creator/${group.group_id}`);
       const jsonRes = await response.json();
 
       setGm(jsonRes);

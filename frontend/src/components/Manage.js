@@ -27,7 +27,7 @@ function Manage(props) {
     try {
       const userID = localStorage.getItem("user");
 
-      const response = await fetch(`http://localhost:5000/groups/${userID}`);
+      const response = await fetch(`/groups/${userID}`);
       const jsonRes = await response.json();
 
       setGmGroups(jsonRes.gm);

@@ -226,22 +226,6 @@ function NavBar(props) {
         props.handleAuthChange(true);
         // setOpenToastSuccess(true);
         setToast({ isOpen: true, message: "Login succesful." });
-        // handleChangeToast("loginSuccess", true);
-        // try {
-        //   const response2 = await fetch(
-        //     `http://localhost:5000/users/${email}`,
-        //     {
-        //       method: "GET",
-        //       headers: { "Content-Type": "application/json" },
-        //     }
-        //   );
-        //   const result = await response2.json();
-        //   if (result) {
-        //     localStorage.setItem("user_id", result.user_id);
-        //   }
-        // } catch (err) {
-        //   console.error(err.message);
-        // }
       } else {
         // setOpenToastFail(true);
         setToast({ isOpen: true, message: "Incorrect email or password." });
@@ -280,24 +264,6 @@ function NavBar(props) {
           isOpen: true,
           message: "Registered and logged in succesfully.",
         });
-
-        // handleChangeToast("registerSuccess", true);
-
-        // try {
-        //   const response2 = await fetch(
-        //     `http://localhost:5000/users/${email}`,
-        //     {
-        //       method: "GET",
-        //       headers: { "Content-Type": "application/json" },
-        //     }
-        //   );
-        //   const result = await response2.json();
-        //   if (result) {
-        //     localStorage.setItem("user_id", result.user_id);
-        //   }
-        // } catch (err) {
-        //   console.error(err.message);
-        // }
       } else {
         setToast({ isOpen: true, message: "Register failed." });
         props.handleAuthChange(false);

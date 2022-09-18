@@ -55,7 +55,7 @@ function Search() {
 
       // const temp_lang = filters.language === null ? '' : filters.language;
       const response = await fetch(
-        `http://localhost:5000/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${sort.orderBy}&gameSystem=${filters.gameSystem}&medium=${filters.medium}&adventureLength=${filters.adventureLength}&language=${filters.language}`
+        `/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${sort.orderBy}&gameSystem=${filters.gameSystem}&medium=${filters.medium}&adventureLength=${filters.adventureLength}&language=${filters.language}`
       );
       const jsonRes = await response.json();
       setGroups(jsonRes.groups);
