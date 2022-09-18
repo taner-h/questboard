@@ -9,6 +9,17 @@ const devConfig = {
   port: process.env.PG_PORT,
 };
 
-const pool = new Pool(devConfig);
+const prodConfig = {
+  connectionString: process.env.DATABASE_URL,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  port: process.env.PGPORT,
+};
+
+const pool = new Pool(
+  process.env.RAILWAY_ENVIRONMENT === "production" ? prodConfig : devConfig
+);
 
 module.exports = pool;
