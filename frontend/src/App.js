@@ -12,7 +12,7 @@ import Manage from "./components/Manage";
 import NavBar from "./components/NavBar";
 import NotFound from "./components/NotFound";
 import Search from "./components/Search";
-const URL = process.env.RAILWAY_STATIC_URL || "http://localhost:5000";
+// const URL = process.env.RAILWAY_STATIC_URL || "http://localhost:5000";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
