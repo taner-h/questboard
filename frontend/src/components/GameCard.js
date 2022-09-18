@@ -143,7 +143,7 @@ function GameCard(props) {
         groupID,
       };
 
-      const response = await fetch("http://localhost:5000/requests", {
+      const response = await fetch("/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -168,7 +168,7 @@ function GameCard(props) {
         userID,
         groupID,
       };
-      const response = await fetch("http://localhost:5000/players", {
+      const response = await fetch("/players", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -193,7 +193,7 @@ function GameCard(props) {
         groupID,
       };
 
-      const response = await fetch("http://localhost:5000/requests", {
+      const response = await fetch("/requests", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -218,7 +218,7 @@ function GameCard(props) {
         groupID,
       };
 
-      const response = await fetch("http://localhost:5000/players", {
+      const response = await fetch("/players", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

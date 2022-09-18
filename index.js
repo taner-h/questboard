@@ -10,9 +10,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-// if(process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "frontend/build")));
-// }
+app.use(express.static(path.join(__dirname, "./frontend/build")));
 
 // routes
 app.use("/auth", require("./routes/jwtAuth"));
