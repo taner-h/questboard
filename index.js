@@ -123,7 +123,9 @@ app.get("/groups?", async (req, res) => {
     // console.log(orderBy);
     // console.log(str);
 
-    const query = `SELECT *, total_player_count - current_player_count AS available_player_count FROM groups WHERE game_system = ${gameSystem} AND medium = ${medium} AND adventure_length = ${adventureLength} AND game_language = ${language} ORDER BY ${sortBy} ${orderBy}`;
+    const query = `SELECT *, total_player_count - current_player_count AS available_player_count FROM groups WHERE game_system = ${gameSystem} AND medium = ${medium} AND adventure_length = ${adventureLength} AND game_language = ${language} ORDER BY ${
+      sortBy || "group_id"
+    } ${orderBy || "ASC"}`;
     console.log(query);
 
     const startIndex = (page - 1) * limit;
