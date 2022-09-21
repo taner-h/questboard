@@ -248,7 +248,11 @@ function GameCard(props) {
           color="text.secondary"
           gutterBottom
         >
-          {`${group.game_system} ${group.game_version}`}
+          {`${
+            group.game_system === "Vampire: The Masquerade"
+              ? "Vampire:tM"
+              : group.game_system
+          } ${group.game_version}`}
         </Typography>
         <Typography variant="h6" color="#2e3440">
           {group.adventure_name}
@@ -673,7 +677,7 @@ function GameCard(props) {
                 </Typography>
               </Box>
 
-              <Divider variant="middle" />
+              {/* <Divider variant="middle" />
               <Box sx={{ m: 2 }}>
                 <Typography
                   gutterBottom
@@ -731,7 +735,7 @@ function GameCard(props) {
                   }}
                   label="Dark"
                 />
-              </Box>
+              </Box> */}
             </DialogContent>
             <DialogActions>
               <Button
