@@ -376,3 +376,7 @@ app.get("/users/:email", async (req, res) => {
     console.error(err.message);
   }
 });
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+});
