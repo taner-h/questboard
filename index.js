@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-// if (process.env.RAILWAY_ENVIRONMENT === "production") {
-app.use(express.static(path.join(__dirname, "frontend/build")));
-// }
+if (process.env.RAILWAY_ENVIRONMENT === "production") {
+  app.use(express.static(path.join(__dirname, "frontend/build")));
+}
 
 // routes
 app.use("/auth", require("./routes/jwtAuth"));
@@ -266,6 +266,22 @@ app.get("/players/:id", async (req, res) => {
   }
 });
 
+// get player by id
+
+app.get("/player/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const players = await pool.query(
+      "SELECT users.user_id, username FROM users WHERE user_id = $1",
+      [id]
+    );
+    res.json(players.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // get creator of a group by id
 
 app.get("/creator/:id", async (req, res) => {
@@ -377,6 +393,8 @@ app.get("/users/:email", async (req, res) => {
   }
 });
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
-});
+if (process.env.RAILWAY_ENVIRONMENT === "production") {
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+  });
+}

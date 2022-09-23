@@ -1,5 +1,4 @@
 import React, { forceUpdate } from "react";
-// import Box from '@mui/material/Box';
 import Grid from "@mui/material/Grid";
 import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
@@ -8,7 +7,6 @@ import CardActions from "@mui/material/CardActions";
 import CheckIcon from "@mui/icons-material/Check";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
-import EventNoteIcon from "@mui/icons-material/EventNote";
 import GroupIcon from "@mui/icons-material/Group";
 import CardContent from "@mui/material/CardContent";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
@@ -20,23 +18,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-// import ImageIcon from "@mui/icons-material/Image";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from "@mui/icons-material/Person";
-// import WorkIcon from "@mui/icons-material/Work";
-// import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-// import Button from "@mui/material/Button";
-// import MoreIcon from "@mui/icons-material/More";
-import ScheduleIcon from "@mui/icons-material/Schedule";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import EditIcon from "@mui/icons-material/Edit";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-// import DialogContentText from "@mui/material/DialogContentText";
-// import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
-// import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 
 function GameCard(props) {
@@ -173,6 +162,20 @@ function GameCard(props) {
           isOpen: true,
           message: "User has been added to the group succesfully.",
         });
+
+        try {
+          const userResponse = await fetch(`/player/${userID}`);
+          console.log(userResponse);
+          const addedUser = await userResponse.json();
+          console.log(addedUser);
+
+          setPlayers([...players, addedUser]);
+          setRequests(
+            requests.filter((request) => request.user_id != addedUser.user_id)
+          );
+        } catch (err) {
+          console.error(err.message);
+        }
       }
     } catch (err) {
       console.error(err.message);
@@ -198,6 +201,8 @@ function GameCard(props) {
           isOpen: true,
           message: "Request has been declined.",
         });
+
+        setRequests(requests.filter((request) => request.user_id != userID));
       }
     } catch (err) {
       console.error(err.message);
@@ -223,22 +228,13 @@ function GameCard(props) {
           isOpen: true,
           message: "User has been deleted from the group.",
         });
+
+        setPlayers(players.filter((player) => player.user_id != userID));
       }
     } catch (err) {
       console.error(err.message);
     }
   };
-
-  // const handleMaxWidthChange = (event) => {
-  //   setMaxWidth(
-  //     // @ts-expect-error autofill of arbitrary value is not handled.
-  //     event.target.value
-  //   );
-  // };
-
-  // const handleFullWidthChange = (event) => {
-  //   setFullWidth(event.target.checked);
-  // };
 
   return (
     <Card>
