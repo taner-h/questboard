@@ -40,7 +40,7 @@ function GameCard(props) {
   const [requests, setRequests] = React.useState([]);
   const [gm, setGm] = React.useState([]);
 
-  const { group } = props;
+  const { group, groups, setGroups } = props;
 
   const [toast, setToast] = React.useState({
     isOpen: false,
@@ -165,14 +165,20 @@ function GameCard(props) {
 
         try {
           const userResponse = await fetch(`/player/${userID}`);
-          console.log(userResponse);
+          // console.log(userResponse);
           const addedUser = await userResponse.json();
-          console.log(addedUser);
+          // console.log(addedUser);
 
           setPlayers([...players, addedUser]);
           setRequests(
             requests.filter((request) => request.user_id != addedUser.user_id)
           );
+
+          let prev = [...groups];
+          let index = prev.findIndex((grp) => grp.group_id === group.group_id);
+          const cnt = prev[index].current_player_count;
+          prev[index].current_player_count++;
+          setGroups(prev);
         } catch (err) {
           console.error(err.message);
         }
@@ -230,6 +236,12 @@ function GameCard(props) {
         });
 
         setPlayers(players.filter((player) => player.user_id != userID));
+
+        let prev = [...groups];
+        let index = prev.findIndex((grp) => grp.group_id === group.group_id);
+        const cnt = prev[index].current_player_count;
+        prev[index].current_player_count--;
+        setGroups(prev);
       }
     } catch (err) {
       console.error(err.message);
@@ -432,6 +444,10 @@ function GameCard(props) {
                         props.type === "gm" ? (
                           <>
                             <IconButton
+                              disabled={
+                                group.current_player_count >=
+                                group.total_player_count
+                              }
                               edge="end"
                               aria-label="accept"
                               sx={{ marginRight: 0.5 }}
