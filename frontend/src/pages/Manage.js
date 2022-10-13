@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
-import FormInfo from "./FormInfo";
+import FormInfo from "../components/FormInfo";
 import Typography from "@mui/material/Typography";
-import GameCard from "./GameCard";
+import GameCard from "../components/GameCard";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -33,8 +33,6 @@ function Manage(props) {
       setGmGroups(jsonRes.gm);
       setPlayerGroups(jsonRes.player);
       setRequestGroups(jsonRes.request);
-
-      // console.log(gmGroups);
     } catch (err) {
       console.error(err.message);
     }

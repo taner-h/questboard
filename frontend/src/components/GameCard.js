@@ -1,4 +1,4 @@
-import React, { forceUpdate } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
@@ -26,7 +26,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 
 function GameCard(props) {
   const [openInfo, setOpenInfo] = React.useState(false);
@@ -171,12 +170,11 @@ function GameCard(props) {
 
           setPlayers([...players, addedUser]);
           setRequests(
-            requests.filter((request) => request.user_id != addedUser.user_id)
+            requests.filter((request) => request.user_id !== addedUser.user_id)
           );
 
           let prev = [...groups];
           let index = prev.findIndex((grp) => grp.group_id === group.group_id);
-          const cnt = prev[index].current_player_count;
           prev[index].current_player_count++;
           setGroups(prev);
         } catch (err) {
@@ -208,7 +206,7 @@ function GameCard(props) {
           message: "Request has been declined.",
         });
 
-        setRequests(requests.filter((request) => request.user_id != userID));
+        setRequests(requests.filter((request) => request.user_id !== userID));
       }
     } catch (err) {
       console.error(err.message);
@@ -235,11 +233,10 @@ function GameCard(props) {
           message: "User has been deleted from the group.",
         });
 
-        setPlayers(players.filter((player) => player.user_id != userID));
+        setPlayers(players.filter((player) => player.user_id !== userID));
 
         let prev = [...groups];
         let index = prev.findIndex((grp) => grp.group_id === group.group_id);
-        const cnt = prev[index].current_player_count;
         prev[index].current_player_count--;
         setGroups(prev);
       }

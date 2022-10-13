@@ -26,7 +26,7 @@ function Copyright(props) {
   );
 }
 
-export default function Homepage() {
+export default function Home() {
   return (
     <>
       <Container

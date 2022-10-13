@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "cd frontend && npm install && npm run build"
+    "build": "cd frontend && npm install && npm run build",
+    "client": "cd frontend && npm start"
   },
   "keywords": [],
   "author": "",

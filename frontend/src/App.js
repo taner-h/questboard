@@ -6,13 +6,12 @@ import {
   Routes,
 } from "react-router-dom";
 import "./App.css";
-import Form from "./components/Form";
-import Homepage from "./components/Homepage";
-import Manage from "./components/Manage";
+import Create from "./pages/Create";
+import Home from "./pages/Home";
+import Manage from "./pages/Manage";
 import NavBar from "./components/NavBar";
 import NotFound from "./components/NotFound";
-import Search from "./components/Search";
-// const URL = process.env.RAILWAY_STATIC_URL || "http://localhost:5000";
+import Search from "./pages/Search";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -43,7 +42,6 @@ function App() {
       });
 
       const parseRes = await response.json();
-      // console.log(parseRes);
       parseRes === true ? handleGrantAuth() : handleDenyAuth();
     } catch (err) {
       console.error(err.message);
@@ -52,7 +50,7 @@ function App() {
 
   useEffect(() => {
     isAuth();
-  }, []);
+  });
 
   return (
     <div className="App">
@@ -66,11 +64,11 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Homepage isAuthenticated={isAuthenticated} />}
+            element={<Home isAuthenticated={isAuthenticated} />}
           />
           <Route
             path="/create"
-            element={<Form isAuthenticated={isAuthenticated} />}
+            element={<Create isAuthenticated={isAuthenticated} />}
           />
           <Route
             path="/search"

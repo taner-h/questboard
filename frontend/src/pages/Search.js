@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import FormInfo from "./FormInfo";
-import GameCard from "./GameCard";
+import FormInfo from "../components/FormInfo";
+import GameCard from "../components/GameCard";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
@@ -12,9 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import ToggleButton from "@mui/material/ToggleButton";
-// import Drawer from "@mui/material/Drawer";
 import MenuItem from "@mui/material/MenuItem";
-// import List from "@mui/material/List";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -24,11 +22,10 @@ import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@material-ui/core/styles";
 import Collapse from "@mui/material/Collapse";
 import SortIcon from "@mui/icons-material/Sort";
-import { languages, tagList } from "./options";
+import { languages, tagList } from "../utils/options";
 
 function Search() {
   const [groups, setGroups] = useState([]);
-  // const [inGroup, setInGroup] = useState([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(5);
   const [limit, setLimit] = useState(12);
@@ -50,10 +47,7 @@ function Search() {
   const getGroups = async () => {
     try {
       const sortBy = getSort(sort.sortBy);
-      // console.log(sortBy)
-      // console.log(sort.orderBy)
 
-      // const temp_lang = filters.language === null ? '' : filters.language;
       const response = await fetch(
         `/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${
           sort.orderBy
@@ -68,7 +62,6 @@ function Search() {
       const jsonRes = await response.json();
       setGroups(jsonRes.groups);
       setPageCount(jsonRes.pageCount);
-      // console.log(jsonRes);
     } catch (err) {
       console.error(err.message);
     }
@@ -76,7 +69,6 @@ function Search() {
 
   useEffect(() => {
     getGroups();
-    // getInGroup();
   }, [page]);
 
   const handleChange = (prop) => (event) => {
