@@ -176,35 +176,18 @@ function NavBar(props) {
     });
   };
 
+  const handleCloseLogin = () => {
+    setOpenLogin(false);
+  };
+
+  const handleCloseRegister = () => {
+    setOpenRegister(false);
+  };
+
   const handleClickOpenLogin = () => {
     setOpenRegister(false);
     setOpenLogin(true);
   };
-
-  // const actionToastSuccess = (
-  //   <React.Fragment>
-  //     <IconButton
-  //       size="small"
-  //       aria-label="close"
-  //       color="inherit"
-  //       onClick={handleCloseToastSuccess}
-  //     >
-  //       <CloseIcon fontSize="small" />
-  //     </IconButton>
-  //   </React.Fragment>
-  // );
-  // const actionToastFail = (
-  //   <React.Fragment>
-  //     <IconButton
-  //       size="small"
-  //       aria-label="close"
-  //       color="inherit"
-  //       onClick={handleCloseToastFail}
-  //     >
-  //       <CloseIcon fontSize="small" />
-  //     </IconButton>
-  //   </React.Fragment>
-  // );
 
   const handleSubmitLogin = async (event) => {
     event.preventDefault();
@@ -422,7 +405,7 @@ function NavBar(props) {
           </React.Fragment>
           <Dialog
             open={openLogin}
-            // onClose={handleSubmitLogin}
+            onClose={handleCloseLogin}
             PaperProps={{
               style: {
                 backgroundColor: "#eceff4",
@@ -497,7 +480,8 @@ function NavBar(props) {
 
           <Dialog
             open={openRegister}
-            onClose={handleSubmitRegister}
+            // onClose={handleSubmitRegister}
+            onClose={handleCloseRegister}
             PaperProps={{
               style: {
                 backgroundColor: "#eceff4",

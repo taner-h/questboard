@@ -143,8 +143,6 @@ function Search() {
                 </InputAdornment>
               ),
             }}
-            // value={values.tags}
-            // onChange={handleChangeTags}
             renderInput={(params) => (
               <TextField {...params} label="Search tags" />
             )}

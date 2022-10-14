@@ -1,10 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
+import Copyright from "../components/Copyright";
 import Grid from "@mui/material/Grid";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import logo from "../img/dice-dark.svg";
@@ -12,19 +13,6 @@ import dnd from "../img/dnd.png";
 import cthulhu from "../img/cthulhu.png";
 import fate from "../img/fate.png";
 import vampire from "../img/vampire.png";
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="#d8dee9" align="center" {...props}>
-      {"Copyright © "}
-      <Link style={{ textDecoration: "none", color: "#d8dee9" }} to="/">
-        questboard
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function Home() {
   return (
@@ -38,18 +26,27 @@ export default function Home() {
           justifyContent: "center",
         }}
       >
-        <Typography
+        <Container
+          maxWidth="xs"
           sx={{
             flexGrow: 1,
-            color: "#434C5E",
-            fontWeight: "700",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          variant="h2"
         >
-          Looking for online
-          <br />
-          <span style={{ color: "#677590" }}>game groups</span>?
-        </Typography>
+          <Typography
+            sx={{
+              flexGrow: 1,
+              color: "#434C5E",
+              fontWeight: "700",
+              wordWrap: "break-word",
+            }}
+            variant="h3"
+          >
+            Looking for online{" "}
+            <span style={{ color: "#677590" }}> game groups</span>?
+          </Typography>
+        </Container>
 
         <Typography
           sx={{

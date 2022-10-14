@@ -212,7 +212,6 @@ function Create(props) {
         mb: 5,
         alignItems: "center",
         justifyContent: "center",
-        // backgroundColor: "#eceff4",
       }}
     >
       {/* <Collapse in={activeStep == 0}> */}
@@ -232,10 +231,10 @@ function Create(props) {
           <Step
             sx={{
               "& .MuiStepLabel-root .Mui-completed": {
-                color: "#677590", // circle color (COMPLETED)
+                color: "#677590",
               },
               "& .MuiStepLabel-root .Mui-active": {
-                color: "#4c566a", // circle color (ACTIVE)
+                color: "#4c566a",
               },
             }}
             key={label}
