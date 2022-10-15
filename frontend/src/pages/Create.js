@@ -109,6 +109,7 @@ function Create(props) {
       !values.language ||
       !values.totalPlayerCount ||
       !values.currentPlayerCount ||
+      !values.sessionDay ||
       !values.medium
     )
       return true;

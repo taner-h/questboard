@@ -27,6 +27,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
+import getExp from "../utils/getExp";
+import getDay from "../utils/getDay";
+import getNextSession from "../utils/getNextSession";
 
 function GameCard(props) {
   const [openInfo, setOpenInfo] = useState(false);
@@ -92,14 +95,6 @@ function GameCard(props) {
     } catch (err) {
       console.error(err.message);
     }
-  };
-
-  const getExp = (number) => {
-    if (number === "0") return "Beginner";
-    if (number === "25") return "Novice";
-    if (number === "50") return "Moderate";
-    if (number === "75") return "Seasoned";
-    if (number === "100") return "Pro";
   };
 
   const handleClickOpenInfo = () => {
@@ -425,6 +420,11 @@ function GameCard(props) {
                     </ListItem>
                   ))}
                 </List>
+                {players.length === 0 && (
+                  <Typography sx={{ mb: 3, mx: 2, color: "#4c566a" }}>
+                    There are no players in this group.
+                  </Typography>
+                )}
               </Box>
 
               <Box sx={{ m: 2 }}>
@@ -489,6 +489,12 @@ function GameCard(props) {
                     </ListItem>
                   ))}
                 </List>
+
+                {requests.length === 0 && (
+                  <Typography sx={{ mb: 3, mx: 2, color: "#4c566a" }}>
+                    There are no requests for this group.
+                  </Typography>
+                )}
               </Box>
             </DialogContent>
             <DialogActions>
@@ -528,12 +534,67 @@ function GameCard(props) {
                   color="#434c5e"
                   variant="body1"
                 >
-                  Next Session
+                  Next Session of {group.adventure_name}
                 </Typography>
+              </Box>
 
-                <Typography color="#4c566a" variant="body2">
-                  19.12.2021, 18.00, Roll20, Dicord
-                </Typography>
+              <Divider variant="middle" />
+              <Box sx={{ m: 2 }}>
+                {group.session_day && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={getNextSession(
+                      getDay(group.session_day)
+                    ).toLocaleDateString("en", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                    variant="outlined"
+                  />
+                )}
+                {group.session_day && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={group.session_day}
+                    variant="outlined"
+                  />
+                )}
+                {group.session_time && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={group.session_time.substring(0, 5)}
+                    variant="outlined"
+                  />
+                )}
+                {group.platform && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={group.platform}
+                    variant="outlined"
+                  />
+                )}
+                {group.communication_method && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={group.communication_method}
+                    variant="outlined"
+                  />
+                )}
+                {group.session_location && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={group.session_location}
+                    variant="outlined"
+                  />
+                )}
+                {group.hosting && (
+                  <Chip
+                    sx={{ m: 0.5, color: "#4C566A" }}
+                    label={group.hosting}
+                    variant="outlined"
+                  />
+                )}
               </Box>
             </DialogContent>
             <DialogActions>
