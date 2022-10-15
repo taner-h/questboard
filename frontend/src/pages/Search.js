@@ -79,8 +79,9 @@ function Search() {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    getGroups();
+    // getGroups();
   };
+
   const useStyles = makeStyles((theme) => ({
     root: {
       "& > *": {
@@ -104,7 +105,8 @@ function Search() {
   };
 
   const handleSearch = () => {
-    getGroups();
+    if (page === 1) getGroups();
+    else setPage(1);
   };
 
   return (
