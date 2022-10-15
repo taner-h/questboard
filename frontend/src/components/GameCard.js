@@ -620,8 +620,41 @@ function GameCard(props) {
                   Basics
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  {`${group.game_system} ${group.game_version}`},{" "}
-                  {group.adventure_length}, {group.game_language}, Prewritten
+                  {group.game_system && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.game_system}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.game_version && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.game_version}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.adventure_length && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.adventure_length}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.game_language && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.game_language}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.story_style && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.story_style}
+                      variant="outlined"
+                    />
+                  )}
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -635,11 +668,20 @@ function GameCard(props) {
                   Player Info
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  {`${group.current_player_count}/${group.total_player_count}`}{" "}
-                  Players
-                  {group.player_experience_level
-                    ? `, ${getExp(group.player_experience_level)}`
-                    : null}
+                  {
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={`${group.current_player_count}/${group.total_player_count} Players`}
+                      variant="outlined"
+                    />
+                  }
+                  {group.player_experience_level && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={getExp(group.player_experience_level)}
+                      variant="outlined"
+                    />
+                  )}
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -653,10 +695,41 @@ function GameCard(props) {
                   Location Details
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  {group.medium}
-                  {group.medium !== "IRL"
-                    ? `, ${group.platform}, ${group.communication_method}`
-                    : `, ${group.session_location}, ${group.hosting}`}
+                  {group.medium && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.medium}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.platform && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.platform}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.communication_method && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.communication_method}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.session_location && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.session_location}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.hosting && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.hosting}
+                      variant="outlined"
+                    />
+                  )}
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -670,15 +743,45 @@ function GameCard(props) {
                   Session Details
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  1 Session per {group.session_frequency} days,{" "}
-                  {group.session_length} Hours,{" "}
-                  {group.gm_timezone > -1
-                    ? "UTC +" + group.gm_timezone
-                    : "UTC " + group.gm_timezone}
-                  , {group.session_day},{" "}
-                  {group.session_time
-                    ? group.session_time.substring(0, 5)
-                    : null}
+                  {group.session_frequency && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={`Every ${group.session_frequency} days`}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.session_length && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={`${group.session_length} Hours`}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.session_day && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.session_day}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.session_time && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.session_time.substring(0, 5)}
+                      variant="outlined"
+                    />
+                  )}
+                  {(group.gm_timezone || group.gm_timezone === 0) && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={
+                        group.gm_timezone > -1
+                          ? "UTC +" + group.gm_timezone
+                          : "UTC " + group.gm_timezone
+                      }
+                      variant="outlined"
+                    />
+                  )}
                 </Typography>
               </Box>
               <Divider variant="middle" />
@@ -692,9 +795,41 @@ function GameCard(props) {
                   Game Style
                 </Typography>
                 <Typography color="#4c566a" variant="body2">
-                  {group.player_style}, {group.gm_style},{" "}
-                  {group.adventure_style}, {group.gm_experience_level},{" "}
-                  {group.story_genre}
+                  {group.player_style && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.player_style}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.gm_style && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.gm_style}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.adventure_style && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.adventure_style}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.gm_experience_level && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.gm_experience_level}
+                      variant="outlined"
+                    />
+                  )}
+                  {group.story_genre && (
+                    <Chip
+                      sx={{ m: 0.5, color: "#4C566A" }}
+                      label={group.story_genre}
+                      variant="outlined"
+                    />
+                  )}
                 </Typography>
               </Box>
 
@@ -710,12 +845,7 @@ function GameCard(props) {
                 </Typography>
                 {tags.map((tag) => (
                   <Chip
-                    sx={{
-                      m: 0.5,
-                      // backgroundColor: "#4c566a48",
-                      // backgroundColor: "#4C566A",
-                      color: "#4C566A",
-                    }}
+                    sx={{ m: 0.5, color: "#4C566A" }}
                     label={tag.tag}
                     variant="outlined"
                   />
