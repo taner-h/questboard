@@ -52,6 +52,7 @@ app.post("/groups", async (req, res) => {
       storyGenre,
       campaignPrimer,
       storyStyle,
+      tags,
     } = req.body;
 
     const createTime = new Date(Date.now()).toISOString();
@@ -89,6 +90,21 @@ app.post("/groups", async (req, res) => {
       ]
     );
 
+    // tags.forEach(async (item) => {
+    //   await pool.query(
+    //     "INSERT INTO group_tags (group_id, tag_id) VALUES ($1, $2)",
+    //     [item.groupId, item.tagId]
+    //   );
+    // });
+    console.log(tags);
+
+    for (const tag of tags) {
+      await pool.query("INSERT INTO tags (group_id, tag) VALUES ($1, $2)", [
+        newGroup.rows[0].group_id,
+        tag,
+      ]);
+    }
+
     res.json(newGroup.rows[0]);
   } catch (err) {
     console.error(err.message);
@@ -103,10 +119,9 @@ app.get("/groups?", async (req, res) => {
     const limit = req.query.limit;
     const sortBy = req.query.sortBy;
     const orderBy = req.query.orderBy;
+    const tags = req.query.tags;
 
     console.log(req.query.language);
-
-    // const language_value = req.query.language === null ? '' : req.query.language
 
     const gameSystem = req.query.gameSystem
       ? `'${req.query.gameSystem}'`
@@ -119,13 +134,16 @@ app.get("/groups?", async (req, res) => {
       ? `'${req.query.language}'`
       : "game_language";
 
-    // console.log(sortBy);
-    // console.log(orderBy);
-    // console.log(str);
-
-    const query = `SELECT *, total_player_count - current_player_count AS available_player_count FROM groups WHERE game_system = ${gameSystem} AND medium = ${medium} AND adventure_length = ${adventureLength} AND game_language = ${language} ORDER BY ${
+    const query = `SELECT *, total_player_count - current_player_count AS available_player_count from groups WHERE ${
+      tags
+        ? `group_id in (select distinct groups.group_id
+  from tags inner join groups on tags.group_id = groups.group_id 
+  where tag in (${tags})) and`
+        : ``
+    } game_system = ${gameSystem} AND medium = ${medium} AND adventure_length = ${adventureLength} AND game_language = ${language} ORDER BY ${
       sortBy || "group_id"
     } ${orderBy || "ASC"}`;
+
     console.log(query);
 
     const startIndex = (page - 1) * limit;
@@ -140,6 +158,20 @@ app.get("/groups?", async (req, res) => {
     response.groups = allGroups.rows.slice(startIndex, endIndex);
     response.pageCount = pageCount;
     res.json(response);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/tags/:group_id", async (req, res) => {
+  try {
+    const { group_id } = req.params;
+
+    const tags = await pool.query("SELECT * FROM tags WHERE group_id = $1", [
+      group_id,
+    ]);
+
+    res.json(tags.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -209,19 +241,6 @@ app.get("/group/:user_id", async (req, res) => {
     console.error(err.message);
   }
 });
-
-// app.get("/groups/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const group = await pool.query("SELECT * FROM groups WHERE group_id = $1", [
-//       id,
-//     ]);
-//     res.json(group.rows[0]);
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
 
 // add a player to a group
 

@@ -5,7 +5,13 @@ import TextField from "@mui/material/TextField";
 import FormInfo from "./FormInfo";
 import React from "react";
 
-export default function Other({ handleChange, tagList, values }) {
+export default function Other({
+  handleChange,
+  setTags,
+  tagList,
+  values,
+  tags,
+}) {
   return (
     <Container
       maxWidth="lg"
@@ -66,8 +72,9 @@ export default function Other({ handleChange, tagList, values }) {
             id="tags-outlined"
             options={tagList}
             getOptionLabel={(option) => option}
-            filterSelectedOptions // value={values.tags}
-            // onChange={handleChangeTags}
+            filterSelectedOptions
+            value={tags}
+            onChange={(event, newTags) => setTags(newTags)}
             renderInput={(params) => (
               <TextField
                 {...params}

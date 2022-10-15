@@ -50,7 +50,7 @@ function App() {
 
   useEffect(() => {
     isAuth();
-  });
+  }, []);
 
   return (
     <div className="App">

@@ -32,13 +32,14 @@ import {
   adventureStyles,
   gmExperinceLevels,
   genres,
-} from "../utils/options";
+} from "../data/options";
 
 function Create(props) {
   const [temptime, setTempTime] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [values, setValues] = useState(defaultValues);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [tags, setTags] = useState([]);
   const [toast, setToast] = React.useState({
     isOpen: false,
     message: "",
@@ -72,6 +73,10 @@ function Create(props) {
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
+
+  // const handleChangeTags = () => {
+  //   setTags([...tags, ])
+  // }
 
   const handleChangeMedium = (event) => {
     if (event.target.value === "Online") {
@@ -185,6 +190,7 @@ function Create(props) {
       storyGenre,
       campaignPrimer,
       storyStyle,
+      tags,
     };
 
     try {
@@ -298,7 +304,13 @@ function Create(props) {
       )}
 
       {activeStep === 5 && (
-        <Other handleChange={handleChange} tagList={tagList} values={values} />
+        <Other
+          handleChange={handleChange}
+          tags={tags}
+          setTags={setTags}
+          tagList={tagList}
+          values={values}
+        />
       )}
 
       <Button

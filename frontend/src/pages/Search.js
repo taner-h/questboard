@@ -22,13 +22,14 @@ import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@material-ui/core/styles";
 import Collapse from "@mui/material/Collapse";
 import SortIcon from "@mui/icons-material/Sort";
-import { languages, tagList } from "../utils/options";
+import { languages, tagList } from "../data/options";
 
 function Search() {
   const [groups, setGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(5);
   const [limit, setLimit] = useState(12);
+  const [tagFilter, setTagFilter] = useState([]);
   const [filters, setFilters] = useState({
     gameSystem: "",
     medium: "",
@@ -47,6 +48,7 @@ function Search() {
   const getGroups = async () => {
     try {
       const sortBy = getSort(sort.sortBy);
+      const tags = tagFilter.map((tag) => `'${tag}'`).join(",");
 
       const response = await fetch(
         `/groups?page=${page}&limit=${limit}&sortBy=${sortBy}&orderBy=${
@@ -57,7 +59,7 @@ function Search() {
             : filters.gameSystem
         }&medium=${filters.medium}&adventureLength=${
           filters.adventureLength
-        }&language=${filters.language}`
+        }&language=${filters.language}&tags=${tags}`
       );
       const jsonRes = await response.json();
       setGroups(jsonRes.groups);
@@ -132,6 +134,8 @@ function Search() {
             multiple
             id="tags-outlined"
             options={tagList}
+            value={tagFilter}
+            onChange={(event, newTagFilter) => setTagFilter(newTagFilter)}
             getOptionLabel={(option) => option}
             filterSelectedOptions
             InputProps={{

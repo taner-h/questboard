@@ -308,6 +308,201 @@ export const tagList = [
   "Worldbuilding",
 ];
 
+export const tagsList = [
+  {
+    id: 1,
+    name: "Absurd",
+  },
+  {
+    id: 2,
+    name: "Adults Only",
+  },
+  {
+    id: 3,
+    name: "Casual",
+  },
+  {
+    id: 4,
+    name: "Character Driven",
+  },
+  {
+    id: 5,
+    name: "Combat-heavy",
+  },
+  {
+    id: 6,
+    name: "Comedy",
+  },
+  {
+    id: 7,
+    name: "Dark",
+  },
+  {
+    id: 8,
+    name: "Dragonlance",
+  },
+  {
+    id: 9,
+    name: "Dungeon Crawler",
+  },
+  {
+    id: 10,
+    name: "Eberron",
+  },
+  {
+    id: 11,
+    name: "Epic Fantasy",
+  },
+  {
+    id: 12,
+    name: "Forgotten Realms",
+  },
+  {
+    id: 13,
+    name: "Fun Prioritized",
+  },
+  {
+    id: 14,
+    name: "Gothic",
+  },
+  {
+    id: 15,
+    name: "Grim",
+  },
+  {
+    id: 16,
+    name: "Hardcore Play",
+  },
+  {
+    id: 17,
+    name: "Heavy Prep",
+  },
+  {
+    id: 18,
+    name: "High Magic",
+  },
+  {
+    id: 19,
+    name: "High Tier",
+  },
+  {
+    id: 20,
+    name: "Homebrew",
+  },
+  {
+    id: 21,
+    name: "Horror",
+  },
+  {
+    id: 22,
+    name: "Improvisation",
+  },
+  {
+    id: 23,
+    name: "Kid-friendly",
+  },
+  {
+    id: 24,
+    name: "Low Magic",
+  },
+  {
+    id: 25,
+    name: "Low Tier",
+  },
+  {
+    id: 26,
+    name: "Maraton Sessions",
+  },
+  {
+    id: 27,
+    name: "Mediaval",
+  },
+  {
+    id: 28,
+    name: "Mid Tier",
+  },
+  {
+    id: 29,
+    name: "Multiple GM",
+  },
+  {
+    id: 30,
+    name: "Murderhobo",
+  },
+  {
+    id: 31,
+    name: "New GM",
+  },
+  {
+    id: 32,
+    name: "No Prep",
+  },
+  {
+    id: 33,
+    name: "Old School",
+  },
+  {
+    id: 34,
+    name: "Open-world",
+  },
+  {
+    id: 35,
+    name: "Prewritten",
+  },
+  {
+    id: 36,
+    name: "Railroad",
+  },
+  {
+    id: 37,
+    name: "Realistic",
+  },
+  {
+    id: 38,
+    name: "RP-heavy",
+  },
+  {
+    id: 39,
+    name: "Rule of Fun",
+  },
+  {
+    id: 40,
+    name: "Rules-heavy",
+  },
+  {
+    id: 41,
+    name: "Sandbox",
+  },
+  {
+    id: 42,
+    name: "Serious",
+  },
+  {
+    id: 43,
+    name: "Solo",
+  },
+  {
+    id: 44,
+    name: "Strategic",
+  },
+  {
+    id: 45,
+    name: "Urban",
+  },
+  {
+    id: 46,
+    name: "Vampire",
+  },
+  {
+    id: 47,
+    name: "Werewolf",
+  },
+  {
+    id: 48,
+    name: "Worldbuilding",
+  },
+];
+
 export const marks = [
   {
     value: 0,

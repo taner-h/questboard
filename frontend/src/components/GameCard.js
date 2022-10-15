@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Slide from "@mui/material/Slide";
 import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
+import Chip from "@mui/material/Chip";
 import CardActions from "@mui/material/CardActions";
 import CheckIcon from "@mui/icons-material/Check";
 import Snackbar from "@mui/material/Snackbar";
@@ -28,20 +29,20 @@ import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 
 function GameCard(props) {
-  const [openInfo, setOpenInfo] = React.useState(false);
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [addGame, setAddGame] = React.useState(false);
-  const [maxWidth, setMaxWidth] = React.useState("sm");
-  const [openPlayers, setOpenPlayers] = React.useState(false);
-  const [openSession, setOpenSession] = React.useState(false);
-
-  const [players, setPlayers] = React.useState([]);
-  const [requests, setRequests] = React.useState([]);
-  const [gm, setGm] = React.useState([]);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [fullWidth, setFullWidth] = useState(true);
+  const [addGame, setAddGame] = useState(false);
+  const [maxWidth, setMaxWidth] = useState("sm");
+  const [openPlayers, setOpenPlayers] = useState(false);
+  const [openSession, setOpenSession] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [players, setPlayers] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [gm, setGm] = useState([]);
 
   const { group, groups, setGroups } = props;
 
-  const [toast, setToast] = React.useState({
+  const [toast, setToast] = useState({
     isOpen: false,
     message: "",
   });
@@ -83,16 +84,27 @@ function GameCard(props) {
     }
   };
 
+  const getTags = async () => {
+    try {
+      const response = await fetch(`/tags/${group.group_id}`);
+      const jsonRes = await response.json();
+      setTags(jsonRes);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   const getExp = (number) => {
     if (number === "0") return "Beginner";
     if (number === "25") return "Novice";
-    if (number === "50") return "Intermediate";
-    if (number === "75") return "Experienced";
-    if (number === "100") return "Veteran";
+    if (number === "50") return "Moderate";
+    if (number === "75") return "Seasoned";
+    if (number === "100") return "Pro";
   };
 
   const handleClickOpenInfo = () => {
     setOpenInfo(true);
+    getTags();
   };
 
   const handleCloseInfo = () => {
@@ -686,7 +698,7 @@ function GameCard(props) {
                 </Typography>
               </Box>
 
-              {/* <Divider variant="middle" />
+              <Divider variant="middle" />
               <Box sx={{ m: 2 }}>
                 <Typography
                   gutterBottom
@@ -696,55 +708,19 @@ function GameCard(props) {
                 >
                   Tags
                 </Typography>
-                <Chip
-                  sx={{
-                    m: 0.5,
-                    backgroundColor: "#4c566a48",
-                    color: "#2e3440",
-                  }}
-                  label="Gothic"
-                />
-                <Chip
-                  sx={{
-                    m: 0.5,
-                    backgroundColor: "#4c566a48",
-                    color: "#2e3440",
-                  }}
-                  label="Ravenloft"
-                />
-                <Chip
-                  sx={{
-                    m: 0.5,
-                    backgroundColor: "#4c566a48",
-                    color: "#2e3440",
-                  }}
-                  label="Serious"
-                />
-                <Chip
-                  sx={{
-                    m: 0.5,
-                    backgroundColor: "#4c566a48",
-                    color: "#2e3440",
-                  }}
-                  label="Vampire"
-                />
-                <Chip
-                  sx={{
-                    m: 0.5,
-                    backgroundColor: "#4c566a48",
-                    color: "#2e3440",
-                  }}
-                  label="Sandbox"
-                />
-                <Chip
-                  sx={{
-                    m: 0.5,
-                    backgroundColor: "#4c566a48",
-                    color: "#2e3440",
-                  }}
-                  label="Dark"
-                />
-              </Box> */}
+                {tags.map((tag) => (
+                  <Chip
+                    sx={{
+                      m: 0.5,
+                      // backgroundColor: "#4c566a48",
+                      // backgroundColor: "#4C566A",
+                      color: "#4C566A",
+                    }}
+                    label={tag.tag}
+                    variant="outlined"
+                  />
+                ))}
+              </Box>
             </DialogContent>
             <DialogActions>
               <Button
