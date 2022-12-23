@@ -8,8 +8,7 @@
 
 If you wish to try questboard, you can do so from the following adresses;
 
-- https://questboard-production.up.railway.app
-- https://questboard.onrender.com (It may take 30 seconds for it to spin up)
+- https://questboard.onrender.com
 
 If you want to try the features yourself without creating a group or multiple accounts, you can use the following test users:
 
