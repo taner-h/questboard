@@ -6,7 +6,7 @@
 
 ## Try for yourself
 
-If you wish to try questboard, you can do so from the following adresses;
+If you wish to try questboard, you can do so from the following address:
 
 - https://questboard.onrender.com
 
