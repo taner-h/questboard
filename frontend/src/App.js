@@ -12,6 +12,7 @@ import Manage from "./pages/Manage";
 import NavBar from "./components/NavBar";
 import NotFound from "./components/NotFound";
 import Search from "./pages/Search";
+import { useLocation } from "react-router-dom";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,7 +50,9 @@ function App() {
   }
 
   useEffect(() => {
-    isAuth();
+    if (location.pathname !== "/test") {
+      isAuth();
+    }
   }, []);
 
   return (
