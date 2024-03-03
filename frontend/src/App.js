@@ -86,7 +86,12 @@ function App() {
           />
           <Route
             path="/test"
-            element={<Home isAuthenticated={isAuthenticated} />}
+            element={
+              <Home
+                handleAuthChange={handleAuthChange}
+                isAuthenticated={isAuthenticated}
+              />
+            }
           />
           <Route
             path="*"
