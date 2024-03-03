@@ -18,6 +18,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userID, setUserID] = useState(null);
 
+  const location = useLocation();
+
   const handleChangeUserID = (integer) => {
     setUserID(integer);
   };
