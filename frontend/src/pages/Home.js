@@ -13,8 +13,42 @@ import dnd from "../img/dnd.png";
 import cthulhu from "../img/cthulhu.png";
 import fate from "../img/fate.png";
 import vampire from "../img/vampire.png";
+import { useLocation } from "react-router-dom";
 
 export default function Home() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleLogin = async () => {
+      const body = { email: "test1@mail.com", password: "password" };
+
+      try {
+        const response = await fetch("/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const parseRes = await response.json();
+
+        if (parseRes.token) {
+          localStorage.setItem("token", parseRes.token);
+          localStorage.setItem("user", parseRes.userID);
+          props.handleAuthChange(true);
+          // setOpenToastSuccess(true);
+        } else {
+          // setOpenToastFail(true);
+          props.handleAuthChange(false);
+        }
+        // console.log(parseRes);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    if (location.pathname === "/test") {
+      handleLogin();
+    }
+  }, [third]);
+
   return (
     <>
       <Container

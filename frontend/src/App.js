@@ -85,6 +85,10 @@ function App() {
             }
           />
           <Route
+            path="/test"
+            element={<Home isAuthenticated={isAuthenticated} />}
+          />
+          <Route
             path="*"
             element={<NotFound isAuthenticated={isAuthenticated} />}
           />
