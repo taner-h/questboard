@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -15,7 +15,7 @@ import fate from "../img/fate.png";
 import vampire from "../img/vampire.png";
 import { useLocation } from "react-router-dom";
 
-export default function Home() {
+export default function Home({ props }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Home() {
     if (location.pathname === "/test") {
       handleLogin();
     }
-  }, [third]);
+  }, []);
 
   return (
     <>
