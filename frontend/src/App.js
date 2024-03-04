@@ -12,13 +12,10 @@ import Manage from "./pages/Manage";
 import NavBar from "./components/NavBar";
 import NotFound from "./components/NotFound";
 import Search from "./pages/Search";
-import { useLocation } from "react-router-dom";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userID, setUserID] = useState(null);
-
-  const location = useLocation();
 
   const handleChangeUserID = (integer) => {
     setUserID(integer);
@@ -52,9 +49,8 @@ function App() {
   }
 
   useEffect(() => {
-    if (location.pathname !== "/test") {
-      isAuth();
-    }
+    if (window.location.pathname === "/test") handleGrantAuth();
+    else isAuth();
   }, []);
 
   return (
