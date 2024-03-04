@@ -10,11 +10,14 @@ If you wish to try questboard, you can do so from the following address:
 
 - https://questboard.onrender.com
 
-If you want to try the features yourself without creating a group or multiple accounts, you can use the following test users:
+If you want to try the features yourself without creating a group or multiple accounts, you can use the following test user:
 
 - email: `test1@mail.com` password: `password`
-- email: `test2@mail.com` password: `password`
-- email: `test3@mail.com` password: `password`
+
+or simply use the following address:
+
+- https://questboard.onrender.com/test
+
 
 ## Features
 
